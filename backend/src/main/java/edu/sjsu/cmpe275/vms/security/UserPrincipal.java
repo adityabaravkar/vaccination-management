@@ -1,5 +1,6 @@
 package edu.sjsu.cmpe275.vms.security;
 
+import edu.sjsu.cmpe275.vms.model.Role;
 import edu.sjsu.cmpe275.vms.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +27,11 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     public static UserPrincipal create(User user) {
-        List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority("ROLE_PATIENT"));
-
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(Role.Patient.getRoleName()));
+        if(Role.Admin.equals(user.getRole())) {
+            authorities.add(new SimpleGrantedAuthority(Role.Admin.getRoleName()));
+        }
         return new UserPrincipal(
                 user.getId(),
                 user.getEmail(),

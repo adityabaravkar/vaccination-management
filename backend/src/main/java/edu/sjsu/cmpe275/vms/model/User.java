@@ -35,6 +35,10 @@ public class User {
 
     private String providerId;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public Long getId() {
         return id;
     }
@@ -97,5 +101,13 @@ public class User {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
