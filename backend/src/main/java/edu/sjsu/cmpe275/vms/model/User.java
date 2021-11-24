@@ -1,21 +1,35 @@
 package edu.sjsu.cmpe275.vms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+import java.sql.Date;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "mrn-generator")
+    @GenericGenerator(name = "mrn-generator",
+            parameters = {
+                    @Parameter(name = "min", value = "100"),
+                    @Parameter(name = "max", value = "999999999")
+            },
+            strategy = "edu.sjsu.cmpe275.vms.config.MrnGenerator")
+    private Long mrn;
 
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+
+    private String middleName;
+
+    @Column(nullable = false)
+    private String lastName;
 
     @Email
     @Column(nullable = false, unique = true)
@@ -39,20 +53,46 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Long getId() {
-        return id;
+    @NotNull
+    private Date dateOfBirth;
+
+    @Embedded
+    private Address address;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    public Long getMrn() {
+        return mrn;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMrn(Long mrn) {
+        this.mrn = mrn;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -109,5 +149,29 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

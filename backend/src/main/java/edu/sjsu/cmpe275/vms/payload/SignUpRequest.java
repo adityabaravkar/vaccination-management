@@ -5,7 +5,12 @@ import javax.validation.constraints.NotBlank;
 
 public class SignUpRequest {
     @NotBlank
-    private String name;
+    private String firstName;
+
+    private String middleName;
+
+    @NotBlank
+    private String lastName;
 
     @NotBlank
     @Email
@@ -16,12 +21,42 @@ public class SignUpRequest {
 
     private String role;
 
-    public String getName() {
-        return name;
+    @NotBlank
+    private String dateOfBirth;
+
+    private String streetAndNumber;
+
+    private String city;
+
+    private String state;
+
+    private Integer zipCode;
+
+    @NotBlank
+    private String gender;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -46,5 +81,53 @@ public class SignUpRequest {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getStreetAndNumber() {
+        return streetAndNumber;
+    }
+
+    public void setStreetAndNumber(String streetAndNumber) {
+        this.streetAndNumber = streetAndNumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Integer getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(Integer zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

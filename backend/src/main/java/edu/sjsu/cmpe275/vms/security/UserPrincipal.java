@@ -33,7 +33,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
             authorities.add(new SimpleGrantedAuthority(Role.Admin.getRoleName()));
         }
         return new UserPrincipal(
-                user.getId(),
+                user.getMrn(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities
