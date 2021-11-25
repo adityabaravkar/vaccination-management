@@ -11,9 +11,9 @@ public class Address {
 
     private String state;
 
-    private Integer zipCode;
+    private int zipCode;
 
-    public Address(String streetAndNumber, String city, String state, Integer zipCode) {
+    public Address(String streetAndNumber, String city, String state, int zipCode) {
         this.streetAndNumber = streetAndNumber;
         this.city = city;
         this.state = state;
@@ -48,11 +48,11 @@ public class Address {
         this.state = state;
     }
 
-    public Integer getZipCode() {
+    public int getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(Integer zipCode) {
+    public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
     }
 }
