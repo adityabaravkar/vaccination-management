@@ -13,19 +13,15 @@ public class Disease {
     @GeneratedValue
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description")
     private String description;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "vaccination_id", referencedColumnName = "id")
+    private Vaccination vaccination;
 
     public String getName() {
         return name;
@@ -42,4 +38,22 @@ public class Disease {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Vaccination getVaccination() {
+        return vaccination;
+    }
+
+    public void setVaccination(Vaccination vaccination) {
+        this.vaccination = vaccination;
+    }
+
+    public Disease(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Disease() {
+
+    }
+
 }

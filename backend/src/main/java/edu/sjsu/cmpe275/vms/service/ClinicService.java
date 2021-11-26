@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ClinicService {
     Clinic createClinic(String name,
-                       // Address address,
+                        Address address,
                         String businessHours,
                         int NumberOfPhysicians);
 }

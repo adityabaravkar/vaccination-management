@@ -13,8 +13,8 @@ public class ClinicServiceImpl implements ClinicService {
     @Autowired ClinicRepository clinicRepository;
 
     @Override
-    public Clinic createClinic(String name, /* Address address,*/ String businessHours, int numberOfPhysicians) {
-        Clinic clinic = new Clinic(name, /*address,*/ businessHours, numberOfPhysicians);
+    public Clinic createClinic(String name, Address address, String businessHours, int numberOfPhysicians) {
+        Clinic clinic = new Clinic(name, address, businessHours, numberOfPhysicians);
         return this.clinicRepository.save(clinic);
     }
 }

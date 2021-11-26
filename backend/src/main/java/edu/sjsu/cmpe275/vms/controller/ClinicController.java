@@ -29,11 +29,11 @@ public class ClinicController {
     @PostMapping("/clinic")
     @PreAuthorize("hasRole('ADMIN')")
     public Clinic createClinic(@CurrentUser @RequestParam String name,
-                               // @RequestParam Address address,
+                               @RequestBody Address address,
                                @RequestParam String businessHours,
                                @RequestParam int numberOfPhysicians
                                ) {
-        return this.clinicService.createClinic(name, /*address*/ businessHours, numberOfPhysicians);
+        return this.clinicService.createClinic(name, address, businessHours, numberOfPhysicians);
     }
 
 

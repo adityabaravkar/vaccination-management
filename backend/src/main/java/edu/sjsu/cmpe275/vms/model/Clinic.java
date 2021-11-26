@@ -14,8 +14,8 @@ public class Clinic {
     @Column(name = "name", nullable = false)
     private String name;
 
-//    @Column(name = "address", nullable = false)
-//    private Address address;
+    @Embedded
+    private Address address;
 
     @Column(name = "businessHours", nullable = false)
     private String businessHours;
@@ -23,11 +23,15 @@ public class Clinic {
     @Column(name = "numberOfPhysicians", nullable = false)
     private int numberOfPhysicians;
 
-    public Clinic(String name, /*Address address,*/ String businessHours, int numberOfPhysicians) {
+    public Clinic(String name, Address address, String businessHours, int numberOfPhysicians) {
         this.name = name;
-       // this.address = address;
+        this.address = address;
         this.businessHours = businessHours;
         this.numberOfPhysicians = numberOfPhysicians;
+    }
+
+    public Clinic() {
+
     }
 
     public long getId() {
@@ -46,13 +50,13 @@ public class Clinic {
         this.name = name;
     }
 
-//    public Address getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public String getBusinessHours() {
         return businessHours;

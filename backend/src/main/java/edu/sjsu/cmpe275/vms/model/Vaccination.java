@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe275.vms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 import javax.persistence.*;
 
@@ -14,8 +16,11 @@ public class Vaccination {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "diseases", nullable = false)
-    private String diseases;
+   // @Column(name = "diseases", nullable = false)
+
+    @OneToMany(mappedBy = "vaccination", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JsonIgnoreProperties({"vaccination"})
+    private List<Disease> diseases;
 
     @Column(name = "manufacturer", nullable = false)
     private String manufacturer;
@@ -28,6 +33,19 @@ public class Vaccination {
 
     @Column(name = "duration", nullable = false)
     private int duration;
+
+    public Vaccination(String name, List<Disease> diseases, String manufacturer, int numberOfShots, int shotInternalVal, int duration) {
+        this.name = name;
+        this.diseases = diseases;
+        this.manufacturer = manufacturer;
+        this.numberOfShots = numberOfShots;
+        this.shotInternalVal = shotInternalVal;
+        this.duration = duration;
+    }
+
+    public Vaccination() {
+
+    }
 
     public long getId() {
         return id;
@@ -45,11 +63,11 @@ public class Vaccination {
         this.name = name;
     }
 
-    public String getDiseases() {
+    public List<Disease> getDiseases() {
         return diseases;
     }
 
-    public void setDiseases(String diseases) {
+    public void setDiseases(List<Disease> diseases) {
         this.diseases = diseases;
     }
 
