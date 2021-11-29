@@ -4,6 +4,7 @@ import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
 import Login from "../login/Login";
 import NotFound from "../common/NotFound";
+import OAuth2RedirectHandler from "../oauth2/OAuth2RedirectHandler";
 import { getCurrentUser } from "../../util/APIUtils";
 import { ACCESS_TOKEN } from "../../constants";
 import Alert from "react-s-alert";
@@ -21,6 +22,7 @@ class App extends Component {
 
     this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   loadCurrentlyLoggedInUser() {
@@ -31,7 +33,9 @@ class App extends Component {
           authenticated: true,
         });
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log("Error: " + error);
+      });
   }
 
   handleLogout() {
@@ -41,6 +45,12 @@ class App extends Component {
       currentUser: null,
     });
     Alert.success("You've logged out!");
+  }
+
+  handleLogin() {
+    this.setState({
+      authenticated: true,
+    });
   }
 
   componentDidMount() {
@@ -62,8 +72,16 @@ class App extends Component {
             <Route
               path="/login"
               render={(props) => (
-                <Login authenticated={this.state.authenticated} {...props} />
+                <Login
+                  authenticated={this.state.authenticated}
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
               )}
+            />
+            <Route
+              path="/api/oauth2/redirect"
+              component={OAuth2RedirectHandler}
             />
             <Route component={NotFound} />
           </Switch>

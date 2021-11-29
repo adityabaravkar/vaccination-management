@@ -28,5 +28,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("forward:/index.html");
         registry.addViewController("/{x:[\\w\\-]+}").setViewName("forward:/index.html");
         registry.addViewController("/{x:^(?!api$).*$}/**/{y:[\\w\\-]+}").setViewName("forward:/index.html");
+        registry.addViewController("/api/oauth2/redirect").setViewName("forward:/index.html");
     }
 }

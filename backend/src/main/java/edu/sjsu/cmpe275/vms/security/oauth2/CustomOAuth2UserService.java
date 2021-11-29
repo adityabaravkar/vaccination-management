@@ -2,6 +2,7 @@ package edu.sjsu.cmpe275.vms.security.oauth2;
 
 import edu.sjsu.cmpe275.vms.exception.OAuth2AuthenticationProcessingException;
 import edu.sjsu.cmpe275.vms.model.AuthProvider;
+import edu.sjsu.cmpe275.vms.model.Role;
 import edu.sjsu.cmpe275.vms.model.User;
 import edu.sjsu.cmpe275.vms.repository.UserRepository;
 import edu.sjsu.cmpe275.vms.security.UserPrincipal;
@@ -64,16 +65,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user = new User();
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getId());
-        //FIXME: Separate First Name and Last Name
-        user.setFirstName(oAuth2UserInfo.getName());
+        user.setFirstName(oAuth2UserInfo.getFirstName());
+        user.setLastName(oAuth2UserInfo.getLastName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        user.setRole(Role.Patient);
         return userRepository.save(user);
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        //FIXME: Separate First Name and Last Name
-        existingUser.setFirstName(oAuth2UserInfo.getName());
+        existingUser.setFirstName(oAuth2UserInfo.getFirstName());
+        existingUser.setLastName(oAuth2UserInfo.getLastName());
         existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(existingUser);
     }

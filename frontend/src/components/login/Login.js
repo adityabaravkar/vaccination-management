@@ -43,7 +43,7 @@ class Login extends Component {
     return (
       <div className="login-container">
         <div className="login-content">
-          <h1 className="login-title">Login to SpringSocial</h1>
+          <h1 className="login-title">Login to VMS</h1>
           <SocialLogin />
           <div className="or-separator">
             <span className="or-text">OR</span>
@@ -106,6 +106,7 @@ class LoginForm extends Component {
       .then((response) => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         Alert.success("You're successfully logged in!");
+        this.props.handleLogin();
         this.props.history.push("/");
       })
       .catch((error) => {
