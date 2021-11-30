@@ -1,7 +1,12 @@
 package edu.sjsu.cmpe275.vms.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "clinic")
@@ -23,12 +28,31 @@ public class Clinic {
     @Column(name = "numberOfPhysicians", nullable = false)
     private int numberOfPhysicians;
 
+    public List<Vaccination> getVaccinations() {
+        return vaccinations;
+    }
+
+    public void setVaccinations(List<Vaccination> vaccinations) {
+        this.vaccinations = vaccinations;
+    }
+
+    @Fetch(FetchMode.SELECT)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "clinic_vaccination_map",
+            joinColumns = { @JoinColumn(name = "clinic_id", referencedColumnName = "id")},
+            inverseJoinColumns = { @JoinColumn(name = "vaccination_id", referencedColumnName = "id")}
+    )
+    private List<Vaccination> vaccinations;
+
     public Clinic(String name, Address address, String businessHours, int numberOfPhysicians) {
         this.name = name;
         this.address = address;
         this.businessHours = businessHours;
         this.numberOfPhysicians = numberOfPhysicians;
     }
+
+
 
     public Clinic() {
 
