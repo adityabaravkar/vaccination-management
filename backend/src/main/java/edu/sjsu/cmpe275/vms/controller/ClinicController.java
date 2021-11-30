@@ -3,6 +3,7 @@ package edu.sjsu.cmpe275.vms.controller;
 
 import edu.sjsu.cmpe275.vms.model.Address;
 import edu.sjsu.cmpe275.vms.model.Clinic;
+import edu.sjsu.cmpe275.vms.model.Vaccination;
 import edu.sjsu.cmpe275.vms.security.CurrentUser;
 import edu.sjsu.cmpe275.vms.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class ClinicController {
 
     @Autowired private ClinicService clinicService;
 
+
+    @GetMapping(path = "/clinic/{id}")
+    public List<Vaccination> getVaccinations(@PathVariable(value = "id") long id) {
+        return this.clinicService.getVaccinations(id);
+    }
 
     @PostMapping(path = "/clinic/addVaccine")
     @PreAuthorize("hasRole('ADMIN')")

@@ -21,6 +21,16 @@ public class ClinicServiceImpl implements ClinicService {
     @Autowired ClinicRepository clinicRepository;
     @Autowired
     VaccinationRepository vaccinationRepository;
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Vaccination> getVaccinations(long id) {
+        Clinic clinic =  this.clinicRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Sorry, clinic does not exist!"));
+        return clinic.getVaccinations();
+    }
+
     @Override
     public Clinic createClinic(String name, Address address, String businessHours, int numberOfPhysicians) {
         Clinic clinic = new Clinic(name, address, businessHours, numberOfPhysicians);
