@@ -53,13 +53,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @NotNull
     private Date dateOfBirth;
 
     @Embedded
     private Address address;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
