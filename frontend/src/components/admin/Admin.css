@@ -5,8 +5,8 @@ body {
     background: radial-gradient(circle, #0077ea, #1f4f96, #1b2949, #000);
 }
 .adminbtns {
-    margin-left: 13rem;
-    margin-right: 6rem;
+    margin-left: 6rem;
+    margin-right: 7.5rem;
 }
 .stage {
     height: 300px;
