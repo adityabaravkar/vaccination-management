@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
 import Login from "../login/Login";
+import Admin from "../admin/Admin";
 import NotFound from "../common/NotFound";
 import OAuth2RedirectHandler from "../oauth2/OAuth2RedirectHandler";
 import { getCurrentUser } from "../../util/APIUtils";
@@ -78,6 +79,16 @@ class App extends Component {
                   {...props}
                 />
               )}
+            />
+            <Route
+                path="/admin"
+                render={(props) => (
+                    <Admin
+                        authenticated={this.state.authenticated}
+                        handleLogin={this.handleLogin}
+                        {...props}
+                    />
+                )}
             />
             <Route
               path="/api/oauth2/redirect"
