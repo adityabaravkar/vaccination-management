@@ -62,6 +62,17 @@ class Admin extends Component {
         })
 
     }
+    showAllClinics = (e) =>{
+        window.location.href= "/allClinics";
+    }
+    showAllVacinations = (e) =>{
+        window.location.href= "/allVaccinations";
+    }
+    
+    showAllDiseases = (e) =>{
+        window.location.href= "/allDiseases";
+    }
+    
     render() {
         const {showClinic, showDisease, showVaccine} = this.state;
         var clinicForm = null;
@@ -309,10 +320,15 @@ class Admin extends Component {
         return (
             <div class="">
                 <div className="container1">
+                   
                     <Button className="adminbtns" onClick = {this.addClinicModal}>Add Clinic</Button>
                     <Button className="adminbtns" onClick = {this.addDiseaseModal}>Add Disease</Button>
                     <Button className="adminbtns" onClick = {this.addVaccineModal}>Add Vaccine</Button>
+                   <br/>
                     <Button className="adminbtns" onClick = {this.showAllClinics}>All Clinics</Button>
+                    <Button className="adminbtns" onClick = {this.showAllDiseases}>All Diseases</Button>
+                    <Button className="adminbtns" onClick = {this.showAllVacinations}>All Vaccines</Button>
+                   
                </div>
                <div>
               <Modal size="lg"

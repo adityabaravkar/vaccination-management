@@ -5,8 +5,14 @@ body {
     background: radial-gradient(circle, #0077ea, #1f4f96, #1b2949, #000);
 }
 .adminbtns {
-    margin-left: 6rem;
-    margin-right: 7.5rem;
+    margin-left: 12rem;
+    margin-right: 10rem;
+    margin-top: 5rem;
+}
+.stageClinic{
+    margin-top: 50px;
+    margin-left: 550px;
+    align-items: center;
 }
 .stage {
     height: 300px;
