@@ -1,6 +1,5 @@
 package edu.sjsu.cmpe275.vms.service.impl;
 
-import com.nimbusds.oauth2.sdk.util.StringUtils;
 import edu.sjsu.cmpe275.vms.exception.BadRequestException;
 import edu.sjsu.cmpe275.vms.model.*;
 import edu.sjsu.cmpe275.vms.payload.SignUpRequest;
@@ -36,8 +35,12 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
         user.setProvider(AuthProvider.local);
-        user.setRole(StringUtils.isBlank(signUpRequest.getRole())?
-                Role.Patient:Role.valueOf(signUpRequest.getRole()));
+
+        if(signUpRequest.getEmail().endsWith("@sjsu.edu")) {
+            user.setRole(Role.Admin);
+        } else {
+            user.setRole(Role.Patient);
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
