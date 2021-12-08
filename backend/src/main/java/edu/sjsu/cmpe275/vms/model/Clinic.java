@@ -2,6 +2,7 @@ package edu.sjsu.cmpe275.vms.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.aspectj.weaver.patterns.ConcreteCflowPointcut;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -45,13 +46,16 @@ public class Clinic {
     )
     private List<Vaccination> vaccinations;
 
+    @OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JsonIgnoreProperties({"clinic"})
+    List<Slot> slot;
+
     public Clinic(String name, Address address, String businessHours, int numberOfPhysicians) {
         this.name = name;
         this.address = address;
         this.businessHours = businessHours;
         this.numberOfPhysicians = numberOfPhysicians;
     }
-
 
 
     public Clinic() {
