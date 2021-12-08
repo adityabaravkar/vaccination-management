@@ -109,7 +109,7 @@ class SignupForm extends Component {
     signup(signUpRequest)
       .then((response) => {
         Alert.success(
-          "You're successfully registered. Please login to continue!"
+          "You're successfully registered. Please verify email to login!"
         );
         this.props.history.push("/login");
       })
