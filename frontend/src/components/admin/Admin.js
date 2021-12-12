@@ -22,7 +22,16 @@ class Admin extends Component {
           state:'',
           zipcode:'',
           businessHrs:'',
-          noOfPhysicians:''
+          noOfPhysicians:'',
+            diseaseName:'',
+            description:'',
+            vaccineName:'',
+            manufacturer:'',
+            shotinterval:'',
+            duration:'',
+            noofshots:'',
+            diseases:[],
+            name:''
 
         };
       }
@@ -112,8 +121,8 @@ class Admin extends Component {
                     </Row>
                     <span style={{color:'red'}}></span>
                     <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="employerName" 
-                        value={this.state.employerName} maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="clinicName"
+                        value={this.state.clinicName} maxLength="45"
                         onChange={this.handleChange}></input>
                     </Row>
                     <br/>
@@ -125,8 +134,8 @@ class Admin extends Component {
                             </Row>
                             <span style={{color:'red'}}></span>    
                             <Row> 
-                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="roleInCompany" 
-                            value={this.state.roleInCompany}  maxLength="50"
+                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="streetNo"
+                            value={this.state.streetNo}  maxLength="50"
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -136,8 +145,8 @@ class Admin extends Component {
                             </Row>
                             <span style={{color:'red'}}></span>
                             <Row> 
-                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="address"
-                            value={this.state.address}  maxLength="45"
+                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="city"
+                            value={this.state.city}  maxLength="45"
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -150,8 +159,8 @@ class Admin extends Component {
                         </Row>
                         <span style={{color:'red'}}></span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="city"
-                        value={this.state.city}  maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="state"
+                        value={this.state.state}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>      
@@ -162,8 +171,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}></span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="state" 
-                        value={this.state.state}  maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="zipcode"
+                        value={this.state.zipcode}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                     </Col>
@@ -177,8 +186,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="zipcode" 
-                        value={this.state.zipcode} type="number"  maxLength="5"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="businessHrs"
+                        value={this.state.businessHrs}   maxLength="5"
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>
@@ -190,8 +199,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="zipcode" 
-                        value={this.state.zipcode} type="number"  maxLength="5"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="noOfPhysicians"
+                        value={this.state.noOfPhysicians} type="number"
                         onChange={this.handleChange}></input>
                         </Row>
                       </Col>  
@@ -218,8 +227,8 @@ class Admin extends Component {
                     </Row>
                     <span style={{color:'red'}}></span>
                     <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="employerName" 
-                        value={this.state.employerName} maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="name"
+                        value={this.state.name} maxLength="45"
                         onChange={this.handleChange}></input>
                     </Row>
                     <br/>
@@ -229,8 +238,8 @@ class Admin extends Component {
                             <h6>Description</h6>
                             </Row>
                             <Row> 
-                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="roleInCompany" 
-                            value={this.state.roleInCompany}  maxLength="50"
+                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="description"
+                            value={this.state.description}  maxLength="50"
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -256,8 +265,8 @@ class Admin extends Component {
                     </Row>
                     <span style={{color:'red'}}></span>
                     <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="employerName" 
-                        value={this.state.employerName} maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="vaccineName"
+                        value={this.state.vaccineName} maxLength="45"
                         onChange={this.handleChange}></input>
                     </Row>
                     <br/>
@@ -269,8 +278,8 @@ class Admin extends Component {
                             </Row>
                                 
                             <Row> 
-                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="roleInCompany" 
-                            value={this.state.roleInCompany}  maxLength="50"
+                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="diseases"
+                            value={this.state.diseases}  maxLength="50"
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -284,8 +293,8 @@ class Admin extends Component {
                         </Row>
                         <span style={{color:'red'}}></span>
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="city"
-                        value={this.state.city}  maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="manufacturer"
+                        value={this.state.manufacturer}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>      
@@ -296,8 +305,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}></span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="state" 
-                        value={this.state.state}  maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="noofshots"
+                        value={this.state.noofshots}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                     </Col>
@@ -311,8 +320,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="zipcode" 
-                        value={this.state.zipcode} type="number"  maxLength="5"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="shotinterval"
+                        value={this.state.shotinterval}
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>
@@ -324,8 +333,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="zipcode" 
-                        value={this.state.zipcode} type="number"  maxLength="5"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="duration"
+                        value={this.state.duration}
                         onChange={this.handleChange}></input>
                         </Row>
                       </Col>  
