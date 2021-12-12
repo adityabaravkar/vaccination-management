@@ -12,6 +12,7 @@
     "react-router-dom": "^4.3.1",
     "react-s-alert": "^1.4.1",
     "react-scripts": "4.0.3",
+    "react-social-login-buttons": "^3.6.0",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
