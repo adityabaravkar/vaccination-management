@@ -30,7 +30,7 @@ public class SignUpRequest {
 
     private String state;
 
-    private Integer zipCode;
+    private Integer zipCode = 0;
 
     @NotBlank
     private String gender;
