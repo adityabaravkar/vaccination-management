@@ -7,8 +7,6 @@ import {
 } from "../../constants";
 import { login } from "../../util/APIUtils";
 import { Link, Redirect } from "react-router-dom";
-import fbLogo from "../../images/fb-logo.png";
-import googleLogo from "../../images/google-logo.png";
 import Alert from "react-s-alert";
 import {
   FacebookLoginButton,
@@ -34,14 +32,26 @@ class Login extends Component {
 
   render() {
     if (this.props.authenticated) {
-      return (
-        <Redirect
-          to={{
-            pathname: "/",
-            state: { from: this.props.location },
-          }}
-        />
-      );
+      console.log("Role: " + this.props.currentUser.role);
+      if (this.props.currentUser.role === "Admin") {
+        return (
+          <Redirect
+            to={{
+              pathname: "/admin",
+              state: { from: this.props.location },
+            }}
+          />
+        );
+      } else {
+        return (
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: this.props.location },
+            }}
+          />
+        );
+      }
     }
 
     return (

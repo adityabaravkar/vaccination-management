@@ -75,6 +75,7 @@ class App extends Component {
               render={(props) => (
                 <Login
                   authenticated={this.state.authenticated}
+                  currentUser={this.state.currentUser}
                   handleLogin={this.handleLogin}
                   {...props}
                 />
@@ -85,7 +86,7 @@ class App extends Component {
               render={(props) => (
                 <Signup authenticated={this.state.authenticated} {...props} />
               )}
-            ></Route>
+            />
             <Route
               path="/api/oauth2/redirect"
               component={OAuth2RedirectHandler}
