@@ -3,6 +3,9 @@ import "./Admin.css";
 import {
  Button, Modal, Row, Col
 } from 'react-bootstrap';
+import {addDisease, login} from "../../util/APIUtils";
+import {ACCESS_TOKEN} from "../../constants";
+import Alert from "react-s-alert";
 
 
 class Admin extends Component {
@@ -72,7 +75,24 @@ class Admin extends Component {
     showAllDiseases = (e) =>{
         window.location.href= "/allDiseases";
     }
-    
+    handleChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+    addDiseaseDetails = (e) => {
+        e.preventDefault();
+        const addDiseaseRequest = Object.assign({}, this.state);
+        addDisease(addDiseaseRequest)
+            .then((response) => {
+                Alert.success("New Disease Added!");
+                this.props.history.push("/admin");
+            })
+            .catch((error) => {
+                Alert.error(
+                    (error && error.message) ||
+                    "Oops! Something went wrong. Please try again!"
+                );
+            });
+    }
     render() {
         const {showClinic, showDisease, showVaccine} = this.state;
         var clinicForm = null;
@@ -217,7 +237,7 @@ class Admin extends Component {
                     </Row>
                     <br/>
                 </Col>  
-                <Button onClick = {this.addClinicDetails}>Save</Button>
+                <Button onClick = {this.addDiseaseDetails}>Save</Button>
                 </div>
             )
         }
@@ -313,7 +333,7 @@ class Admin extends Component {
                     <br/>
                 </Col>
                     
-                <Button onClick = {this.addClinicDetails}>Save</Button>
+                <Button onClick = {this.addVaccineDetails}>Save</Button>
                 </div>
             )
         }

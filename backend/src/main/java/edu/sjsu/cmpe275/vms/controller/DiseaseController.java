@@ -1,7 +1,5 @@
 package edu.sjsu.cmpe275.vms.controller;
 
-
-import edu.sjsu.cmpe275.vms.model.Clinic;
 import edu.sjsu.cmpe275.vms.model.Disease;
 import edu.sjsu.cmpe275.vms.security.CurrentUser;
 

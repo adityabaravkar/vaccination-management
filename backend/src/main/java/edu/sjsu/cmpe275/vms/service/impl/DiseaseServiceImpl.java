@@ -15,7 +15,7 @@ public class DiseaseServiceImpl implements DiseaseService {
 
     @Override
     public Disease createDisease(String name,String description) {
-        Disease disease = new Disease(name,description);
+        Disease disease = new Disease(name, description);
         return this.diseaseRepository.save(disease);
     }
 }
