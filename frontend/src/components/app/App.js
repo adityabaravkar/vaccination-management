@@ -13,6 +13,7 @@ import Alert from "react-s-alert";
 import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
+import Signup from "../signup/Signup";
 import Disease from "../admin/Disease";
 import Vaccine from "../admin/Vaccine";
 
@@ -123,6 +124,12 @@ class App extends Component {
                     />
                 )}
             />
+            <Route
+              path="/signup"
+              render={(props) => (
+                <Signup authenticated={this.state.authenticated} {...props} />
+              )}
+            ></Route>
             <Route
               path="/api/oauth2/redirect"
               component={OAuth2RedirectHandler}

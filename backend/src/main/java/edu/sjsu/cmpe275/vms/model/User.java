@@ -40,6 +40,9 @@ public class User {
     @Column(nullable = false)
     private Boolean emailVerified = false;
 
+    @Column(length = 64)
+    private String verificationCode;
+
     @JsonIgnore
     private String password;
 
@@ -115,6 +118,14 @@ public class User {
 
     public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public String getPassword() {
