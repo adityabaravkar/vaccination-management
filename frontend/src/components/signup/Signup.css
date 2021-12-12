@@ -30,6 +30,10 @@
   margin-top: 0;
 }
 
+.social-btn.google img {
+  margin-top: 7px;
+}
+
 .social-btn.facebook img {
   height: 24px;
   margin-left: 3px;

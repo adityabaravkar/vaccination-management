@@ -10,6 +10,10 @@ import { Link, Redirect } from "react-router-dom";
 import fbLogo from "../../images/fb-logo.png";
 import googleLogo from "../../images/google-logo.png";
 import Alert from "react-s-alert";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from "react-social-login-buttons";
 
 class Login extends Component {
   componentDidMount() {
@@ -62,14 +66,11 @@ class SocialLogin extends Component {
   render() {
     return (
       <div className="social-login">
-        <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
-          <img src={googleLogo} alt="Google" /> Log in with Google
+        <a href={GOOGLE_AUTH_URL}>
+          <GoogleLoginButton />
         </a>
-        <a
-          className="btn btn-block social-btn facebook"
-          href={FACEBOOK_AUTH_URL}
-        >
-          <img src={fbLogo} alt="Facebook" /> Log in with Facebook
+        <a href={FACEBOOK_AUTH_URL}>
+          <FacebookLoginButton />
         </a>
       </div>
     );

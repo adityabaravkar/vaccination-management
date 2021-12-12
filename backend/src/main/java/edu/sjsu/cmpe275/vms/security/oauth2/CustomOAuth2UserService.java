@@ -10,6 +10,7 @@ import edu.sjsu.cmpe275.vms.security.UserPrincipal;
 import edu.sjsu.cmpe275.vms.security.oauth2.user.OAuth2UserInfo;
 import edu.sjsu.cmpe275.vms.security.oauth2.user.OAuth2UserInfoFactory;
 import edu.sjsu.cmpe275.vms.util.EmailUtils;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -77,8 +78,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setFirstName(oAuth2UserInfo.getFirstName());
         user.setLastName(oAuth2UserInfo.getLastName());
         user.setEmail(oAuth2UserInfo.getEmail());
-        user.setImageUrl(oAuth2UserInfo.getImageUrl());
         user.setRole(Role.Patient);
+        user.setVerificationCode(RandomString.make(64));
         User savedUser = userRepository.save(user);
 
         String siteURL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
@@ -90,7 +91,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
         existingUser.setFirstName(oAuth2UserInfo.getFirstName());
         existingUser.setLastName(oAuth2UserInfo.getLastName());
-        existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(existingUser);
     }
 
