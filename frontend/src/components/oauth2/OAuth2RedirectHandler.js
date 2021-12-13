@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ACCESS_TOKEN } from "../../constants";
 import { Redirect } from "react-router-dom";
+import { Authentication } from "../../services";
 
 class OAuth2RedirectHandler extends Component {
   getUrlParameter(name) {
@@ -16,7 +16,8 @@ class OAuth2RedirectHandler extends Component {
     const error = this.getUrlParameter("error");
 
     if (token) {
-      localStorage.setItem(ACCESS_TOKEN, token);
+      Authentication.setToken(token);
+      this.props.handleLogin();
       return (
         <Redirect
           to={{

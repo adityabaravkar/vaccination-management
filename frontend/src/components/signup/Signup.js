@@ -10,14 +10,24 @@ import {
   FacebookLoginButton,
   GoogleLoginButton,
 } from "react-social-login-buttons";
+import { Authentication } from "../../services";
 
 class Signup extends Component {
   render() {
-    if (this.props.authenticated) {
+    if (Authentication.isUserLoggedIntoAdminMode()) {
       return (
         <Redirect
           to={{
-            pathname: "/",
+            pathname: "/admin",
+            state: { from: this.props.location },
+          }}
+        />
+      );
+    } else if (Authentication.isUserLoggedIntoPatientMode()) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/dashboard",
             state: { from: this.props.location },
           }}
         />
@@ -111,8 +121,7 @@ class SignupForm extends Component {
       })
       .catch((error) => {
         Alert.error(
-          (error && error.message) ||
-            "Oops! Something went wrong. Please try again!"
+          (error && error.message) || "Something went wrong. Please try again!"
         );
       });
   }

@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import "./Login.css";
-import {
-  GOOGLE_AUTH_URL,
-  FACEBOOK_AUTH_URL,
-  ACCESS_TOKEN,
-} from "../../constants";
+import { GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL } from "../../constants";
 import { login } from "../../util/APIUtils";
 import { Link, Redirect } from "react-router-dom";
 import Alert from "react-s-alert";
@@ -12,11 +8,10 @@ import {
   FacebookLoginButton,
   GoogleLoginButton,
 } from "react-social-login-buttons";
+import { Authentication } from "../../services";
 
 class Login extends Component {
   componentDidMount() {
-    // If the OAuth2 login encounters an error, the user is redirected to the /login page with an error.
-    // Here we display the error and then remove the error query parameter from the location.
     if (this.props.location.state && this.props.location.state.error) {
       setTimeout(() => {
         Alert.error(this.props.location.state.error, {
@@ -31,27 +26,24 @@ class Login extends Component {
   }
 
   render() {
-    if (this.props.authenticated) {
-      console.log("Role: " + this.props.currentUser.role);
-      if (this.props.currentUser.role === "Admin") {
-        return (
-          <Redirect
-            to={{
-              pathname: "/admin",
-              state: { from: this.props.location },
-            }}
-          />
-        );
-      } else {
-        return (
-          <Redirect
-            to={{
-              pathname: "/",
-              state: { from: this.props.location },
-            }}
-          />
-        );
-      }
+    if (Authentication.isUserLoggedIntoAdminMode()) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/admin",
+            state: { from: this.props.location },
+          }}
+        />
+      );
+    } else if (Authentication.isUserLoggedIntoPatientMode()) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/dashboard",
+            state: { from: this.props.location },
+          }}
+        />
+      );
     }
 
     return (
@@ -115,10 +107,9 @@ class LoginForm extends Component {
 
     login(loginRequest)
       .then((response) => {
-        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+        Authentication.setToken(response.accessToken);
         Alert.success("You're successfully logged in!");
         this.props.handleLogin();
-        this.props.history.push("/");
       })
       .catch((error) => {
         Alert.error(
