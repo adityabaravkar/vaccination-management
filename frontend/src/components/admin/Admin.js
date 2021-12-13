@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import "./Admin.css";
 import { Button, Modal, Row, Col } from "react-bootstrap";
+import { addDisease, login } from "../../util/APIUtils";
+import { ACCESS_TOKEN } from "../../constants";
+import Alert from "react-s-alert";
 
 class Admin extends Component {
   constructor(props) {
@@ -17,6 +20,15 @@ class Admin extends Component {
       zipcode: "",
       businessHrs: "",
       noOfPhysicians: "",
+      diseaseName: "",
+      description: "",
+      name: "",
+      vaccineName: "",
+      manufacturer: "",
+      shotinterval: "",
+      duration: "",
+      noofshots: "",
+      diseases: [],
     };
   }
   addClinicModal = () => {
@@ -67,7 +79,31 @@ class Admin extends Component {
   showAllDiseases = (e) => {
     window.location.href = "/allDiseases";
   };
-
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  addDiseaseDetails = (e) => {
+    e.preventDefault();
+    const addD = {
+      name: this.state.name,
+      description: this.state.description,
+    };
+    console.log("Inside add disease");
+    console.log(typeof this.state.name);
+    console.log(typeof this.state.description);
+    const addDiseaseRequest = Object.assign({}, addD);
+    addDisease(addDiseaseRequest)
+      .then((response) => {
+        Alert.success("New Disease Added!");
+        // this.props.history.push("/admin");
+      })
+      .catch((error) => {
+        Alert.error(
+          (error && error.message) ||
+            "Oops! Something went wrong. Please try again!"
+        );
+      });
+  };
   render() {
     const { showClinic, showDisease, showVaccine } = this.state;
     var clinicForm = null;
@@ -89,8 +125,8 @@ class Admin extends Component {
               &nbsp;&nbsp;&nbsp;
               <input
                 style={{ width: "50%" }}
-                name="employerName"
-                value={this.state.employerName}
+                name="clinicName"
+                value={this.state.clinicName}
                 maxLength="45"
                 onChange={this.handleChange}
               ></input>
@@ -107,8 +143,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="roleInCompany"
-                    value={this.state.roleInCompany}
+                    name="streetNo"
+                    value={this.state.streetNo}
                     maxLength="50"
                     onChange={this.handleChange}
                   ></input>
@@ -125,8 +161,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="address"
-                    value={this.state.address}
+                    name="city"
+                    value={this.state.city}
                     maxLength="45"
                     onChange={this.handleChange}
                   ></input>
@@ -146,8 +182,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="city"
-                    value={this.state.city}
+                    name="state"
+                    value={this.state.state}
                     maxLength="45"
                     onChange={this.handleChange}
                   ></input>
@@ -165,8 +201,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="state"
-                    value={this.state.state}
+                    name="zipcode"
+                    value={this.state.zipcode}
                     maxLength="45"
                     onChange={this.handleChange}
                   ></input>
@@ -187,9 +223,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "50%" }}
-                    name="zipcode"
-                    value={this.state.zipcode}
-                    type="number"
+                    name="businessHrs"
+                    value={this.state.businessHrs}
                     maxLength="5"
                     onChange={this.handleChange}
                   ></input>
@@ -208,10 +243,9 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "50%" }}
-                    name="zipcode"
-                    value={this.state.zipcode}
+                    name="noOfPhysicians"
+                    value={this.state.noOfPhysicians}
                     type="number"
-                    maxLength="5"
                     onChange={this.handleChange}
                   ></input>
                 </Row>
@@ -241,8 +275,8 @@ class Admin extends Component {
               &nbsp;&nbsp;&nbsp;
               <input
                 style={{ width: "50%" }}
-                name="employerName"
-                value={this.state.employerName}
+                name="name"
+                value={this.state.name}
                 maxLength="45"
                 onChange={this.handleChange}
               ></input>
@@ -257,8 +291,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="roleInCompany"
-                    value={this.state.roleInCompany}
+                    name="description"
+                    value={this.state.description}
                     maxLength="50"
                     onChange={this.handleChange}
                   ></input>
@@ -267,7 +301,7 @@ class Admin extends Component {
             </Row>
             <br />
           </Col>
-          <Button onClick={this.addClinicDetails}>Save</Button>
+          <Button onClick={this.addDiseaseDetails}>Save</Button>
         </div>
       );
     }
@@ -288,8 +322,8 @@ class Admin extends Component {
               &nbsp;&nbsp;&nbsp;
               <input
                 style={{ width: "50%" }}
-                name="employerName"
-                value={this.state.employerName}
+                name="vaccineName"
+                value={this.state.vaccineName}
                 maxLength="45"
                 onChange={this.handleChange}
               ></input>
@@ -307,8 +341,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="roleInCompany"
-                    value={this.state.roleInCompany}
+                    name="diseases"
+                    value={this.state.diseases}
                     maxLength="50"
                     onChange={this.handleChange}
                   ></input>
@@ -328,8 +362,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="city"
-                    value={this.state.city}
+                    name="manufacturer"
+                    value={this.state.manufacturer}
                     maxLength="45"
                     onChange={this.handleChange}
                   ></input>
@@ -347,8 +381,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "80%" }}
-                    name="state"
-                    value={this.state.state}
+                    name="noofshots"
+                    value={this.state.noofshots}
                     maxLength="45"
                     onChange={this.handleChange}
                   ></input>
@@ -367,10 +401,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "50%" }}
-                    name="zipcode"
-                    value={this.state.zipcode}
-                    type="number"
-                    maxLength="5"
+                    name="shotinterval"
+                    value={this.state.shotinterval}
                     onChange={this.handleChange}
                   ></input>
                 </Row>
@@ -388,10 +420,8 @@ class Admin extends Component {
                   &nbsp;&nbsp;&nbsp;
                   <input
                     style={{ width: "50%" }}
-                    name="zipcode"
-                    value={this.state.zipcode}
-                    type="number"
-                    maxLength="5"
+                    name="duration"
+                    value={this.state.duration}
                     onChange={this.handleChange}
                   ></input>
                 </Row>
@@ -400,7 +430,7 @@ class Admin extends Component {
             <br />
           </Col>
 
-          <Button onClick={this.addClinicDetails}>Save</Button>
+          <Button onClick={this.addVaccineDetails}>Save</Button>
         </div>
       );
     }
