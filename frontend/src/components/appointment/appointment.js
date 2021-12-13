@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "../admin/Admin.css";
 import { Card } from "react-bootstrap";
 import { Button, Modal, Row, Col } from "react-bootstrap";
+import Alert from "react-s-alert";
+import { makeAppointment, getClinics, login } from "../../util/APIUtils";
 
 class Appointment extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class Appointment extends Component {
       showAppointment: false,
     };
   }
+
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -30,6 +33,29 @@ class Appointment extends Component {
     this.setState({
       showAppointment: false,
     });
+  };
+  componentDidMount = async () => {
+    getClinics()
+      .then((response) => {
+        const respData = JSON.stringify(response);
+        console.log("response for all clinic" + response.name);
+        let clinics = [];
+        for (let i = 0; i < respData.length; i++) {
+          const clinicData = {
+            id: respData[i].clinicId,
+            name: respData[i].name,
+          };
+          clinics.push(clinicData);
+        }
+        // Alert.success("You have successfully booked your appointment!");
+        // this.props.history.push("/admin");
+      })
+      .catch((error) => {
+        Alert.error(
+          (error && error.message) ||
+            "Oops! Something went wrong. Please try again!"
+        );
+      });
   };
 
   makeAppointment = (e) => {
@@ -54,10 +80,28 @@ class Appointment extends Component {
       this.state.aptMin
     );
     const data = {
+      patientId: "598179743",
       appointmentTime: appointmentDate,
       currentTime: datetime,
+      vaccinationIds: ["3"],
+      clinicId: "127",
     };
+    console.log(typeof data.patientId);
     console.log("data:", data);
+
+    const addAptRequest = Object.assign({}, data);
+    makeAppointment(addAptRequest)
+      .then((response) => {
+        Alert.success("You have successfully booked your appointment!");
+        this.handleModalClose();
+        // this.props.history.push("/admin");
+      })
+      .catch((error) => {
+        Alert.error(
+          (error && error.message) ||
+            "Oops! Something went wrong. Please try again!"
+        );
+      });
   };
 
   render() {
