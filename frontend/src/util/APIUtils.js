@@ -52,7 +52,7 @@ export function signup(signupRequest) {
 }
 export function addDisease(addDiseaseRequest) {
   return request({
-    url: BASE_URL + "/disease",
+    url: API_BASE_URL + "/diseases/addDisease",
     method: "POST",
     body: JSON.stringify(addDiseaseRequest),
   });
