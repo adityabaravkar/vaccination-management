@@ -103,7 +103,10 @@ class Admin extends Component {
         addDisease(addDiseaseRequest)
             .then((response) => {
                 Alert.success("New Disease Added!");
-               // this.props.history.push("/admin");
+                this.setState({
+                    show:false
+                })
+                this.props.history.push("/admin");
             })
             .catch((error) => {
                 Alert.error(
