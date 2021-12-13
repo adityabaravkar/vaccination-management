@@ -102,15 +102,19 @@ class Admin extends Component {
         const addDiseaseRequest = Object.assign({}, addD);
         addDisease(addDiseaseRequest)
             .then((response) => {
+                console.log("response")
+                console.log(response)
                 Alert.success("New Disease Added!");
                 this.setState({
                     show:false
                 })
                 this.props.history.push("/admin");
+                this.setState({name : ''});
+                this.setState({description : ''});
             })
             .catch((error) => {
                 Alert.error(
-                    (error && error.message) ||
+
                     "Oops! Something went wrong. Please try again!"
                 );
             });
