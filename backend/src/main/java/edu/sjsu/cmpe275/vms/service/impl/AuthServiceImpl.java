@@ -1,15 +1,19 @@
 package edu.sjsu.cmpe275.vms.service.impl;
 
-import com.nimbusds.oauth2.sdk.util.StringUtils;
 import edu.sjsu.cmpe275.vms.exception.BadRequestException;
 import edu.sjsu.cmpe275.vms.model.*;
 import edu.sjsu.cmpe275.vms.payload.SignUpRequest;
 import edu.sjsu.cmpe275.vms.repository.UserRepository;
 import edu.sjsu.cmpe275.vms.service.AuthService;
 import edu.sjsu.cmpe275.vms.util.DateUtils;
+import edu.sjsu.cmpe275.vms.util.EmailUtils;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -19,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public User registerUser(SignUpRequest signUpRequest) {
+    public User registerUser(SignUpRequest signUpRequest, String siteURL) throws MessagingException, UnsupportedEncodingException {
 
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
@@ -36,12 +40,33 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
         user.setProvider(AuthProvider.local);
-        user.setRole(StringUtils.isBlank(signUpRequest.getRole())?
-                Role.Patient:Role.valueOf(signUpRequest.getRole()));
+
+        if(signUpRequest.getEmail().endsWith("@sjsu.edu")) {
+            user.setRole(Role.Admin);
+        } else {
+            user.setRole(Role.Patient);
+        }
+        user.setVerificationCode(RandomString.make(64));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        EmailUtils.sendVerificationEmail(user, siteURL);
+
+        return savedUser;
+    }
+
+    public Boolean verify(String verificationCode) {
+        User user = userRepository.findByVerificationCode(verificationCode);
+        if (null == user || user.getEmailVerified()) {
+            return Boolean.FALSE;
+        } else {
+            user.setVerificationCode(null);
+            user.setEmailVerified(Boolean.TRUE);
+            userRepository.save(user);
+            return Boolean.TRUE;
+        }
     }
 
     @Autowired

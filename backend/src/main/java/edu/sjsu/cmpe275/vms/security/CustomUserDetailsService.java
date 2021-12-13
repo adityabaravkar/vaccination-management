@@ -1,5 +1,6 @@
 package edu.sjsu.cmpe275.vms.security;
 
+import edu.sjsu.cmpe275.vms.exception.EmailNotVerifiedException;
 import edu.sjsu.cmpe275.vms.exception.ResourceNotFoundException;
 import edu.sjsu.cmpe275.vms.model.User;
 import edu.sjsu.cmpe275.vms.repository.UserRepository;
@@ -23,6 +24,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email : " + email)
         );
+        if(!user.getEmailVerified()) {
+            throw new EmailNotVerifiedException("Please verify your email to login");
+        }
 
         return UserPrincipal.create(user);
     }
