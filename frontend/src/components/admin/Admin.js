@@ -25,13 +25,14 @@ class Admin extends Component {
           noOfPhysicians:'',
             diseaseName:'',
             description:'',
+            name:'',
             vaccineName:'',
             manufacturer:'',
             shotinterval:'',
             duration:'',
             noofshots:'',
             diseases:[],
-            name:''
+
 
         };
       }
@@ -88,12 +89,21 @@ class Admin extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
     addDiseaseDetails = (e) => {
+
         e.preventDefault();
-        const addDiseaseRequest = Object.assign({}, this.state);
+        const addD = {
+            name: this.state.name,
+            description: this.state.description
+
+        }
+        console.log("Inside add disease");
+        console.log(typeof(this.state.name))
+        console.log(typeof(this.state.description))
+        const addDiseaseRequest = Object.assign({}, addD);
         addDisease(addDiseaseRequest)
             .then((response) => {
                 Alert.success("New Disease Added!");
-                this.props.history.push("/admin");
+               // this.props.history.push("/admin");
             })
             .catch((error) => {
                 Alert.error(
