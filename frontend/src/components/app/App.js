@@ -15,6 +15,8 @@ import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import Disease from "../admin/Disease";
 import Vaccine from "../admin/Vaccine";
+import Appointment from "../appointment/appointment";
+import CheckIn from "../appointment/checkIn";
 
 class App extends Component {
   constructor(props) {
@@ -84,44 +86,64 @@ class App extends Component {
               )}
             />
             <Route
-                path="/admin"
-                render={(props) => (
-                    <Admin
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
+              path="/admin"
+              render={(props) => (
+                <Admin
+                  authenticated={this.state.authenticated}
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
+              )}
             />
             <Route
-                path="/allClinics"
-                render={(props) => (
-                    <Clinic
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
+              path="/allClinics"
+              render={(props) => (
+                <Clinic
+                  authenticated={this.state.authenticated}
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
+              )}
             />
             <Route
-                path="/allDiseases"
-                render={(props) => (
-                    <Disease
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
+              path="/allDiseases"
+              render={(props) => (
+                <Disease
+                  authenticated={this.state.authenticated}
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
+              )}
             />
             <Route
-                path="/allVaccinations"
-                render={(props) => (
-                    <Vaccine
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
+              path="/allVaccinations"
+              render={(props) => (
+                <Vaccine
+                  authenticated={this.state.authenticated}
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/allAppointments"
+              render={(props) => (
+                <Appointment
+                  authenticated={this.state.authenticated}
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/checkin"
+              render={(props) => (
+                <CheckIn
+                  authenticated={this.state.authenticated}
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
+              )}
             />
             <Route
               path="/api/oauth2/redirect"
