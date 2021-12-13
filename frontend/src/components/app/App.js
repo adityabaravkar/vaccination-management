@@ -8,7 +8,6 @@ import Clinic from "../admin/Clinic";
 import NotFound from "../common/NotFound";
 import OAuth2RedirectHandler from "../oauth2/OAuth2RedirectHandler";
 import { getCurrentUser } from "../../util/APIUtils";
-import { ACCESS_TOKEN } from "../../constants";
 import Alert from "react-s-alert";
 import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";
@@ -16,35 +15,21 @@ import "./App.css";
 import Signup from "../signup/Signup";
 import Disease from "../admin/Disease";
 import Vaccine from "../admin/Vaccine";
+import { Authentication } from "../../services";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       authenticated: false,
-      currentUser: null,
     };
 
-    this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
 
-  loadCurrentlyLoggedInUser() {
-    getCurrentUser()
-      .then((response) => {
-        this.setState({
-          currentUser: response,
-          authenticated: true,
-        });
-      })
-      .catch((error) => {
-        console.log("Error: " + error);
-      });
-  }
-
   handleLogout() {
-    localStorage.removeItem(ACCESS_TOKEN);
+    Authentication.logout();
     this.setState({
       authenticated: false,
       currentUser: null,
@@ -53,13 +38,21 @@ class App extends Component {
   }
 
   handleLogin() {
-    this.setState({
-      authenticated: true,
-    });
-  }
-
-  componentDidMount() {
-    this.loadCurrentlyLoggedInUser();
+    getCurrentUser()
+      .then((response) => {
+        Authentication.setAuthData(response.mrn, response.role);
+        this.setState({
+          authenticated: true,
+        });
+        if (Authentication.isUserLoggedIntoAdminMode()) {
+          this.props.history.push("/admin");
+        } else {
+          this.props.history.push("/dashboard");
+        }
+      })
+      .catch((error) => {
+        console.log("Error: " + error);
+      });
   }
 
   render() {
@@ -129,10 +122,15 @@ class App extends Component {
               render={(props) => (
                 <Signup authenticated={this.state.authenticated} {...props} />
               )}
-            ></Route>
+            />
             <Route
               path="/api/oauth2/redirect"
-              component={OAuth2RedirectHandler}
+              render={(props) => (
+                <OAuth2RedirectHandler
+                  handleLogin={this.handleLogin}
+                  {...props}
+                />
+              )}
             />
             <Route component={NotFound} />
           </Switch>

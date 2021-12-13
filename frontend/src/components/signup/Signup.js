@@ -3,19 +3,31 @@ import "./Signup.css";
 import { Link, Redirect } from "react-router-dom";
 import { GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL } from "../../constants";
 import { signup } from "../../util/APIUtils";
-import fbLogo from "../../images/fb-logo.png";
-import googleLogo from "../../images/google-logo.png";
 import Alert from "react-s-alert";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from "react-social-login-buttons";
+import { Authentication } from "../../services";
 
 class Signup extends Component {
   render() {
-    if (this.props.authenticated) {
+    if (Authentication.isUserLoggedIntoAdminMode()) {
       return (
         <Redirect
           to={{
-            pathname: "/",
+            pathname: "/admin",
+            state: { from: this.props.location },
+          }}
+        />
+      );
+    } else if (Authentication.isUserLoggedIntoPatientMode()) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/dashboard",
             state: { from: this.props.location },
           }}
         />
@@ -48,19 +60,13 @@ class SocialSignup extends Component {
       <div className="social-signup">
         <div className="row">
           <div className="col signup-input-inline-left">
-            <a
-              className="btn btn-block social-btn google"
-              href={GOOGLE_AUTH_URL}
-            >
-              <img src={googleLogo} alt="Google" /> Sign up with Google
+            <a href={GOOGLE_AUTH_URL}>
+              <FacebookLoginButton />
             </a>
           </div>
           <div className="col signup-input-inline-right">
-            <a
-              className="btn btn-block social-btn facebook"
-              href={FACEBOOK_AUTH_URL}
-            >
-              <img src={fbLogo} alt="Facebook" /> Sign up with Facebook
+            <a href={FACEBOOK_AUTH_URL}>
+              <GoogleLoginButton />
             </a>
           </div>
         </div>
@@ -115,8 +121,7 @@ class SignupForm extends Component {
       })
       .catch((error) => {
         Alert.error(
-          (error && error.message) ||
-            "Oops! Something went wrong. Please try again!"
+          (error && error.message) || "Something went wrong. Please try again!"
         );
       });
   }
