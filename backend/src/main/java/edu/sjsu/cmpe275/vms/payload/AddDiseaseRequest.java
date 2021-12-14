@@ -4,16 +4,16 @@ import javax.validation.constraints.NotBlank;
 
 public class AddDiseaseRequest {
     @NotBlank
-    private String name;
+    private String diseaseName;
 
     private String description;
 
-    public String getName() {
-        return name;
+    public String getDiseaseName() {
+        return diseaseName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDiseaseName(String diseaseName) {
+        this.diseaseName = diseaseName;
     }
 
     public String getDescription() {

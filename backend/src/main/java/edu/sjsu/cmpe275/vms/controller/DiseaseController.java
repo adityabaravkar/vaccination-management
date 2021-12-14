@@ -20,6 +20,6 @@ public class DiseaseController {
     @PostMapping("/addDisease")
     @PreAuthorize("hasRole('ADMIN')")
     public Disease addDisease(@CurrentUser @RequestBody AddDiseaseRequest request) {
-        return this.diseaseService.addDisease(request.getName(), request.getDescription());
+        return this.diseaseService.addDisease(request.getDiseaseName(), request.getDescription());
     }
 }

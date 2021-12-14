@@ -14,7 +14,7 @@ public class Disease {
     private long id;
 
     @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    private String diseaseName;
 
     @Column(name = "description")
     private String description;
@@ -23,12 +23,12 @@ public class Disease {
     @JoinColumn(name = "vaccination_id", referencedColumnName = "id")
     private Vaccination vaccination;
 
-    public String getName() {
-        return name;
+    public String getDiseaseName() {
+        return diseaseName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDiseaseName(String diseaseName) {
+        this.diseaseName = diseaseName;
     }
 
     public String getDescription() {
@@ -47,8 +47,8 @@ public class Disease {
         this.vaccination = vaccination;
     }
 
-    public Disease(String name, String description) {
-        this.name = name;
+    public Disease(String diseaseName, String description) {
+        this.diseaseName = diseaseName;
         this.description = description;
     }
 

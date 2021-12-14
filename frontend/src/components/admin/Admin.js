@@ -3,7 +3,7 @@ import "./Admin.css";
 import {
  Button, Modal, Row, Col
 } from 'react-bootstrap';
-import {addDisease, login} from "../../util/APIUtils";
+import {addDisease,addClinic,login} from "../../util/APIUtils";
 import {ACCESS_TOKEN} from "../../constants";
 import Alert from "react-s-alert";
 
@@ -17,21 +17,21 @@ class Admin extends Component {
           showVaccine:false,
           showDisease:false,
           clinicName:'',
-          streetNo:'',
+          streetAndNumber:'',
           city:'',
           state:'',
-          zipcode:'',
-          businessHrs:'',
-          noOfPhysicians:'',
-            diseaseName:'',
-            description:'',
-            name:'',
-            vaccineName:'',
-            manufacturer:'',
-            shotinterval:'',
-            duration:'',
-            noofshots:'',
-            diseases:[],
+          zipCode:'',
+          businessHours:'',
+          numberOfPhysicians:'',
+          diseaseName:'',
+          description:'',
+          name:'',
+          vaccineName:'',
+          manufacturer:'',
+          shotinterval:'',
+          duration:'',
+          noofshots:'',
+          diseases:[],
 
 
         };
@@ -88,18 +88,52 @@ class Admin extends Component {
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
-    addDiseaseDetails = (e) => {
-
+    addClinicDetails = (e) => {
         e.preventDefault();
-        const addD = {
-            name: this.state.name,
+        const addclinic = {
+            clinicName: this.state.clinicName,
+            streetAndNumber: this.state.streetAndNumber,
+            city:this.state.city,
+            state: this.state.state,
+            zipCode:this.state.zipCode,
+            businessHours:this.state.businessHours,
+            numberOfPhysicians:this.state.numberOfPhysicians
+        }
+        console.log("Inside add clinic");
+        const addClinicRequest = Object.assign({}, addclinic);
+        addClinic(addClinicRequest)
+            .then((response) => {
+                console.log("response")
+                console.log(response)
+                Alert.success("New Clinic Added!");
+                this.setState({
+                    show:false
+                })
+                this.props.history.push("/admin");
+                this.setState({clinicName : ''});
+                this.setState({streetAndNumber : ''});
+                this.setState({city : ''});
+                this.setState({state : ''});
+                this.setState({zipCode : ''});
+                this.setState({businessHours : ''});
+                this.setState({numberOfPhysicians : ''});
+            })
+            .catch((error) => {
+                Alert.error(
+                    "Clinic with the same name already added!"
+                );
+            });
+
+    }
+    addDiseaseDetails = (e) => {
+        e.preventDefault();
+        const adddisease = {
+            diseaseName: this.state.diseaseName,
             description: this.state.description
 
         }
         console.log("Inside add disease");
-        console.log(typeof(this.state.name))
-        console.log(typeof(this.state.description))
-        const addDiseaseRequest = Object.assign({}, addD);
+        const addDiseaseRequest = Object.assign({}, adddisease);
         addDisease(addDiseaseRequest)
             .then((response) => {
                 console.log("response")
@@ -109,13 +143,12 @@ class Admin extends Component {
                     show:false
                 })
                 this.props.history.push("/admin");
-                this.setState({name : ''});
+                this.setState({diseaseName : ''});
                 this.setState({description : ''});
             })
             .catch((error) => {
                 Alert.error(
-
-                    "Oops! Something went wrong. Please try again!"
+                    "Disease with the same name already added!"
                 );
             });
     }
@@ -151,8 +184,8 @@ class Admin extends Component {
                             </Row>
                             <span style={{color:'red'}}></span>    
                             <Row> 
-                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="streetNo"
-                            value={this.state.streetNo}  maxLength="50"
+                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="streetAndNumber"
+                            value={this.state.streetAndNumber}  maxLength="50"
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -188,8 +221,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}></span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="zipcode"
-                        value={this.state.zipcode}  maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="zipCode"
+                        value={this.state.zipCode}  maxLength="45"
                         onChange={this.handleChange}></input>
                         </Row>
                     </Col>
@@ -203,8 +236,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="businessHrs"
-                        value={this.state.businessHrs}   maxLength="5"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="businessHours"
+                        value={this.state.businessHours}   maxLength="10"
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>
@@ -216,8 +249,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="noOfPhysicians"
-                        value={this.state.noOfPhysicians} type="number"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="numberOfPhysicians"
+                        value={this.state.numberOfPhysicians} type="number"
                         onChange={this.handleChange}></input>
                         </Row>
                       </Col>  
@@ -244,8 +277,8 @@ class Admin extends Component {
                     </Row>
                     <span style={{color:'red'}}></span>
                     <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="name"
-                        value={this.state.name} maxLength="45"
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="diseaseName"
+                        value={this.state.diseaseName} maxLength="45"
                         onChange={this.handleChange}></input>
                     </Row>
                     <br/>
@@ -357,8 +390,7 @@ class Admin extends Component {
                       </Col>  
                     </Row>  
                     <br/>
-                </Col>
-                    
+                </Col>      
                 <Button onClick = {this.addVaccineDetails}>Save</Button>
                 </div>
             )

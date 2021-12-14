@@ -25,7 +25,7 @@ public class VaccinationServiceImpl implements VaccinationService {
                                           int duration) {
         List<Disease> diseases = new ArrayList<>();
         for(int i = 0; i < diseasesList.size(); i++) {
-            Disease disease = diseaseRepository.findByName(diseasesList.get(i)).get();
+            Disease disease = diseaseRepository.findByDiseaseName(diseasesList.get(i)).get();
             diseases.add(disease);
         }
         Vaccination vaccination = new Vaccination(name, diseases ,manufacturer, numberOfShots, shotInternalVal, duration);

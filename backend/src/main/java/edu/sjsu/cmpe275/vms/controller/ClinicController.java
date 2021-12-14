@@ -4,6 +4,7 @@ package edu.sjsu.cmpe275.vms.controller;
 import edu.sjsu.cmpe275.vms.model.Address;
 import edu.sjsu.cmpe275.vms.model.Clinic;
 import edu.sjsu.cmpe275.vms.model.Vaccination;
+import edu.sjsu.cmpe275.vms.payload.AddClinicRequest;
 import edu.sjsu.cmpe275.vms.security.CurrentUser;
 import edu.sjsu.cmpe275.vms.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class ClinicController {
 
     @Autowired private ClinicService clinicService;
@@ -31,14 +33,18 @@ public class ClinicController {
     }
 
     @PostMapping("/clinic")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Clinic createClinic(@CurrentUser @RequestParam String name,
-                               @RequestBody Address address,
-                               @RequestParam String businessHours,
-                               @RequestParam int numberOfPhysicians
-                               ) {
-        return this.clinicService.createClinic(name, address, businessHours, numberOfPhysicians);
+   @PreAuthorize("hasRole('ADMIN')")
+    public Clinic createClinic(@CurrentUser @RequestBody AddClinicRequest request
+    ) {
+        return this.clinicService.createClinic(request.getClinicName(), request.getStreetAndNumber(), request.getCity(),request.getState(),request.getZipCode(), request.getBusinessHours(), request.getNumberOfPhysicians());
     }
+//    public Clinic createClinic(@CurrentUser @RequestParam String name,
+//                               @RequestBody Address address,
+//                               @RequestParam String businessHours,
+//                               @RequestParam int numberOfPhysicians
+//                               ) {
+//        return this.clinicService.createClinic(name, address, businessHours, numberOfPhysicians);
+//    }
 
 
 }
