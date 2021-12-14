@@ -25,6 +25,9 @@ public class Appointment {
     @JsonFormat(pattern="yyyy-MM-dd-HH-MM")
     private Timestamp appointmentTime;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "clinic_id", referencedColumnName = "id" ,nullable = false)
     private Clinic clinicId;
