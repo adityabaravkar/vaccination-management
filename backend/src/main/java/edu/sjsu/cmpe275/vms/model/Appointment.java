@@ -23,7 +23,7 @@ public class Appointment {
 
     @Column(name = "appointmentTime", nullable = true)
     @JsonFormat(pattern="yyyy-MM-dd-HH-MM")
-    private Timestamp appointmentTime;
+    private String appointmentTime;
 
     @Column(name = "status")
     private String status;
@@ -41,7 +41,16 @@ public class Appointment {
     )
     private List<Vaccination> vaccinations;
 
+    @Column
+    public String status;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public long getId() {
         return id;
@@ -59,11 +68,11 @@ public class Appointment {
         this.patientId = patientId;
     }
 
-    public Timestamp getAppointmentTime() {
+    public String getAppointmentTime() {
         return appointmentTime;
     }
 
-    public void setAppointmentTime(Timestamp appointmentTime) {
+    public void setAppointmentTime(String appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
 
@@ -83,12 +92,13 @@ public class Appointment {
         this.vaccinations = vaccinations;
     }
 
-    public Appointment(User patientId, Timestamp appointmentTime, Clinic clinicId, List<Vaccination> vaccinations) {
+    public Appointment(User patientId, String appointmentTime, Clinic clinicId, List<Vaccination> vaccinations, String status) {
 
         this.patientId = patientId;
         this.appointmentTime = appointmentTime;
         this.clinicId = clinicId;
         this.vaccinations = vaccinations;
+        this.status = status;
     }
 
     public Appointment() {

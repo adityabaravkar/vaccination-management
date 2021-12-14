@@ -1,4 +1,5 @@
-import { API_BASE_URL } from "../constants";
+import { API_BASE_URL, ACCESS_TOKEN, BASE_URL } from "../constants";
+
 import { Authentication } from "../services";
 
 const request = (options) => {
@@ -47,5 +48,35 @@ export function signup(signupRequest) {
     url: API_BASE_URL + "/auth/signup",
     method: "POST",
     body: JSON.stringify(signupRequest),
+  });
+}
+export function addDisease(addDiseaseRequest) {
+  return request({
+    url: API_BASE_URL + "/diseases/addDisease",
+    method: "POST",
+    body: JSON.stringify(addDiseaseRequest),
+  });
+}
+
+export function makeAppointment(addAptRequest) {
+  console.log("addAptRequest", addAptRequest);
+  return request({
+    url: API_BASE_URL + "/appointment/makeAppointment",
+    method: "POST",
+    body: JSON.stringify(addAptRequest),
+  });
+}
+
+export function getClinics() {
+  return request({
+    url: API_BASE_URL + "/appointment/allClinic",
+    method: "GET",
+  });
+}
+
+export function getAllAppointments() {
+  return request({
+    url: API_BASE_URL + "/appointment/",
+    method: "GET",
   });
 }
