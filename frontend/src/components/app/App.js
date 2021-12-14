@@ -3,8 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
 import Login from "../login/Login";
-import Admin from "../admin/Admin";
-import Clinic from "../admin/Clinic";
 import NotFound from "../common/NotFound";
 import OAuth2RedirectHandler from "../oauth2/OAuth2RedirectHandler";
 import { getCurrentUser } from "../../util/APIUtils";
@@ -15,6 +13,8 @@ import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import Disease from "../admin/Disease";
 import Vaccine from "../admin/Vaccine";
+import Signup from "../signup/Signup";
+import { Authentication } from "../../services";
 
 class App extends Component {
   constructor(props) {
@@ -82,46 +82,6 @@ class App extends Component {
                   {...props}
                 />
               )}
-            />
-            <Route
-                path="/admin"
-                render={(props) => (
-                    <Admin
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
-            />
-            <Route
-                path="/allClinics"
-                render={(props) => (
-                    <Clinic
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
-            />
-            <Route
-                path="/allDiseases"
-                render={(props) => (
-                    <Disease
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
-            />
-            <Route
-                path="/allVaccinations"
-                render={(props) => (
-                    <Vaccine
-                        authenticated={this.state.authenticated}
-                        handleLogin={this.handleLogin}
-                        {...props}
-                    />
-                )}
             />
             <Route
               path="/api/oauth2/redirect"

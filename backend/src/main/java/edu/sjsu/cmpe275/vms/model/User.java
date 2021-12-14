@@ -35,10 +35,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String imageUrl;
-
     @Column(nullable = false)
     private Boolean emailVerified = false;
+
+    @Column(length = 64)
+    private String verificationCode;
 
     @JsonIgnore
     private String password;
@@ -107,20 +108,20 @@ public class User {
         this.email = email;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public Boolean getEmailVerified() {
         return emailVerified;
     }
 
     public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public String getPassword() {
