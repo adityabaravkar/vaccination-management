@@ -61,12 +61,12 @@ class SocialSignup extends Component {
         <div className="row">
           <div className="col signup-input-inline-left">
             <a href={GOOGLE_AUTH_URL}>
-              <FacebookLoginButton />
+              <GoogleLoginButton />
             </a>
           </div>
           <div className="col signup-input-inline-right">
             <a href={FACEBOOK_AUTH_URL}>
-              <GoogleLoginButton />
+              <FacebookLoginButton />
             </a>
           </div>
         </div>

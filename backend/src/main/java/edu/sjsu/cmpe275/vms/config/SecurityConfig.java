@@ -1,8 +1,10 @@
 package edu.sjsu.cmpe275.vms.config;
 
-import edu.sjsu.cmpe275.vms.security.*;
+import edu.sjsu.cmpe275.vms.security.CustomUserDetailsService;
+import edu.sjsu.cmpe275.vms.security.TokenAuthenticationFilter;
+import edu.sjsu.cmpe275.vms.security.RestAuthenticationEntryPoint;
 import edu.sjsu.cmpe275.vms.security.oauth2.CustomOAuth2UserService;
-import edu.sjsu.cmpe275.vms.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import edu.sjsu.cmpe275.vms.security.oauth2.CustomOAuth2AuthorizationRequestRepository;
 import edu.sjsu.cmpe275.vms.security.oauth2.OAuth2AuthenticationFailureHandler;
 import edu.sjsu.cmpe275.vms.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,8 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
         prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -37,16 +36,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
-    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter();
     }
 
     @Bean
-    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
-        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    public CustomOAuth2AuthorizationRequestRepository customAuthorizationRequestRepository() {
+        return new CustomOAuth2AuthorizationRequestRepository();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -55,12 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -71,9 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .csrf()
                 .disable()
@@ -105,7 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/api/oauth2/authorize")
-                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .authorizationRequestRepository(customAuthorizationRequestRepository())
                 .and()
                 .redirectionEndpoint()
                 .baseUri("/api/oauth2/callback/*")
@@ -120,27 +113,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void setCustomUserDetailsService(CustomUserDetailsService customUserDetailsService) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService,
+                          CustomOAuth2UserService customOAuth2UserService,
+                          OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
+                          OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
         this.customUserDetailsService = customUserDetailsService;
-    }
-
-    @Autowired
-    public void setCustomOAuth2UserService(CustomOAuth2UserService customOAuth2UserService) {
         this.customOAuth2UserService = customOAuth2UserService;
-    }
-
-    @Autowired
-    public void setoAuth2AuthenticationSuccessHandler(OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
-    }
-
-    @Autowired
-    public void setoAuth2AuthenticationFailureHandler(OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
         this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
-    }
-
-    @Autowired
-    public void setHttpCookieOAuth2AuthorizationRequestRepository(HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
-        this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
     }
 }

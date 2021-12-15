@@ -57,6 +57,14 @@ class App extends Component {
       });
   }
 
+  componentDidMount() {
+    if (Authentication.isUserLoggedIn()) {
+      this.setState({
+        authenticated: true,
+      });
+    }
+  }
+
   render() {
     return (
       <div className="app">

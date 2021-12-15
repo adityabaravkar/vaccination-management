@@ -14,26 +14,6 @@
   padding: 35px;
 }
 
-.social-btn {
-  margin-bottom: 15px;
-  font-weight: 400;
-  font-size: 16px;
-}
-
-.social-btn img {
-  height: 32px;
-  float: left;
-  margin-top: 10px;
-}
-
-.social-btn.google {
-  margin-top: 0;
-}
-
-.social-btn.google img {
-  margin-top: 7px;
-}
-
 .social-btn.facebook img {
   height: 24px;
   margin-left: 3px;
