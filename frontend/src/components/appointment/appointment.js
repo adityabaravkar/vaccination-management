@@ -3,7 +3,7 @@ import "../admin/Admin.css";
 import { Card } from "react-bootstrap";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import Alert from "react-s-alert";
-import { makeAppointment, getClinics, login } from "../../util/APIUtils";
+import { makeAppointment, getClinics } from "../../util/APIUtils";
 import { Authentication } from "../../services";
 
 class Appointment extends Component {

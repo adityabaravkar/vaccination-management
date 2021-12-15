@@ -106,7 +106,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 throw new BadRequestException(" Sorry physicians are not available.");
             }
         }   else {
-            throw new BadRequestException("The appointment time should be before within 12 monts of the current time.");
+            throw new BadRequestException("The appointment time should be before within 12 months of the current time.");
         }
     }
 
