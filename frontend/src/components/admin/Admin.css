@@ -9,10 +9,22 @@ body {
     margin-right: 10rem;
     margin-top: 5rem;
 }
+.card-list {
+    margin-left: 100px;
+    width: 100%;
+	
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    
+    
+  }
 .stageClinic{
     margin-top: 50px;
     margin-left: 550px;
     align-items: center;
+    margin-bottom: 80px;
+    
 }
 .stage {
     height: 300px;

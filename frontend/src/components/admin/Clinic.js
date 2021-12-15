@@ -63,11 +63,33 @@ class Clinic extends Component {
       </div>
     );
     return (
-      <div class="stageClinic">
-      <h4 style={{color:'white', fontSize:'25px'}} >All Available Clinics</h4>
-      <div style={{ display: 'flex', justifyContent: '' }}>
-      {allClinicList}                  
-      </div>
+      <div >
+      <h4  className="stageClinic" style={{color:'white', fontSize:'25px'}} >All Available Clinics</h4>
+      <br/>
+      <div className="card-list">
+        {allClinics.map( alld => 
+          <div>
+            <Card style={{ width: "18rem" }}>
+                 <Card.Body>
+                 <Card.Title>
+                
+                   <h5>{alld.clinicName}</h5>
+                  
+                   </Card.Title>
+                Business  Hrs: {alld.businessHours}
+                <br/>
+                No of Physicians: {alld.numberOfPhysicians}
+                <br/>
+                Address:
+                <br/>
+                {alld.streetAndNumber == null ? (""):(<div>{alld.streetAndNumber},</div>)}
+                {alld.city},{alld.state},{alld.zipCode}
+                 </Card.Body> 
+                 </Card> 
+          </div>
+      )}
+      </div>              
+     
       </div>
     );
   }
