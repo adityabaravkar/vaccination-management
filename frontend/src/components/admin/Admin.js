@@ -32,6 +32,7 @@ class Admin extends Component {
           duration:'',
           noofshots:'',
           diseases:[],
+          errors:{}
 
 
         };
@@ -87,9 +88,33 @@ class Admin extends Component {
     }
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
+        this.setState({
+            errors: {},
+          });
+    }
+    findDiseaseFormErrors = () => {
+        const {diseaseName,errors} = this.state;
+        if (!diseaseName || diseaseName === '') errors.diseaseName = 'Disease Name cannot be blank!';
+        return errors;
+    }
+    findClinicFormErrors = () => {
+        const {clinicName,city,state,zipCode,businessHours,numberOfPhysicians,errors} = this.state;
+        if (!clinicName || clinicName === '') errors.clinicName = 'Clinic Name cannot be blank!';
+        if (!city || city === '') errors.city = 'City cannot be blank!';
+        if (!state || state === '') errors.state = 'State cannot be blank!';
+        if (!zipCode || zipCode === '') errors.zipCode = 'Zipcode cannot be blank!';
+        if (!businessHours || businessHours === '') errors.businessHours = 'Business Hours cannot be blank!';
+        if (!numberOfPhysicians || numberOfPhysicians === '') errors.numberOfPhysicians = 'Number Of Physicians cannot be blank!';
+        return errors;
     }
     addClinicDetails = (e) => {
         e.preventDefault();
+        const newErrors = this.findClinicFormErrors();
+        if(Object.keys(newErrors).length > 0){
+            this.setState({
+                errors: newErrors,
+            });
+        }else{
         const addclinic = {
             clinicName: this.state.clinicName,
             streetAndNumber: this.state.streetAndNumber,
@@ -123,37 +148,46 @@ class Admin extends Component {
                     "Clinic with the same name already added!"
                 );
             });
+        }
 
     }
     addDiseaseDetails = (e) => {
         e.preventDefault();
-        const adddisease = {
-            diseaseName: this.state.diseaseName,
-            description: this.state.description
-
-        }
-        console.log("Inside add disease");
-        const addDiseaseRequest = Object.assign({}, adddisease);
-        addDisease(addDiseaseRequest)
-            .then((response) => {
-                console.log("response")
-                console.log(response)
-                Alert.success("New Disease Added!");
-                this.setState({
-                    show:false
-                })
-                this.props.history.push("/admin");
-                this.setState({diseaseName : ''});
-                this.setState({description : ''});
-            })
-            .catch((error) => {
-                Alert.error(
-                    "Disease with the same name already added!"
-                );
+        const newErrors = this.findDiseaseFormErrors();
+        if(Object.keys(newErrors).length > 0){
+            this.setState({
+                errors: newErrors,
             });
+        }
+        else {
+            const adddisease = {
+                diseaseName: this.state.diseaseName,
+                description: this.state.description
+
+            }
+            console.log("Inside add disease");
+            const addDiseaseRequest = Object.assign({}, adddisease);
+            addDisease(addDiseaseRequest)
+                .then((response) => {
+                    console.log("response")
+                    console.log(response)
+                    Alert.success("New Disease Added!");
+                    this.setState({
+                        show: false
+                    })
+                    this.props.history.push("/admin");
+                    this.setState({diseaseName: ''});
+                    this.setState({description: ''});
+                })
+                .catch((error) => {
+                    Alert.error(
+                        "Disease with the same name already added!"
+                    );
+                });
+        }
     }
     render() {
-        const {showClinic, showDisease, showVaccine} = this.state;
+        const {showClinic, showDisease, showVaccine,errors} = this.state;
         var clinicForm = null;
         var clinicHead = null;
         if (showClinic){
@@ -172,8 +206,9 @@ class Admin extends Component {
                     <span style={{color:'red'}}></span>
                     <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="clinicName"
-                        value={this.state.clinicName} maxLength="45"
+                        value={this.state.clinicName}
                         onChange={this.handleChange}></input>
+                        <span style={{color:'red'}}>{errors.clinicName}</span>
                     </Row>
                     <br/>
                     <h6>Address</h6>
@@ -185,7 +220,7 @@ class Admin extends Component {
                             <span style={{color:'red'}}></span>    
                             <Row> 
                             &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="streetAndNumber"
-                            value={this.state.streetAndNumber}  maxLength="50"
+                            value={this.state.streetAndNumber}
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -196,8 +231,9 @@ class Admin extends Component {
                             <span style={{color:'red'}}></span>
                             <Row> 
                             &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="city"
-                            value={this.state.city}  maxLength="45"
+                            value={this.state.city}
                             onChange={this.handleChange}></input>
+                            <span style={{color:'red'}}>{errors.city}</span>
                             </Row>
                         </Col>
                     </Row>
@@ -210,8 +246,9 @@ class Admin extends Component {
                         <span style={{color:'red'}}></span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="state"
-                        value={this.state.state}  maxLength="45"
+                        value={this.state.state}
                         onChange={this.handleChange}></input>
+                        <span style={{color:'red'}}>{errors.state}</span>
                         </Row>
                      </Col>      
                      <Col>
@@ -222,8 +259,9 @@ class Admin extends Component {
                         
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="zipCode"
-                        value={this.state.zipCode}  maxLength="45"
+                        value={this.state.zipCode}
                         onChange={this.handleChange}></input>
+                        <span style={{color:'red'}}>{errors.zipCode}</span>
                         </Row>
                     </Col>
                     </Row>
@@ -237,8 +275,9 @@ class Admin extends Component {
                         
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="businessHours"
-                        value={this.state.businessHours}   maxLength="10"
+                        value={this.state.businessHours}
                         onChange={this.handleChange}></input>
+                        <span style={{color:'red'}}>{errors.businessHours}</span>
                         </Row>
                      </Col>
                      
@@ -250,8 +289,9 @@ class Admin extends Component {
                         
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="numberOfPhysicians"
-                        value={this.state.numberOfPhysicians} type="number"
+                        value={this.state.numberOfPhysicians} type="number" min='0'
                         onChange={this.handleChange}></input>
+                        <span style={{color:'red'}}>{errors.numberOfPhysicians}</span>
                         </Row>
                       </Col>  
                     </Row>  
@@ -278,8 +318,9 @@ class Admin extends Component {
                     <span style={{color:'red'}}></span>
                     <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="diseaseName"
-                        value={this.state.diseaseName} maxLength="45"
+                        value={this.state.diseaseName} 
                         onChange={this.handleChange}></input>
+                        <span style={{color:'red'}}>{errors.diseaseName}</span>
                     </Row>
                     <br/>
                     <Row>
@@ -289,7 +330,7 @@ class Admin extends Component {
                             </Row>
                             <Row> 
                             &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="description"
-                            value={this.state.description}  maxLength="50"
+                            value={this.state.description}  
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -316,7 +357,7 @@ class Admin extends Component {
                     <span style={{color:'red'}}></span>
                     <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="vaccineName"
-                        value={this.state.vaccineName} maxLength="45"
+                        value={this.state.vaccineName} 
                         onChange={this.handleChange}></input>
                     </Row>
                     <br/>
@@ -329,7 +370,7 @@ class Admin extends Component {
                                 
                             <Row> 
                             &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="diseases"
-                            value={this.state.diseases}  maxLength="50"
+                            value={this.state.diseases}  
                             onChange={this.handleChange}></input>
                             </Row>
                         </Col>
@@ -344,7 +385,7 @@ class Admin extends Component {
                         <span style={{color:'red'}}></span>
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="manufacturer"
-                        value={this.state.manufacturer}  maxLength="45"
+                        value={this.state.manufacturer}  
                         onChange={this.handleChange}></input>
                         </Row>
                      </Col>      
@@ -356,7 +397,7 @@ class Admin extends Component {
                         
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="noofshots"
-                        value={this.state.noofshots}  maxLength="45"
+                        value={this.state.noofshots}  
                         onChange={this.handleChange}></input>
                         </Row>
                     </Col>

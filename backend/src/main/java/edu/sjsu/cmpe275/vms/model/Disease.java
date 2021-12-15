@@ -13,6 +13,7 @@ public class Disease {
     @GeneratedValue
     private long id;
 
+
     @Column(name = "name", nullable = false, unique = true)
     private String diseaseName;
 
@@ -22,6 +23,14 @@ public class Disease {
     @ManyToOne
     @JoinColumn(name = "vaccination_id", referencedColumnName = "id")
     private Vaccination vaccination;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getDiseaseName() {
         return diseaseName;
