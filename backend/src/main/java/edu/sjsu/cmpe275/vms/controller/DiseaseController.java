@@ -22,7 +22,7 @@ public class DiseaseController {
 
     @GetMapping("/allDiseases")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getDiseases() {
+    public ResponseEntity<?> getAllDiseases() {
         return this.diseaseService.getAllDiseases();
     }
 
