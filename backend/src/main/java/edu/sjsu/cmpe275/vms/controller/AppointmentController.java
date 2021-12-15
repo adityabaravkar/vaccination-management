@@ -64,6 +64,12 @@ public class AppointmentController {
         return this.appointmentService.cancelAppointment(id);
     }
 
+    @PostMapping(path = "/api/appointment/checkInAppointment/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
+    public Appointment checkinAppointment(@PathVariable(value = "id") long id) {
+        return this.appointmentService.checkinAppointment(id);
+    }
+
 //    @PostMapping(path = "/api/appointment/updateAppointment")
 //    @PreAuthorize("hasRole('PATIENT')")
 //    public Appointment updateAppointment(@RequestParam long appointmentId,

@@ -103,13 +103,13 @@ public class Appointment {
         this.vaccinations = vaccinations;
     }
 
-    public Appointment(long patientId, String appointmentTime, Clinic clinicId, List<Vaccination> vaccinations, String status) {
-
+    public Appointment(long patientId, String appointmentTime, Clinic clinicId, List<Vaccination> vaccinations, String aptStatus, String checkedInStatus) {
         this.patientId = patientId;
         this.appointmentTime = appointmentTime;
         this.clinicId = clinicId;
         this.vaccinations = vaccinations;
         this.aptStatus = aptStatus;
+        this.checkedInStatus = checkedInStatus;
     }
 
     public Appointment() {
