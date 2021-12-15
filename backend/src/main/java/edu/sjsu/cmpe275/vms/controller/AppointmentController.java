@@ -8,6 +8,7 @@ import edu.sjsu.cmpe275.vms.model.Appointment;
 import edu.sjsu.cmpe275.vms.model.Clinic;
 import edu.sjsu.cmpe275.vms.model.Vaccination;
 import edu.sjsu.cmpe275.vms.payload.AddAppointmentRequest;
+import edu.sjsu.cmpe275.vms.payload.UpdateAppointmentRequest;
 import edu.sjsu.cmpe275.vms.security.CurrentUser;
 import edu.sjsu.cmpe275.vms.service.AppointmentService;
 
@@ -63,17 +64,63 @@ public class AppointmentController {
         return this.appointmentService.cancelAppointment(id);
     }
 
+    @PostMapping(path = "/api/appointment/checkInAppointment/{id}")
+    @PreAuthorize("hasRole('PATIENT')")
+    public Appointment checkinAppointment(@PathVariable(value = "id") long id) {
+        return this.appointmentService.checkinAppointment(id);
+    }
+
+//    @PostMapping(path = "/api/appointment/updateAppointment")
+//    @PreAuthorize("hasRole('PATIENT')")
+//    public Appointment updateAppointment(@RequestParam long appointmentId,
+//                                       @RequestParam String appointmentTime,
+//                                       @RequestParam String currentTime,
+//                                         @RequestParam String clinicId) {
+//        return this.appointmentService.updateAppointment(appointmentId,appointmentTime,currentTime,Long.valueOf(clinicId));
+//    }
+
     @PostMapping(path = "/api/appointment/updateAppointment")
     @PreAuthorize("hasRole('PATIENT')")
-    public Appointment updateAppointment(@RequestParam long appointmentId,
-                                       @RequestParam String appointmentTime,
-                                       @RequestParam String currentTime,
-                                         @RequestParam String clinicId) {
-        return this.appointmentService.updateAppointment(appointmentId,appointmentTime,currentTime,Long.valueOf(clinicId));
+    public Appointment updateAppointment(@RequestBody UpdateAppointmentRequest updateAppointmentRequest) {
+
+        String appointmentTime = updateAppointmentRequest.getAppointmentTime();
+        String currentTime = updateAppointmentRequest.getCurrentTime();
+        long appointmentId = Long.parseLong(updateAppointmentRequest.getAppointmentId());
+        long clinicId = Long.parseLong(updateAppointmentRequest.getClinicId());
+        return this.appointmentService.updateAppointment(appointmentId,appointmentTime,currentTime,clinicId);
     }
+
+//    @PostMapping(path = "/api/appointment/checkIn/{id}")
+//    @PreAuthorize("hasRole('PATIENT')")
+//    public Appointment checkIn(@PathVariable(value = "id") long id,
+//                               @RequestParam String currentTime) {
+//
+//
+//        return this.appointmentService.updateAppointment(appointmentId,appointmentTime,currentTime,clinicId);
+//    }
 
     @GetMapping(path = "/api/appointment/allClinic")
     public ResponseEntity<?> getAllClinic() {
         return this.appointmentService.getAllClinics();
     }
+
+    @GetMapping(path = "/api/appointment/allDueVaccines")
+    public List<Vaccination>  getAllDueVaccines() {
+        return this.appointmentService.getAllDueVaccines();
+    }
+
+    @GetMapping(path = "/api/availableCheckin")
+    @PreAuthorize("hasRole('PATIENT')")
+    public List<Appointment> getAllCheckin(@RequestParam String patientId, String currentTime){
+        long patientID = Long.valueOf(patientId);
+        return this.appointmentService.allCheckin(patientID, currentTime);
+    }
+
+    @GetMapping(path = "/api/allAppointments")
+    @PreAuthorize("hasRole('PATIENT')")
+    public List<Appointment> getAllAppointments(@RequestParam String patientId){
+        long patientID = Long.valueOf(patientId);
+        return this.appointmentService.allAppointments(patientID);
+    }
+
 }
