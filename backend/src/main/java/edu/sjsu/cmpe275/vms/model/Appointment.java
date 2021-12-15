@@ -17,9 +17,12 @@ public class Appointment {
     @GeneratedValue
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "patient_id", referencedColumnName = "mrn")
-    private User patientId;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "patient_id", referencedColumnName = "mrn")
+//    private User patientId;
+
+    @Column(name = "patientId", nullable = false)
+    private long patientId;
 
     @Column(name = "appointmentTime", nullable = true)
     @JsonFormat(pattern="yyyy-MM-dd-HH-MM")
@@ -39,14 +42,25 @@ public class Appointment {
     private List<Vaccination> vaccinations;
 
     @Column
-    public String status;
+    public String aptStatus;
 
-    public String getStatus() {
-        return status;
+    @Column
+    public String checkedInStatus;
+
+    public String getAptStatus() {
+        return aptStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAptStatus(String aptStatus) {
+        this.aptStatus = aptStatus;
+    }
+
+    public String getCheckedInStatus() {
+        return checkedInStatus;
+    }
+
+    public void setCheckedInStatus(String checkedInStatus) {
+        this.checkedInStatus = checkedInStatus;
     }
 
     public long getId() {
@@ -57,11 +71,11 @@ public class Appointment {
         this.id = id;
     }
 
-    public User getPatientId() {
+    public long getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(User patientId) {
+    public void setPatientId(long patientId) {
         this.patientId = patientId;
     }
 
@@ -89,13 +103,13 @@ public class Appointment {
         this.vaccinations = vaccinations;
     }
 
-    public Appointment(User patientId, String appointmentTime, Clinic clinicId, List<Vaccination> vaccinations, String status) {
-
+    public Appointment(long patientId, String appointmentTime, Clinic clinicId, List<Vaccination> vaccinations, String aptStatus, String checkedInStatus) {
         this.patientId = patientId;
         this.appointmentTime = appointmentTime;
         this.clinicId = clinicId;
         this.vaccinations = vaccinations;
-        this.status = status;
+        this.aptStatus = aptStatus;
+        this.checkedInStatus = checkedInStatus;
     }
 
     public Appointment() {

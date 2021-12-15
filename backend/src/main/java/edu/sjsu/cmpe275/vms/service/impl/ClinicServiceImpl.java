@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static java.lang.Math.abs;
+
 @Service
 public class ClinicServiceImpl implements ClinicService {
 
@@ -40,22 +42,48 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
     public Clinic createClinic(String name, Address address, String businessHours, int numberOfPhysicians) {
-        String[] split = businessHours.split("to");
-        int starthour = Integer.parseInt(split[0]);
-        int endhour = Integer.parseInt(split[1]);
+        int totalhrs = 0;
+        int difInMin = 0;
         ArrayList<Slot> slots = new ArrayList<>();
+
+        String[] split = businessHours.split("to");
+        int starthour = Integer.parseInt(split[0].substring(0,2)); // get start hr
+        int endhour = Integer.parseInt(split[1].substring(0,2)); // get end hr
+        int startTime = Integer.parseInt(split[0].substring(3));// get start min
+        int endTime = Integer.parseInt(split[1].substring(3));// get end min
+
 
         Clinic clinic = new Clinic(name, address, businessHours, numberOfPhysicians);
         Clinic clinicValue = this.clinicRepository.saveAndFlush(clinic); // trying to save the clinic entity first
         long clinicId = clinic.getId();
-        System.out.println("clinicId"+clinicId);
 
-        int totalhrs =  endhour - starthour;
+        //calculating the total business hours
+        if(startTime > endTime) {
+            totalhrs =  endhour - starthour - 1;
+            difInMin = 60 - startTime;
+        } else if(startTime < endTime) {
+            totalhrs = endhour - starthour ;
+            difInMin = endTime - startTime;
+        } else {
+            totalhrs = endhour - starthour;
+        }
+
+        //adding slots only if business hours is <=8
         if(totalhrs <= 8){
-            int allowedSlots = totalhrs * 4;
+            int allowedSlots = 0;
+            switch (difInMin){
+                case 0: allowedSlots = totalhrs * 4;
+                break;
+                case 15: allowedSlots = (totalhrs * 4) + 1;
+                break;
+                case 30: allowedSlots = (totalhrs * 4) + 2;
+                    break;
+                case 45: allowedSlots = (totalhrs  * 4) + 3;
+                    break;
+            }
             for(int i =0 ; i< allowedSlots ; i++)
             {
-              Slot slot = new Slot("Unbooked",0,clinicValue);
+            Slot slot = new Slot("Unbooked",0,clinicValue);
               slots.add(slot);
             }
         }

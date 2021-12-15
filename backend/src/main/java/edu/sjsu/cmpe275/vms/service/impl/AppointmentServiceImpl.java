@@ -52,58 +52,64 @@ public class AppointmentServiceImpl implements AppointmentService {
             vaccine = vaccinationRepository.findById(vaccinationIds.get(i)).get();
             vaccinationList.add(vaccine);
         }
-//        System.out.println("Appointment time:" + appointmentTime);
-//        System.out.println("current date time:" + currentTime);
-
 
         String appointmentDate = appointmentTime.substring(0,10);
         String currentDate = currentTime.substring(0,10);
         int aptHr = Integer.parseInt(appointmentTime.substring(11,13));
         int aptMin = Integer.parseInt(appointmentTime.substring(14,16));
 
-        //System.out.println(" Temporal Apt date "+ LocalDate.parse(appointmentDate));
         long months = ChronoUnit.MONTHS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
-        //System.out.println("months" + months);
+        long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
 
-        if(months >= 0 && months <= 12) { //check dates if month is 0 or 12
-           // System.out.println("apt time is within 12 months of current time");
+        if(months >= 0 && months <= 12 && days >=0) { //check dates if month is 0 or 12
             String businessHours =  clinic.getBusinessHours();
             String[] split = businessHours.split("to");
-            int starthour = Integer.parseInt(split[0]);
-            int differenceInHrs =  aptHr - starthour;
+            int starthour = Integer.parseInt(split[0].substring(0,2)); // get start hr
+            int endhour = Integer.parseInt(split[1].substring(0,2)); // get end hr
+            int startTime = Integer.parseInt(split[0].substring(3));// get start min
+            int endTime = Integer.parseInt(split[1].substring(3));// get end min
 
-            // fetch all the slot ids for this clinic
-            slotIds = this.slotRepository.findByClinicId(clinicId);
-            for( int  i=0 ; i<slotIds.size(); i++){
-                int a = 0;
-                a = a + differenceInHrs*4;
+            if(aptHr >= starthour && aptHr < endhour && aptMin >= startTime){
 
-                switch (aptMin){
-                    case 0 : slotIdToBook = slotIds.get(a);
+                int differenceInHrs =  aptHr - starthour; //for finding the slot
+
+                // fetch all the slot ids for this clinic
+                slotIds = this.slotRepository.findByClinicId(clinicId);
+                for( int  i=0 ; i<slotIds.size(); i++){
+                    int a = 0;
+                    a = (a + differenceInHrs*4) -1;
+
+                    switch (aptMin){
+                        case 0 : slotIdToBook = slotIds.get(a);
+                            break;
+                        case 15 : slotIdToBook = slotIds.get(a + 1);
+                            break;
+                        case 30 : slotIdToBook = slotIds.get(a + 2);
+                            break;
+                        case 45 : slotIdToBook = slotIds.get(a + 3);
+                            break;
+                    }
                     break;
-                    case 15 : slotIdToBook = slotIds.get(a + 1);
-                    break;
-                    case 30 : slotIdToBook = slotIds.get(a + 2);
-                        break;
-                    case 45 : slotIdToBook = slotIds.get(a + 3);
-                        break;
+
                 }
-                break;
-               // System.out.println("slotIdToBook" + slotIdToBook);
-            }
+                System.out.println("slotIdToBook" + slotIdToBook);
+                System.out.println("NumberOfPhysicians()"+clinic.getNumberOfPhysicians());
+                Slot s = this.slotRepository.findById(slotIdToBook).get();
+                //check if slots are available
+                int numberOfAptsInThisSlot = s.getNoOfApt();
+                if (numberOfAptsInThisSlot < clinic.getNumberOfPhysicians()) {
+                    numberOfAptsInThisSlot++;
+                    Appointment appointment = new Appointment(patientId, appointmentTime, clinic, vaccinationList,"Booked","Ready for Checkin");
+                    s.setNoOfApt(numberOfAptsInThisSlot);
+                   this.slotRepository.save(s);
+               return this.appointmentRepository.save(appointment);
 
-            Slot s = this.slotRepository.findById(slotIdToBook).get();
-            //check if slots are available
-            int numberOfAptsInThisSlot = s.getNoOfApt();
-            if (numberOfAptsInThisSlot <= clinic.getNumberOfPhysicians()) {
-                numberOfAptsInThisSlot++;
-                Appointment appointment = new Appointment(patient, appointmentTime, clinic, vaccinationList,"Booked");
-                s.setNoOfApt(numberOfAptsInThisSlot);
-                this.slotRepository.save(s);
-                return this.appointmentRepository.save(appointment);
-            }
-            else{
-                throw new BadRequestException(" Sorry physicians are not available.");
+                }
+                else{
+                    throw new BadRequestException(" Sorry physicians are not available.");
+                }
+            } else {
+                throw new BadRequestException("The appointment time is not within the business hours.");
             }
         }   else {
             throw new BadRequestException("The appointment time should be before within 12 monts of the current time.");
@@ -128,9 +134,13 @@ public class AppointmentServiceImpl implements AppointmentService {
             entity.put("name", n.getName());
             clinicList.add(entity);
         }
-        System.out.println(clinicList);
-       //return clinicList;
         return ResponseEntity.ok(clinicList);
+
+    }
+
+    @Override
+    public List<Vaccination> getAllDueVaccines() {
+        return this.vaccinationRepository.findAll();
 
     }
 
@@ -138,7 +148,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment cancelAppointment(long id) {
         Appointment appointment = this.appointmentRepository.findById(id).orElse(null);
         if(appointment != null){
-            appointment.setStatus("Cancelled");
+            appointment.setAptStatus("Cancelled");
+        }
+        return this.appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public Appointment checkinAppointment(long id) {
+        Appointment appointment = this.appointmentRepository.findById(id).orElse(null);
+        if(appointment != null){
+            appointment.setCheckedInStatus("Checked-In");
         }
         return this.appointmentRepository.save(appointment);
     }
@@ -154,6 +173,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Clinic clinic = this.clinicRepository.findById(clinicId).get();
         List<Long> slotIds = new ArrayList<>();
 
+
         String appointmentDate = appointmentTime.substring(0,10);
         String currentDate = currentTime.substring(0,10);
         int aptHr = Integer.parseInt(appointmentTime.substring(11,13));
@@ -163,82 +183,129 @@ public class AppointmentServiceImpl implements AppointmentService {
         int prevAptMin = Integer.parseInt(previousAptTime.substring(14,16));
 
         long months = ChronoUnit.MONTHS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
+        long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
 
-        if(months >= 0 && months <= 12) { //check dates if month is 0 or 12
+        if(months >= 0 && months <= 12 && days>=0) { //check dates if month is 0 or 12
             // System.out.println("apt time is within 12 months of current time");
             String businessHours =  clinic.getBusinessHours();
             String[] split = businessHours.split("to");
-            int starthour = Integer.parseInt(split[0]);
-            int differenceInHrs =  aptHr - starthour;
+            int starthour = Integer.parseInt(split[0].substring(0,2)); // get start hr
+            int endhour = Integer.parseInt(split[1].substring(0,2)); // get end hr
+            int startTime = Integer.parseInt(split[0].substring(3));// get start min
+            int endTime = Integer.parseInt(split[1].substring(3));// get end min
 
-            int differenceInPrevAptHrs = prevAptHr - starthour;
+            if(aptHr >= starthour && aptHr < endhour && aptMin >= startTime) {
+                int differenceInHrs =  aptHr - starthour;
 
-            // fetch all the slot ids for this clinic
-            slotIds = this.slotRepository.findByClinicId(clinicId);
+                int differenceInPrevAptHrs = prevAptHr - starthour;
 
-            //for removing the old slot
-            for( int  i=0 ; i<slotIds.size(); i++){
-                int a = 0;
-                a = a + differenceInPrevAptHrs*4;
+                // fetch all the slot ids for this clinic
+                slotIds = this.slotRepository.findByClinicId(clinicId);
 
-                switch (prevAptMin){
-                    case 0 : slotIdToUpdate = slotIds.get(a);
-                        break;
-                    case 15 : slotIdToUpdate = slotIds.get(a + 1);
-                        break;
-                    case 30 : slotIdToUpdate = slotIds.get(a + 2);
-                        break;
-                    case 45 : slotIdToUpdate = slotIds.get(a + 3);
-                        break;
+                //for removing the old slot
+                for( int  i=0 ; i<slotIds.size(); i++){
+                    int a = 0;
+                    a = (a + differenceInPrevAptHrs*4) -1;
+
+                    switch (prevAptMin){
+                        case 0 : slotIdToUpdate = slotIds.get(a);
+                            break;
+                        case 15 : slotIdToUpdate = slotIds.get(a + 1);
+                            break;
+                        case 30 : slotIdToUpdate = slotIds.get(a + 2);
+                            break;
+                        case 45 : slotIdToUpdate = slotIds.get(a + 3);
+                            break;
+                    }
+                    break;
+
                 }
-                break;
-
-            }
-            System.out.println("slotIdToUpdate" + slotIdToUpdate);
-            Slot updateSlot = this.slotRepository.findById(slotIdToUpdate).get();
-            int aptCount = updateSlot.getNoOfApt();
-            aptCount -= 1;
-            updateSlot.setNoOfApt(aptCount);
-            this.slotRepository.save(updateSlot);
+                System.out.println("slotIdToUpdate" + slotIdToUpdate);
+                Slot updateSlot = this.slotRepository.findById(slotIdToUpdate).get();
+                int aptCount = updateSlot.getNoOfApt();
+                aptCount -= 1;
+                updateSlot.setNoOfApt(aptCount);
+                this.slotRepository.save(updateSlot);
 
 
-            //for new slot booking
-            for( int  i=0 ; i<slotIds.size(); i++){
-                int a = 0;
-                a = a + differenceInHrs*4;
+                //for new slot booking
+                for( int  i=0 ; i<slotIds.size(); i++){
+                    int a = 0;
+                    a = (a + differenceInHrs*4)-1;
 
-                switch (aptMin){
-                    case 0 : slotIdToBook = slotIds.get(a);
-                        break;
-                    case 15 : slotIdToBook = slotIds.get(a + 1);
-                        break;
-                    case 30 : slotIdToBook = slotIds.get(a + 2);
-                        break;
-                    case 45 : slotIdToBook = slotIds.get(a + 3);
-                        break;
+                    switch (aptMin){
+                        case 0 : slotIdToBook = slotIds.get(a);
+                            break;
+                        case 15 : slotIdToBook = slotIds.get(a + 1);
+                            break;
+                        case 30 : slotIdToBook = slotIds.get(a + 2);
+                            break;
+                        case 45 : slotIdToBook = slotIds.get(a + 3);
+                            break;
+                    }
+                    break;
+
                 }
-                break;
-                // System.out.println("slotIdToBook" + slotIdToBook);
-            }
+                System.out.println("slotIdToBook" + slotIdToBook);
+                Slot s = this.slotRepository.findById(slotIdToBook).get();
+                //check if slots are available
+                int numberOfAptsInThisSlot = s.getNoOfApt();
+                if (numberOfAptsInThisSlot < clinic.getNumberOfPhysicians()) {
+                    numberOfAptsInThisSlot++;
 
-            Slot s = this.slotRepository.findById(slotIdToBook).get();
-            //check if slots are available
-            int numberOfAptsInThisSlot = s.getNoOfApt();
-            if (numberOfAptsInThisSlot <= clinic.getNumberOfPhysicians()) {
-                numberOfAptsInThisSlot++;
-              //  Appointment appointment = new Appointment(patient, appointmentTime, clinic, vaccinationList);
-                s.setNoOfApt(numberOfAptsInThisSlot);
-                this.slotRepository.save(s);
-                appointment.setAppointmentTime(appointmentTime);
-                return this.appointmentRepository.saveAndFlush(appointment);
-              //  return this.appointmentRepository.save(appointment);
-            }
-            else{
-                throw new BadRequestException(" Sorry physicians are not available.");
+                    s.setNoOfApt(numberOfAptsInThisSlot);
+                    this.slotRepository.save(s);
+                    appointment.setAppointmentTime(appointmentTime);
+                    return this.appointmentRepository.saveAndFlush(appointment);
+
+                }
+                else{
+                    throw new BadRequestException(" Sorry physicians are not available.");
+                }
+            } else{
+                throw new BadRequestException("The appointment time is not within the business hours.");
             }
         }   else {
             throw new BadRequestException("The appointment time should be before within 12 monts of the current time.");
         }
     }
 
+    @Override
+    public List<Appointment> allCheckin(long patientId, String currentTime) {
+        User patient = null;
+        if(this.userRepository.existsById(patientId)){
+            patient = userRepository.findById(patientId).get();
+        } else {
+            throw new BadRequestException("Patient with id " + patientId + " does not exist in the database.");
+        }
+
+        String currentDate = currentTime.substring(0,10);
+        String currentHr = currentTime.substring(11,13);
+        Appointment appointment = new Appointment();
+        appointment.setPatientId(patientId);
+        List<Appointment> checkinList = new ArrayList<>();
+        List<Appointment> aptList = this.appointmentRepository.findAppointmentsBy(patientId);
+        for(Appointment apt : aptList){
+            String aptDate = apt.getAppointmentTime().substring(0,10);
+            String aptHr =  apt.getAppointmentTime().substring(11,13);
+
+            long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(aptDate));
+            if(days >=0 && days<=1){
+                checkinList.add(apt); //days has been checked, need to check for time
+                if(days >=0 && days<=1 && Integer.parseInt(aptHr) < Integer.parseInt(currentHr)){
+                    apt.setCheckedInStatus("NoShow");
+                    this.appointmentRepository.save(apt);
+                }
+            }
+
+        }
+        return checkinList;
+    }
+
+    @Override
+    public List<Appointment> allAppointments(long patientId) {
+        List<Appointment> aptList = this.appointmentRepository.findAppointmentsBy(patientId);
+        System.out.println(aptList);
+        return aptList;
+    }
 }
