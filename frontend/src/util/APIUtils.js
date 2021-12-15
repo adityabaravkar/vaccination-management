@@ -64,6 +64,14 @@ export function addClinic(addClinicRequest) {
     body: JSON.stringify(addClinicRequest),
   });
 }
+export function addVaccination(addVaccinationRequest) {
+  return request({
+    url: API_BASE_URL + "/vaccination/createVaccination",
+    method: "POST",
+    body: JSON.stringify(addVaccinationRequest),
+  });
+}
+
 export function makeAppointment(addAptRequest) {
   console.log("addAptRequest", addAptRequest);
   return request({
@@ -83,6 +91,13 @@ export function getClinics() {
 export function getAllAppointments() {
   return request({
     url: API_BASE_URL + "/appointment/",
+    method: "GET",
+  });
+}
+
+export function getAllDiseases() {
+  return request({
+    url: API_BASE_URL + "/diseases/allDiseases",
     method: "GET",
   });
 }

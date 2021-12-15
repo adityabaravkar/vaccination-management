@@ -3,6 +3,7 @@ package edu.sjsu.cmpe275.vms.model;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -11,7 +12,8 @@ public class Disease {
 
     @Id
     @GeneratedValue
-    private long id;
+    @Column(name = "diseaseId", nullable = false, unique = true)
+    private long diseaseId;
 
 
     @Column(name = "name", nullable = false, unique = true)
@@ -20,17 +22,27 @@ public class Disease {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "vaccination_id", referencedColumnName = "id")
-    private Vaccination vaccination;
+    @ManyToMany
+    @JoinTable(
+            name = "disease_vaccination",
+            joinColumns = @JoinColumn(name = "disease_id",referencedColumnName = "diseaseId"),
+            inverseJoinColumns = @JoinColumn(name="vaccination_id",referencedColumnName = "vaccinationId"))
+    private List<Vaccination> vaccination;
 
-    public long getId() {
-        return id;
+    public long getDiseaseId() {
+        return diseaseId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDiseaseId(long diseaseId) {
+        this.diseaseId = diseaseId;
     }
+//    public long getId() {
+//        return id;
+//    }
+//
+//    public void setId(long id) {
+//        this.id = id;
+//    }
 
     public String getDiseaseName() {
         return diseaseName;
@@ -48,13 +60,20 @@ public class Disease {
         this.description = description;
     }
 
-    public Vaccination getVaccination() {
+    public List<Vaccination> getVaccination() {
         return vaccination;
     }
 
-    public void setVaccination(Vaccination vaccination) {
+    public void setVaccination(List<Vaccination> vaccination) {
         this.vaccination = vaccination;
     }
+//    public Vaccination getVaccination() {
+//        return vaccination;
+//    }
+//
+//    public void setVaccination(Vaccination vaccination) {
+//        this.vaccination = vaccination;
+//    }
 
     public Disease(String diseaseName, String description) {
         this.diseaseName = diseaseName;

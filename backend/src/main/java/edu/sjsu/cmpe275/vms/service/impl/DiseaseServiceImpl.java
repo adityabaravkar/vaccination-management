@@ -25,14 +25,14 @@ public class DiseaseServiceImpl implements DiseaseService {
         return this.diseaseRepository.save(disease);
     }
     @Override
-    public ResponseEntity<?> getAllDiseases(){
+    public ResponseEntity<List<String>> getAllDiseases(){
         List<Disease> allDiseases = this.diseaseRepository.findAll();
-        List<JSONObject> diseaseList = new ArrayList<JSONObject>();
+        List<String> diseaseList = new ArrayList<String>();
         for (Disease n : allDiseases){
-            JSONObject entity = new JSONObject();
-            entity.put("diseaseId",n.getId());
-            entity.put("diseaseName",n.getDiseaseName());
-            diseaseList.add(entity);
+//            JSONObject entity = new JSONObject();
+//            entity.put("diseaseId",n.getId());
+           // entity.put("diseaseName",n.getDiseaseName());
+            diseaseList.add(n.getDiseaseName());
         }
         return ResponseEntity.ok(diseaseList);
     }

@@ -3,9 +3,10 @@ import "./Admin.css";
 import {
  Button, Modal, Row, Col
 } from 'react-bootstrap';
-import {addDisease,addClinic,login} from "../../util/APIUtils";
+import {addDisease, addClinic, login, getAllDiseases, addVaccination} from "../../util/APIUtils";
 import {ACCESS_TOKEN} from "../../constants";
 import Alert from "react-s-alert";
+import { Multiselect } from "multiselect-react-dropdown";
 
 
 class Admin extends Component {
@@ -32,11 +33,45 @@ class Admin extends Component {
           duration:'',
           noofshots:'',
           diseases:[],
-          errors:{}
+          errors:{},
+          allDiseasesSelected: [],
 
 
         };
       }
+    componentDidMount = async () => {
+        console.log("hello")
+        getAllDiseases()
+            .then((response) => {
+                const respData = response;
+                console.log(respData)
+                 let diseases = [];
+                for (let i = 0; i < respData.length; i++) {
+                    const diseaseData = {
+
+                        diseaseName: respData[i],
+                    };
+                    diseases.push(diseaseData);
+
+                }
+                this.setState({diseases:diseases})
+               
+                
+            })
+    }
+    onSelectDiseases = (data) => {
+        console.log("data multiselect", data);
+        // this.setState({
+        //     allDiseasesSelected: data,
+        //   });
+
+        var diseasesList = data.map(function(item) {
+            return item['diseaseName'];
+          });
+        this.setState({
+            allDiseasesSelected: diseasesList,
+        });
+      };
     addClinicModal = () =>{
         this.setState({
             show:true
@@ -97,6 +132,16 @@ class Admin extends Component {
         if (!diseaseName || diseaseName === '') errors.diseaseName = 'Disease Name cannot be blank!';
         return errors;
     }
+    findVaccinationFormErrors = () => {
+        const {vaccineName,errors,manufacturer,
+        noofshots} = this.state;
+        
+        if (!vaccineName || vaccineName === '') errors.vaccineName = 'Vaccination Name cannot be blank!';
+        if (!manufacturer || manufacturer === '' ) errors.manufacturer = 'Manufacturer cannot be blank!';
+        if (!noofshots || noofshots === '' ) errors.noofshots = 'No. of shots cannot be blank!';
+        //if (!shotinterval || shotinterval === '' ) errors.shotinterval = 'Shot Interval cannot be blank!';
+        return errors;
+    }
     findClinicFormErrors = () => {
         const {clinicName,city,state,zipCode,businessHours,numberOfPhysicians,errors} = this.state;
         if (!clinicName || clinicName === '') errors.clinicName = 'Clinic Name cannot be blank!';
@@ -151,6 +196,44 @@ class Admin extends Component {
         }
 
     }
+    addVaccineDetails = (e) => {
+        e.preventDefault();
+        const newErrors = this.findVaccinationFormErrors();
+        if(Object.keys(newErrors).length > 0){
+            this.setState({
+                errors: newErrors,
+            });
+        }else{
+            const addVaccine = {
+                vaccineName: this.state.vaccineName,
+                diseasesList : this.state.allDiseasesSelected,
+                manufacturer:this.state.manufacturer,
+                numberOfShots: this.state.numberOfShots,
+                shotinterval: this.state.shotinterval,
+                duration: this.state.duration
+
+            }
+            console.log("Vaccination created")
+            const addVaccinationRequest = Object.assign({}, addVaccine);
+            addVaccination(addVaccinationRequest)
+                .then((response) => {
+                    console.log("response")
+                    console.log(response)
+                    Alert.success("New Vaccination Added!");
+                    this.setState({
+                        show: false
+                    })
+                    this.props.history.push("/admin");
+                    // this.setState({diseaseName: ''});
+                    // this.setState({description: ''});
+                })
+                .catch((error) => {
+                    Alert.error(
+                        "Disease with the same name already added!"
+                    );
+                });
+        }
+    }
     addDiseaseDetails = (e) => {
         e.preventDefault();
         const newErrors = this.findDiseaseFormErrors();
@@ -178,6 +261,7 @@ class Admin extends Component {
                     this.props.history.push("/admin");
                     this.setState({diseaseName: ''});
                     this.setState({description: ''});
+                    this.componentDidMount();
                 })
                 .catch((error) => {
                     Alert.error(
@@ -187,6 +271,7 @@ class Admin extends Component {
         }
     }
     render() {
+        
         const {showClinic, showDisease, showVaccine,errors} = this.state;
         var clinicForm = null;
         var clinicHead = null;
@@ -359,19 +444,31 @@ class Admin extends Component {
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="vaccineName"
                         value={this.state.vaccineName} 
                         onChange={this.handleChange}></input>
+                         <span style={{color:'red'}}>{errors.vaccineName}</span>
                     </Row>
                     <br/>
                     
                     <Row>
                         <Col>
                             <Row>
-                            <h6>Diseases<span style={{color:'red'}}></span></h6>
+                            <h6>Diseases<span style={{color:'red'}}>*</span></h6>
                             </Row>
                                 
-                            <Row> 
-                            &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="diseases"
-                            value={this.state.diseases}  
-                            onChange={this.handleChange}></input>
+                            <Row>
+                                <Multiselect
+                                     options={this.state.diseases}
+                                     displayValue="diseaseName"
+                                     placeholder="Select diseases"
+                                     onSelect={this.onSelectDiseases}
+                                    style={{
+                                        chips: { background: "" },
+                                        color: "black",
+                                    }}
+                                />
+                                 {/* <span style={{color:'red'}}>{errors.diseases}</span> */}
+                            {/*&nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="diseases"*/}
+                            {/*value={this.state.diseases}  */}
+                            {/*onChange={this.handleChange}></input>*/}
                             </Row>
                         </Col>
                         
@@ -387,6 +484,7 @@ class Admin extends Component {
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="manufacturer"
                         value={this.state.manufacturer}  
                         onChange={this.handleChange}></input>
+                         <span style={{color:'red'}}>{errors.manufacturer}</span>
                         </Row>
                      </Col>      
                      <Col>
@@ -399,6 +497,7 @@ class Admin extends Component {
                         &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="noofshots"
                         value={this.state.noofshots}  
                         onChange={this.handleChange}></input>
+                         <span style={{color:'red'}}>{errors.noofshots}</span>
                         </Row>
                     </Col>
                     </Row>
@@ -414,15 +513,14 @@ class Admin extends Component {
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="shotinterval"
                         value={this.state.shotinterval}
                         onChange={this.handleChange}></input>
+                        
                         </Row>
                      </Col>
                      
                      <Col>
                         <Row>
-                        <h6>Duration<span style={{color:'red'}}>*</span></h6>
+                        <h6>Duration</h6>
                         </Row>
-                        <span style={{color:'red'}}> </span>
-                        
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="duration"
                         value={this.state.duration}
