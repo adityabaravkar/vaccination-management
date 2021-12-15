@@ -12,8 +12,7 @@ public class Disease {
 
     @Id
     @GeneratedValue
-    @Column(name = "diseaseId", nullable = false, unique = true)
-    private long diseaseId;
+    private long id;
 
 
     @Column(name = "name", nullable = false, unique = true)
@@ -25,24 +24,24 @@ public class Disease {
     @ManyToMany
     @JoinTable(
             name = "disease_vaccination",
-            joinColumns = @JoinColumn(name = "disease_id",referencedColumnName = "diseaseId"),
-            inverseJoinColumns = @JoinColumn(name="vaccination_id",referencedColumnName = "vaccinationId"))
+            joinColumns = @JoinColumn(name = "disease_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="vaccination_id",referencedColumnName = "id"))
     private List<Vaccination> vaccination;
 
-    public long getDiseaseId() {
-        return diseaseId;
-    }
-
-    public void setDiseaseId(long diseaseId) {
-        this.diseaseId = diseaseId;
-    }
-//    public long getId() {
-//        return id;
+//    public long getDiseaseId() {
+//        return diseaseId;
 //    }
 //
-//    public void setId(long id) {
-//        this.id = id;
+//    public void setDiseaseId(long diseaseId) {
+//        this.diseaseId = diseaseId;
 //    }
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getDiseaseName() {
         return diseaseName;

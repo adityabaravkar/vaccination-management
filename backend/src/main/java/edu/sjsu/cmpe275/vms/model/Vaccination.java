@@ -11,8 +11,8 @@ public class Vaccination {
 
     @Id
     @GeneratedValue
-    @Column(name = "vaccinationId", nullable = false, unique = true)
-    private long vaccinationId;
+
+    private long id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String vaccineName;
@@ -48,13 +48,20 @@ public class Vaccination {
 
     }
 
-    public long getVaccinationId() {
-        return vaccinationId;
+    public long getId() {
+        return id;
     }
 
-    public void setVaccinationId(long vaccinationId) {
-        this.vaccinationId = vaccinationId;
+    public void setId(long id) {
+        this.id = id;
     }
+//    public long getVaccinationId() {
+//        return vaccinationId;
+//    }
+//
+//    public void setVaccinationId(long vaccinationId) {
+//        this.vaccinationId = vaccinationId;
+//    }
 
     public String getVaccineName() {
         return vaccineName;
