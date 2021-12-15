@@ -1,4 +1,4 @@
-import { API_BASE_URL, ACCESS_TOKEN, BASE_URL } from "../constants";
+import { API_BASE_URL } from "../constants";
 
 import { Authentication } from "../services";
 
@@ -78,5 +78,14 @@ export function getAllAppointments() {
   return request({
     url: API_BASE_URL + "/appointment/",
     method: "GET",
+  });
+}
+
+export function getAppointment() {
+  console.log(Authentication.userId)
+  return request({
+    url: API_BASE_URL + `/patient/getVaccinationHistory/${Authentication.userId}`,
+    method: "GET",
+    
   });
 }

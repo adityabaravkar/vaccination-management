@@ -41,8 +41,7 @@ public class Appointment {
     )
     private List<Vaccination> vaccinations;
 
-    @Column
-    public String status;
+
 
     public String getStatus() {
         return status;

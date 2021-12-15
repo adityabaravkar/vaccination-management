@@ -18,6 +18,8 @@ import Vaccine from "../admin/Vaccine";
 import Appointment from "../appointment/appointment";
 import CheckIn from "../appointment/checkIn";
 import { Authentication } from "../../services";
+import Profile from "../profile/Profile";
+
 
 class App extends Component {
   constructor(props) {
@@ -136,6 +138,13 @@ class App extends Component {
                   authenticated={this.state.authenticated}
                   handleLogin={this.handleLogin}
                   {...props}
+                />
+              )}
+            />
+            <Route
+              path="/profile"
+              render={(props) => (
+                <Profile
                 />
               )}
             />

@@ -5,7 +5,7 @@ const SecondTab = () => {
     const [state, setstate] = useState("")
 
     useEffect(() => {
-        getAppointment(state)
+        getAppointment()
         .then((response) => {
             console.log(response);
           })
