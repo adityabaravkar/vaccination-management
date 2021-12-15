@@ -18,9 +18,10 @@ public class ClinicController {
     @Autowired private ClinicService clinicService;
 
 
-    @GetMapping(path = "/clinic/{id}")
-    public List<Vaccination> getVaccinations(@PathVariable(value = "id") long id) {
-        return this.clinicService.getVaccinations(id);
+    @GetMapping(path = "/api/clinic/{id}")
+    public List<Vaccination> getVaccinations(@PathVariable(value = "id") String id) {
+        long clinicId = Long.valueOf(id);
+        return this.clinicService.getVaccinations(clinicId);
     }
 
     @PostMapping(path = "/clinic/addVaccine")

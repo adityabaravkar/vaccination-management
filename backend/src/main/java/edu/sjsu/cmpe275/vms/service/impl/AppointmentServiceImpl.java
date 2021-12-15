@@ -97,7 +97,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             int numberOfAptsInThisSlot = s.getNoOfApt();
             if (numberOfAptsInThisSlot <= clinic.getNumberOfPhysicians()) {
                 numberOfAptsInThisSlot++;
-                Appointment appointment = new Appointment(patient, appointmentTime, clinic, vaccinationList,"Booked");
+                Appointment appointment = new Appointment(patientId, appointmentTime, clinic, vaccinationList,"Booked");
                 s.setNoOfApt(numberOfAptsInThisSlot);
                 this.slotRepository.save(s);
                 return this.appointmentRepository.save(appointment);
@@ -128,9 +128,13 @@ public class AppointmentServiceImpl implements AppointmentService {
             entity.put("name", n.getName());
             clinicList.add(entity);
         }
-        System.out.println(clinicList);
-       //return clinicList;
         return ResponseEntity.ok(clinicList);
+
+    }
+
+    @Override
+    public List<Vaccination> getAllDueVaccines() {
+        return this.vaccinationRepository.findAll();
 
     }
 
@@ -138,7 +142,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment cancelAppointment(long id) {
         Appointment appointment = this.appointmentRepository.findById(id).orElse(null);
         if(appointment != null){
-            appointment.setStatus("Cancelled");
+            appointment.setAptStatus("Cancelled");
         }
         return this.appointmentRepository.save(appointment);
     }
@@ -241,4 +245,34 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
+    @Override
+    public List<Appointment> allCheckin(long patientId, String currentTime) {
+        User patient = null;
+        if(this.userRepository.existsById(patientId)){
+            patient = userRepository.findById(patientId).get();
+        } else {
+            throw new BadRequestException("Patient with id " + patientId + " does not exist in the database.");
+        }
+
+        String currentDate = currentTime.substring(0,10);
+        Appointment appointment = new Appointment();
+        appointment.setPatientId(patientId);
+        List<Appointment> checkinList = new ArrayList<>();
+        List<Appointment> aptList = this.appointmentRepository.findAppointmentsBy(patientId);
+        for(Appointment apt : aptList){
+            String aptDate = apt.getAppointmentTime().substring(0,10);
+            long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(aptDate));
+            if(days >=0 && days<=1){
+                checkinList.add(apt); //days has been checked, need to check for time
+            }
+        }
+        return checkinList;
+    }
+
+    @Override
+    public List<Appointment> allAppointments(long patientId) {
+        List<Appointment> aptList = this.appointmentRepository.findAppointmentsBy(patientId);
+        System.out.println(aptList);
+        return aptList;
+    }
 }
