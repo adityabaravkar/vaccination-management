@@ -3,8 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
 import Login from "../login/Login";
-import Admin from "../admin/Admin";
-import Clinic from "../admin/Clinic";
 import NotFound from "../common/NotFound";
 import OAuth2RedirectHandler from "../oauth2/OAuth2RedirectHandler";
 import { getCurrentUser } from "../../util/APIUtils";
@@ -13,13 +11,7 @@ import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import Signup from "../signup/Signup";
-import Disease from "../admin/Disease";
-import Vaccine from "../admin/Vaccine";
-import Appointment from "../appointment/appointment";
-import CheckIn from "../appointment/checkIn";
 import { Authentication } from "../../services";
-import Profile from "../profile/Profile";
-
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +28,6 @@ class App extends Component {
     Authentication.logout();
     this.setState({
       authenticated: false,
-      currentUser: null,
     });
     Alert.success("You've logged out!");
   }
@@ -59,6 +50,14 @@ class App extends Component {
       });
   }
 
+  componentDidMount() {
+    if (Authentication.isUserLoggedIn()) {
+      this.setState({
+        authenticated: true,
+      });
+    }
+  }
+
   render() {
     return (
       <div className="app">
@@ -78,73 +77,6 @@ class App extends Component {
                   authenticated={this.state.authenticated}
                   handleLogin={this.handleLogin}
                   {...props}
-                />
-              )}
-            />
-            <Route
-              path="/admin"
-              render={(props) => (
-                <Admin
-                  authenticated={this.state.authenticated}
-                  handleLogin={this.handleLogin}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/allClinics"
-              render={(props) => (
-                <Clinic
-                  authenticated={this.state.authenticated}
-                  handleLogin={this.handleLogin}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/allDiseases"
-              render={(props) => (
-                <Disease
-                  authenticated={this.state.authenticated}
-                  handleLogin={this.handleLogin}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/allVaccinations"
-              render={(props) => (
-                <Vaccine
-                  authenticated={this.state.authenticated}
-                  handleLogin={this.handleLogin}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/allAppointments"
-              render={(props) => (
-                <Appointment
-                  authenticated={this.state.authenticated}
-                  handleLogin={this.handleLogin}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/checkin"
-              render={(props) => (
-                <CheckIn
-                  authenticated={this.state.authenticated}
-                  handleLogin={this.handleLogin}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/profile"
-              render={(props) => (
-                <Profile
                 />
               )}
             />
