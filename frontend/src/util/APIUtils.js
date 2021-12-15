@@ -74,9 +74,53 @@ export function getClinics() {
   });
 }
 
-export function getAllAppointments() {
+export function getAllAppointments(patientId) {
+  console.log("patientId", patientId);
   return request({
-    url: API_BASE_URL + "/appointment/",
+    url: API_BASE_URL + `/allAppointments?patientId=${patientId}`,
+    method: "GET",
+  });
+}
+
+export function cancelAppointment(aptId) {
+  console.log("aptId to cancel", aptId);
+  return request({
+    url: API_BASE_URL + `/appointment/cancelAppointment/${aptId}`,
+    method: "POST",
+  });
+}
+
+export function checkInAppointment(aptId) {
+  console.log("aptId to checkInAppointment", aptId);
+  return request({
+    url: API_BASE_URL + `/appointment/checkInAppointment/${aptId}`,
+    method: "POST",
+  });
+}
+
+export function updateAppointment(updateAptRequest) {
+  console.log("updateAppointment", updateAptRequest);
+  return request({
+    url: API_BASE_URL + "/appointment/updateAppointment",
+    method: "POST",
+    body: JSON.stringify(updateAptRequest),
+  });
+}
+
+export function getDueVaccines(clinicId) {
+  console.log("clinicId in utils", clinicId);
+  return request({
+    url: API_BASE_URL + `/clinic/${clinicId}`,
+    method: "GET",
+  });
+}
+
+export function getAptsToCheckin(patientId, currentTime) {
+  console.log("getAptsToCheckin in utils", patientId + currentTime);
+  return request({
+    url:
+      API_BASE_URL +
+      `/availableCheckin/?patientId=${patientId}&currentTime=${currentTime}`,
     method: "GET",
   });
 }
