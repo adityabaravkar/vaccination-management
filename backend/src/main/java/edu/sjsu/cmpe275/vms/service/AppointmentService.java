@@ -16,7 +16,8 @@ public interface AppointmentService {
 
     Appointment getAppointment(long id);
 
-    ResponseEntity<?> getAllClinics();
+//    ResponseEntity<?> getAllClinics();
+    List<Clinic> getAllClinics();
 
     Appointment cancelAppointment(long id);
 

@@ -25,7 +25,7 @@ public class DiseaseServiceImpl implements DiseaseService {
         return this.diseaseRepository.save(disease);
     }
     @Override
-    public ResponseEntity<List<String>> getAllDiseases(){
+    public List<Disease> getAllDiseases(){
         List<Disease> allDiseases = this.diseaseRepository.findAll();
         List<String> diseaseList = new ArrayList<String>();
         for (Disease n : allDiseases){
@@ -34,6 +34,7 @@ public class DiseaseServiceImpl implements DiseaseService {
            // entity.put("diseaseName",n.getDiseaseName());
             diseaseList.add(n.getDiseaseName());
         }
-        return ResponseEntity.ok(diseaseList);
+        return allDiseases;
+        //return ResponseEntity.ok(diseaseList);
     }
 }

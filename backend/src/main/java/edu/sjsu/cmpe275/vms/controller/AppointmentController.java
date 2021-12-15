@@ -72,8 +72,12 @@ public class AppointmentController {
         return this.appointmentService.updateAppointment(appointmentId,appointmentTime,currentTime,Long.valueOf(clinicId));
     }
 
-    @GetMapping(path = "/api/appointment/allClinic")
-    public ResponseEntity<?> getAllClinic() {
-        return this.appointmentService.getAllClinics();
-    }
+//    @GetMapping(path = "/api/appointment/allClinic")
+//    public ResponseEntity<?> getAllClinic() {
+//        return this.appointmentService.getAllClinics();
+//    }
+@GetMapping(path = "/api/appointment/allClinic")
+public List<Clinic> getAllClinic() {
+    return this.appointmentService.getAllClinics();
+}
 }

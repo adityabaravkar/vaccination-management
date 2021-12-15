@@ -116,23 +116,32 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new BadRequestException("Sorry, Appointment with this ID does not exist!"));
         return appointment;
     }
+//
+//    @Override
+//    public ResponseEntity<?> getAllClinics() {
+//        List<Clinic> allClinics = this.clinicRepository.findAll();
+//
+//        List<JSONObject> clinicList = new ArrayList<JSONObject>();
+//        for (Clinic n : allClinics) {
+//            JSONObject entity = new JSONObject();
+//            entity.put("id", n.getId());
+//            entity.put("name", n.getClinicName());
+//            clinicList.add(entity);
+//        }
+//        System.out.println(clinicList);
+//       //return clinicList;
+//        return ResponseEntity.ok(clinicList);
+//
+//    }
+
 
     @Override
-    public ResponseEntity<?> getAllClinics() {
+    public List<Clinic> getAllClinics() {
         List<Clinic> allClinics = this.clinicRepository.findAll();
-
-        List<JSONObject> clinicList = new ArrayList<JSONObject>();
-        for (Clinic n : allClinics) {
-            JSONObject entity = new JSONObject();
-            entity.put("id", n.getId());
-            entity.put("name", n.getClinicName());
-            clinicList.add(entity);
-        }
-        System.out.println(clinicList);
-       //return clinicList;
-        return ResponseEntity.ok(clinicList);
+        return allClinics;
 
     }
+
 
     @Override
     public Appointment cancelAppointment(long id) {

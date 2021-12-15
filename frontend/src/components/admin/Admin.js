@@ -49,7 +49,7 @@ class Admin extends Component {
                 for (let i = 0; i < respData.length; i++) {
                     const diseaseData = {
 
-                        diseaseName: respData[i],
+                        diseaseName: respData[i].diseaseName,
                     };
                     diseases.push(diseaseData);
 
@@ -224,12 +224,17 @@ class Admin extends Component {
                         show: false
                     })
                     this.props.history.push("/admin");
-                    // this.setState({diseaseName: ''});
-                    // this.setState({description: ''});
+                    this.setState({vaccineName: ''});
+                    this.setState({allDiseasesSelected: []});
+                    this.setState({manufacturer: ''});
+                    this.setState({numberOfShots: ''});
+                    this.setState({shotinterval: ''});
+                    this.setState({duration: ''});
+
                 })
                 .catch((error) => {
                     Alert.error(
-                        "Disease with the same name already added!"
+                        "Vaccine with the same name already added!"
                     );
                 });
         }

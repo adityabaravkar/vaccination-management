@@ -8,5 +8,5 @@ import java.util.List;
 public interface DiseaseService {
     Disease addDisease(String diseaseName,
                        String description);
-    ResponseEntity<?> getAllDiseases();
+    List<Disease> getAllDiseases();
 }
