@@ -11,6 +11,7 @@ import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import Signup from "../signup/Signup";
+import Profile from "../profile/Profile";
 import { Authentication } from "../../services";
 
 class App extends Component {
@@ -93,6 +94,12 @@ class App extends Component {
                   handleLogin={this.handleLogin}
                   {...props}
                 />
+              )}
+            />
+            <Route
+              path="/profile"
+              render={(props) => (
+                <Profile></Profile>
               )}
             />
             <Route component={NotFound} />

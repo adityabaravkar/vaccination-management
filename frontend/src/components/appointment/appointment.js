@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import Alert from "react-s-alert";
 import { makeAppointment, getClinics, login } from "../../util/APIUtils";
+import { Authentication } from "../../services";
 
 class Appointment extends Component {
   constructor(props) {
@@ -80,7 +81,7 @@ class Appointment extends Component {
       this.state.aptMin
     );
     const data = {
-      patientId: "598179743",
+      patientId: Authentication.userId,
       appointmentTime: appointmentDate,
       currentTime: datetime,
       vaccinationIds: ["3"],

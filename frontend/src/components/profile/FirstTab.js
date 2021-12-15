@@ -1,8 +1,18 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
+import { getAppointment } from "../../util/APIUtils";
 import "./Profile.css";
 import { Card } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 const FirstTab = () => {
+  useEffect(() => {
+    getAppointment()
+    .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log("Error");
+      });
+}, [])
   return (
     <div className="FirstTab">
       <p><h4 style={{ color: "white", fontSize: "25px" }}>

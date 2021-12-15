@@ -1,9 +1,10 @@
 import React from "react";
+import Appointment from "../appointment/appointment";
 const ThirdTab = () => {
   return (
     <div className="SecondTab">
       <p>Manage Appointment</p>
-      {/* First tab content will go here */}
+      <Appointment></Appointment>
     </div>
   );
 };
