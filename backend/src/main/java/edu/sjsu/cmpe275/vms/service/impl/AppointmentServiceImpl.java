@@ -75,38 +75,42 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 // fetch all the slot ids for this clinic
                 slotIds = this.slotRepository.findByClinicId(clinicId);
-                for( int  i=0 ; i<slotIds.size(); i++){
-                    int a = 0;
-                    a = (a + differenceInHrs*4) -1;
+                if(slotIds.size() > 0) {
+                    for( int  i=0 ; i<slotIds.size(); i++){
+                        int a = 0;
+                        a = (a + differenceInHrs*4) -1;
 
-                    switch (aptMin){
-                        case 0 : slotIdToBook = slotIds.get(a);
-                            break;
-                        case 15 : slotIdToBook = slotIds.get(a + 1);
-                            break;
-                        case 30 : slotIdToBook = slotIds.get(a + 2);
-                            break;
-                        case 45 : slotIdToBook = slotIds.get(a + 3);
-                            break;
+                        switch (aptMin){
+                            case 0 : slotIdToBook = slotIds.get(a);
+                                break;
+                            case 15 : slotIdToBook = slotIds.get(a + 1);
+                                break;
+                            case 30 : slotIdToBook = slotIds.get(a + 2);
+                                break;
+                            case 45 : slotIdToBook = slotIds.get(a + 3);
+                                break;
+                        }
+                        // break;
+
                     }
-                    break;
+                    System.out.println("slotIdToBook" + slotIdToBook);
+                    System.out.println("NumberOfPhysicians()"+clinic.getNumberOfPhysicians());
+                    Slot s = this.slotRepository.findById(slotIdToBook).get();
+                    //check if slots are available
+                    int numberOfAptsInThisSlot = s.getNoOfApt();
+                    if (numberOfAptsInThisSlot < clinic.getNumberOfPhysicians()) {
+                        numberOfAptsInThisSlot++;
+                        Appointment appointment = new Appointment(patientId, appointmentTime, clinic, vaccinationList,"Booked","Ready for Checkin");
+                        s.setNoOfApt(numberOfAptsInThisSlot);
+                        this.slotRepository.save(s);
+                        return this.appointmentRepository.save(appointment);
 
-                }
-                System.out.println("slotIdToBook" + slotIdToBook);
-                System.out.println("NumberOfPhysicians()"+clinic.getNumberOfPhysicians());
-                Slot s = this.slotRepository.findById(slotIdToBook).get();
-                //check if slots are available
-                int numberOfAptsInThisSlot = s.getNoOfApt();
-                if (numberOfAptsInThisSlot < clinic.getNumberOfPhysicians()) {
-                    numberOfAptsInThisSlot++;
-                    Appointment appointment = new Appointment(patientId, appointmentTime, clinic, vaccinationList,"Booked","Ready for Checkin");
-                    s.setNoOfApt(numberOfAptsInThisSlot);
-                    this.slotRepository.save(s);
-                    return this.appointmentRepository.save(appointment);
-
-                }
-                else{
-                    throw new BadRequestException(" Sorry physicians are not available.");
+                    }
+                    else{
+                        throw new BadRequestException(" Sorry physicians are not available.");
+                    }
+                } else{
+                    throw new BadRequestException("No slots entry present in the slot table.");
                 }
             } else {
                 throw new BadRequestException("The appointment time is not within the business hours.");
@@ -202,6 +206,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 // fetch all the slot ids for this clinic
                 slotIds = this.slotRepository.findByClinicId(clinicId);
 
+//                if(slotIds.size() > 0){
+//
+//                }else{
+//                    throw new BadRequestException("No slots entry present in the slot table.");
+//                }
                 //for removing the old slot
                 for( int  i=0 ; i<slotIds.size(); i++){
                     int a = 0;
@@ -281,23 +290,46 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         String currentDate = currentTime.substring(0,10);
         String currentHr = currentTime.substring(11,13);
+        String currentMin = currentTime.substring(14);
         Appointment appointment = new Appointment();
         appointment.setPatientId(patientId);
         List<Appointment> checkinList = new ArrayList<>();
         List<Appointment> aptList = this.appointmentRepository.findAppointmentsBy(patientId);
         for(Appointment apt : aptList){
             String aptDate = apt.getAppointmentTime().substring(0,10);
-            String aptHr =  apt.getAppointmentTime().substring(11,13);
 
+            String aptHr =  apt.getAppointmentTime().substring(11,13);
+            String aptMin = apt.getAppointmentTime().substring(14);
             long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(aptDate));
-            if(days >=0 && days<=1){
+//            if(days >=0 && days<=1 ){
+//                checkinList.add(apt); //days has been checked, need to check for time
+//
+//
+//                if((Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && apt.getCheckedInStatus().equals("Ready for Checkin"))
+//                        || (Integer.parseInt(aptHr) == Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(currentMin) && apt.getCheckedInStatus().equals("Ready for Checkin"))){
+//                    //if(Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(60 - currentMin)){
+//                    apt.setCheckedInStatus("No Show");
+//                     this.appointmentRepository.save(apt);
+//                }
+//            }
+            if(days == 0){
                 checkinList.add(apt); //days has been checked, need to check for time
-                if(days >=0 && days<=1 && Integer.parseInt(aptHr) < Integer.parseInt(currentHr)){
-                    apt.setCheckedInStatus("NoShow");
+                if((Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && apt.getCheckedInStatus().equals("Ready for Checkin"))
+                        || (Integer.parseInt(aptHr) == Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(currentMin) && apt.getCheckedInStatus().equals("Ready for Checkin"))){
+                    //if(Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(60 - currentMin)){
+                    apt.setCheckedInStatus("No Show");
                     this.appointmentRepository.save(apt);
                 }
             }
-
+            if(days == 1 && Integer.parseInt(currentHr) > Integer.parseInt(aptHr)){
+                checkinList.add(apt); //days has been checked, need to check for time
+                if((Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && apt.getCheckedInStatus().equals("Ready for Checkin"))
+                        || (Integer.parseInt(aptHr) == Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(currentMin) && apt.getCheckedInStatus().equals("Ready for Checkin"))){
+                    //if(Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(60 - currentMin)){
+                    apt.setCheckedInStatus("No Show");
+                    this.appointmentRepository.save(apt);
+                }
+            }
         }
         return checkinList;
     }
