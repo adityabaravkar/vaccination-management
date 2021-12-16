@@ -201,10 +201,12 @@ class MakeAppointment extends Component {
                           })}
                         </select>
                       </div>
+                      &nbsp;
                     </Row>
-                    <br />
+
+                    <span style={{ color: "red" }}>* </span>
+
                     <Row>
-                      &nbsp;&nbsp;&nbsp;
                       <div className="form-group d-sm-flex margin">
                         <div className="d-flex align-items-center flex-fill ms-sm-1 my-sm-0 my-4 border-bottom position-relative">
                           <input
@@ -221,9 +223,11 @@ class MakeAppointment extends Component {
                       </div>
                     </Row>
                   </Row>
-                  <span style={{ color: "red" }}></span>
+                  <span style={{ color: "red" }}>* </span>
+                  <span style={{ color: "gray" }}>
+                    Business hours are usually between 09 -17 hrs
+                  </span>
                   <Row>
-                    &nbsp;&nbsp;&nbsp;
                     {this.state.clinics.businessHrs}
                     <div className="form-group d-sm-flex margin">
                       <div className="d-flex align-items-center flex-fill me-sm-1 my-sm-0 my-4 border-bottom position-relative">
@@ -280,8 +284,8 @@ class MakeAppointment extends Component {
                       </div>
                     </div>
                   </Row>
-                  <br />
                   <Row>
+                    <span style={{ color: "red" }}>* </span>
                     <div className="d-flex align-items-center flex-fill me-sm-1 my-sm-0 my-4 border-bottom position-relative">
                       {/* <select
                           className="form-control"
