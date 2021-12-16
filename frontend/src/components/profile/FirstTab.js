@@ -16,6 +16,7 @@ class FirstTab extends Component {
       checkins: [],
       //  checkinStatus: false,
     };
+    this.getAppointmentsToCheckIn = this.getAppointmentsToCheckIn.bind(this);
   }
   onChange = (e) => {
     this.setState({
@@ -23,10 +24,20 @@ class FirstTab extends Component {
     });
   };
 
+  componentWillReceiveProps(newProps) {
+    var currentDate = newProps.currentDate;
+    console.log("New Changed Current Date: " + currentDate.toString());
+    this.getAppointmentsToCheckIn(currentDate);
+  }
+
   componentDidMount = async () => {
-    const patientId = Authentication.userId;
     var currentDate = this.props.currentDate;
     console.log("Current Date: " + currentDate.toString());
+    this.getAppointmentsToCheckIn(currentDate);
+  };
+
+  getAppointmentsToCheckIn(currentDate) {
+    const patientId = Authentication.userId;
     let curHr =
       currentDate.getHours() < 10
         ? "0" + currentDate.getHours()
@@ -68,7 +79,7 @@ class FirstTab extends Component {
             "Oops! Something went wrong. Please try again!"
         );
       });
-  };
+  }
 
   checkInApt = (aptID) => (e) => {
     console.log("cancel Appt");
