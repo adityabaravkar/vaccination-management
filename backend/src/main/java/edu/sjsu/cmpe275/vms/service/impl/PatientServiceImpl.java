@@ -28,12 +28,12 @@ public class PatientServiceImpl implements PatientService {
         return user.getAppointmentList();
     }
 
-    @Override
-    public Appointment checkInAppointment(long id) {
-        Appointment appointment = this.appointmentRepository.findById(id).orElse(null);
-        if(appointment != null){
-            appointment.setStatus("CheckedIn");
-        }
-        return this.appointmentRepository.save(appointment);
-    }
+//    @Override
+//    public Appointment checkInAppointment(long id) {
+//        Appointment appointment = this.appointmentRepository.findById(id).orElse(null);
+//        if(appointment != null){
+//            appointment.setStatus("CheckedIn");
+//        }
+//        return this.appointmentRepository.save(appointment);
+//    }
 }

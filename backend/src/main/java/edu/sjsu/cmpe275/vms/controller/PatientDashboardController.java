@@ -17,8 +17,8 @@ public class PatientDashboardController {
         return this.patientService.getVaccinationHistory(id);
     }
 
-    @PostMapping(path = "/patient/checkInAppointment")
-    public Appointment checkInAppointment(@RequestParam long id){
-        return this.patientService.checkInAppointment(id);
-    }
+//    @PostMapping(path = "/patient/checkInAppointment")
+//    public Appointment checkInAppointment(@RequestParam long id){
+//        return this.patientService.checkInAppointment(id);
+//    }
 }
