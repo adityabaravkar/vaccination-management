@@ -333,7 +333,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
             if(days == 1 && Integer.parseInt(currentHr) > Integer.parseInt(aptHr)){
                 checkinList.add(apt); //days has been checked, need to check for time
-                if((Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && apt.getCheckedInStatus().equals("Ready for Checkin"))
+                if((Integer.parseInt(currentHr) < Integer.parseInt(aptHr) && apt.getCheckedInStatus().equals("Ready for Checkin"))
                         || (Integer.parseInt(aptHr) == Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(currentMin) && apt.getCheckedInStatus().equals("Ready for Checkin"))){
                     //if(Integer.parseInt(aptHr) < Integer.parseInt(currentHr) && Integer.parseInt(aptMin) < Integer.parseInt(60 - currentMin)){
                     apt.setCheckedInStatus("No Show");
