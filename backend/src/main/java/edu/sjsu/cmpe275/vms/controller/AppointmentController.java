@@ -126,7 +126,7 @@ public class AppointmentController {
 
     @PostMapping ("/api/allAppointmentsByClinic")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Appointment> getAllAppointmentsByClinic( @RequestBody AppointmentsByClinicRequest request){
+    public List<Appointment> getAllAppointmentsByClinic(@RequestBody AppointmentsByClinicRequest request){
         return this.appointmentService.getAllAppointmentsByClinic(request.getClinicId());
     }
 

@@ -63,7 +63,7 @@ handleModalClose = () => {
     render() {
         const {allClinics,selectedClinic,reportData} = this.state;
         console.log("selectedClinic")
-        console.log(selectedClinic)
+        console.log(typeof(selectedClinic))
 
         return (
             <div >
@@ -98,7 +98,9 @@ handleModalClose = () => {
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
               
-                  <Button style={{color:'blue'}} onClick={this.addVaccineClinic}>Save</Button>
+                  Appointments Checked In :
+                  <br/>
+                  Appointments No Show:
                 </Modal.Body>
                 
               </Modal>
