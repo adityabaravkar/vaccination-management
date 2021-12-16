@@ -159,7 +159,7 @@ class Appointment extends Component {
                  
                   <UpdateAppointment/>
                  
-                  <Button
+                  <Button style={{marginLeft:'60px',marginTop:'20px'}}
                           type="submit"
                           onClick={this.cancelApt(data.id)}
                         >

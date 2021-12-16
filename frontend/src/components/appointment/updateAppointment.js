@@ -111,7 +111,7 @@ class UpdateAppointment extends Component {
     return (
       <div className="">
         <br />
-        <Button onClick={this.handleShow}>Update</Button>
+        <Button style={{marginLeft:'60px'}} onClick={this.handleShow}>Update</Button>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <div className="container mt-4">
@@ -220,7 +220,7 @@ class UpdateAppointment extends Component {
                   </Row>
                 </Col>
                 <br />
-                <Button onClick={this.onSubmitUpdate}>Save</Button>
+                <Button  onClick={this.onSubmitUpdate}>Save</Button>
               </div>
             </Modal.Body>
           </div>
