@@ -5,6 +5,7 @@ import edu.sjsu.cmpe275.vms.model.Address;
 import edu.sjsu.cmpe275.vms.model.Clinic;
 import edu.sjsu.cmpe275.vms.model.Vaccination;
 import edu.sjsu.cmpe275.vms.payload.AddClinicRequest;
+import edu.sjsu.cmpe275.vms.payload.AddVaccinationToClinicRequest;
 import edu.sjsu.cmpe275.vms.security.CurrentUser;
 import edu.sjsu.cmpe275.vms.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,13 @@ public class ClinicController {
 
     @PostMapping(path = "/clinic/addVaccine")
     @PreAuthorize("hasRole('ADMIN')")
-    public Clinic addVaccination(@RequestParam long clinic_id,
-                                 @RequestParam List<Long> vaccination_ids) {
-        return this.clinicService.addVaccinations(clinic_id, vaccination_ids);
+        public Clinic addVaccination(@CurrentUser @RequestBody AddVaccinationToClinicRequest request) {
+        return this.clinicService.addVaccinations(request.getClinic_id(), request.getVaccination_ids());
     }
+//    public Clinic addVaccination(@RequestParam long clinic_id,
+//                                 @RequestParam List<Long> vaccination_ids) {
+//        return this.clinicService.addVaccinations(clinic_id, vaccination_ids);
+//    }
 
     @PostMapping("/clinic")
    @PreAuthorize("hasRole('ADMIN')")

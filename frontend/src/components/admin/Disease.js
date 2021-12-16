@@ -26,6 +26,8 @@ class Disease extends Component {
   homePage = ()=>{
     this.props.history.push("/admin");
   }
+  
+    
   render() {
     const {allDiseases} = this.state;
     

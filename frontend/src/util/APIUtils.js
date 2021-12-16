@@ -130,6 +130,15 @@ export function addVaccination(addVaccinationRequest) {
   });
 }
 
+export function addVaccinationToClinic(addVaccinationToClinicRequest) {
+  return request({
+    url: API_BASE_URL + "/clinic/addVaccine",
+    method: "POST",
+    body: JSON.stringify(addVaccinationToClinicRequest),
+  });
+}
+
+
 // export function makeAppointment(addAptRequest) {
 //   console.log("addAptRequest", addAptRequest);
 //   return request({
