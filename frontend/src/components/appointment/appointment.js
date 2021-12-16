@@ -8,6 +8,7 @@ import Container from "react-bootstrap/Container";
 import MakeAppointment from "./makeAppointment";
 import UpdateAppointment from "./updateAppointment";
 import swal from "sweetalert";
+import { Authentication } from "../../services";
 
 class Appointment extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class Appointment extends Component {
   };
 
   componentDidMount = async () => {
-    const patientId = "598179743";
+    const patientId = Authentication.userId;
     getAllAppointments(patientId)
       .then((response) => {
         this.setState({
@@ -95,7 +96,7 @@ class Appointment extends Component {
       this.state.aptMin
     );
     const data = {
-      patientId: "598179743",
+      patientId: Authentication.userId,
       appointmentTime: appointmentDate,
       currentTime: datetime,
       vaccinationIds: ["3"],
@@ -122,48 +123,106 @@ class Appointment extends Component {
     console.log("appointments", this.state.appointments);
     return (
       <div className="">
-        <Container>
-          <h4 style={{ color: "white", fontSize: "25px" }}>
-            <center>Current Appointments</center>
-          </h4>
-          <MakeAppointment />
-          <Row xs={4}>
-            {this.state.appointments.map((data) => {
-              const aptDate = data.appointmentTime.substring(0, 10);
-              const aptTime = data.appointmentTime.substring(11, 16);
-              const updateAptData = { aptId: data.id };
-              return (
-                <Col>
-                  <div style={{ display: "flex", justifyContent: "" }}>
-                    <Card style={{ width: "18rem" }}>
-                      <Card.Body>
-                        <Card.Title tag="h6">Ref Id: {data.id}</Card.Title>
-                        <Card.Subtitle tag="h7" className="mb-2 text-muted">
-                          Status: {data.aptStatus}
-                        </Card.Subtitle>
-                        <Card.Text>
-                          <u>Clinic:</u> {data.clinicId.name}
-                          <br />
-                          <u>Date:</u> {aptDate}
-                          <br />
-                          <u>Time:</u> {aptTime}
-                          <br />
-                        </Card.Text>
-                        <Button type="submit" onClick={this.cancelApt(data.id)}>
-                          Cancel
-                        </Button>
-                        &nbsp;&nbsp;&nbsp;
-                        <br />
-                        <UpdateAppointment updateAptData={updateAptData} />
-                      </Card.Body>
-                    </Card>
-                  </div>
+      <div><MakeAppointment /></div> 
+      
+          
+          <Container>
+      <h4 style={{ color: "white", fontSize: "25px" }}>
+        <center>Check - In Online!</center>
+      </h4>
+      <br />
+      <Row xs={4}>
+       
+            <Col>
+              <div style={{ display: "flex", justifyContent: "", color:"black" }}>
+                <Card style={{ width: "18rem" }}>
+                  <Card.Body>
+                    <Card.Title tag="h6">Ref Id: </Card.Title>
+                    <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                      Status: 
+                    </Card.Subtitle>
+                    <Card.Text>
+                      <u>Clinic:</u> 
+                      <br />
+                      <u>Date:</u> 
+                      <br />
+                      <u>Time:</u> 
+                      <br />
+                    </Card.Text>
+                    <Button
+                      type="submit"
+                     
+                    >
+                      Checkin
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
+                    <br />
+                  </Card.Body>
+                </Card>
+              </div>
+              <br />
+            </Col>
+            <Col>
+              <div style={{ display: "flex", justifyContent: "", color:"black" }}>
+                <Card style={{ width: "18rem" }}>
+                  <Card.Body>
+                    <Card.Title tag="h6">Ref Id: </Card.Title>
+                    <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                      Status: 
+                    </Card.Subtitle>
+                    <Card.Text>
+                      <u>Clinic:</u> 
+                      <br />
+                      <u>Date:</u> 
+                      <br />
+                      <u>Time:</u> 
+                      <br />
+                    </Card.Text>
+                    <Button
+                      type="submit"
+                     
+                    >
+                      Checkin
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
+                    <br />
+                  </Card.Body>
+                </Card>
+              </div>
+              <br />
+            </Col>
+            <Col>
+            <div style={{ display: "flex", justifyContent: "", color:"black" }}>
+              <Card style={{ width: "18rem" }}>
+                <Card.Body>
+                  <Card.Title tag="h6">Ref Id: </Card.Title>
+                  <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                    Status: 
+                  </Card.Subtitle>
+                  <Card.Text>
+                    <u>Clinic:</u> 
+                    <br />
+                    <u>Date:</u> 
+                    <br />
+                    <u>Time:</u> 
+                    <br />
+                  </Card.Text>
+                  <Button
+                    type="submit"
+                   
+                  >
+                    Checkin
+                  </Button>
+                  &nbsp;&nbsp;&nbsp;
                   <br />
-                </Col>
-              );
-            })}
-          </Row>
-        </Container>
+                </Card.Body>
+              </Card>
+            </div>
+            <br />
+          </Col>
+      </Row>
+      
+    </Container>
       </div>
     );
   }
