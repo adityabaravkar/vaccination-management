@@ -78,8 +78,12 @@ public class ClinicServiceImpl implements ClinicService {
 //    }
 @Override
 public Clinic createClinic(String clinicName, String streetAndNumber,String city,String state,int zipCode, String businessHours, int numberOfPhysicians) {
+        if(clinicRepository.findByClinicName(clinicName).isPresent()) {
+            throw new BadRequestException("Clinic name already exists.");
+        }
     int totalhrs = 0;
     int difInMin = 0;
+
     ArrayList<Slot> slots = new ArrayList<>();
 
     String[] split = businessHours.split("to");
@@ -102,7 +106,9 @@ public Clinic createClinic(String clinicName, String streetAndNumber,String city
     } else {
         totalhrs = endhour - starthour;
     }
-
+     if(totalhrs > 8 ){
+         throw new BadRequestException("Business hours range should be 8 hrs");
+     }
     //adding slots only if business hours is <=8
     if(totalhrs <= 8){
         int allowedSlots = 0;

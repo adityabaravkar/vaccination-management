@@ -20,6 +20,7 @@ class FirstTab extends Component {
       noCheckin: 0,
       //  checkinStatus: false,
     };
+    this.getAppointmentsToCheckIn = this.getAppointmentsToCheckIn.bind(this);
   }
   onChange = (e) => {
     this.setState({
@@ -27,10 +28,20 @@ class FirstTab extends Component {
     });
   };
 
+  componentWillReceiveProps(newProps) {
+    var currentDate = newProps.currentDate;
+    console.log("New Changed Current Date: " + currentDate.toString());
+    this.getAppointmentsToCheckIn(currentDate);
+  }
+
   componentDidMount = async () => {
-    const patientId = Authentication.userId;
     var currentDate = this.props.currentDate;
     console.log("Current Date: " + currentDate.toString());
+    this.getAppointmentsToCheckIn(currentDate);
+  };
+
+  getAppointmentsToCheckIn(currentDate) {
+    const patientId = Authentication.userId;
     let curHr =
       currentDate.getHours() < 10
         ? "0" + currentDate.getHours()
@@ -108,36 +119,74 @@ class FirstTab extends Component {
   checkInApt = (aptID) => (e) => {
     console.log("cancel Appt");
     console.log(aptID);
-    checkInAppointment(aptID).then((response) => {
-      swal({
-        title: "Are you ready?",
-        text: "Your Appointment is ready for online check-in",
-        type: "warning",
-        buttons: ["Cancel", "Confirm"],
-        // showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Confirm!",
-      }).then(function (isConfirm) {
-        if (isConfirm) {
-          swal(
-            "Confirmed!",
-            "Your Appointment has been successfully checked in!.",
-            "success"
-          ).then((okay) => {
-            if (okay) {
-              window.location.reload();
-            }
+    swal({
+      title: "Are you sure?",
+      text: "Your Appointment is ready for online check-in",
+      type: "warning",
+      buttons: ["Cancel", "Confirm"],
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!",
+    }).then(function (isConfirm) {
+      if (isConfirm) {
+        checkInAppointment(aptID)
+          .then((response) => {
+            swal(
+              "Confirmed!",
+              "Appointment has been successfully checked in!.",
+              "success"
+            ).then((okay) => {
+              if (okay) {
+                window.location.reload();
+              }
+            });
+          })
+          .catch((error) => {
+            console.log("error:", error);
+            swal(
+              "Oops!",
+              "Could not find the appointment to checkin ",
+              "error"
+            );
           });
-        } else {
-          swal(
-            "Cancelled",
-            "There was some problem with online checkin! Please try again later!!",
-            "error"
-          );
-        }
-      });
+      } else {
+        swal(
+          "Ok",
+          "There was some problem with online checkin! Please try again later!!",
+          "error"
+        );
+      }
     });
+    // checkInAppointment(aptID).then((response) => {
+    //   swal({
+    //     title: "Are you ready?",
+    //     text: "Your Appointment is ready for online check-in",
+    //     type: "warning",
+    //     buttons: ["Cancel", "Confirm"],
+    //     // showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Confirm!",
+    //   }).then(function (isConfirm) {
+    //     if (isConfirm) {
+    //       swal(
+    //         "Confirmed!",
+    //         "Your Appointment has been successfully checked in!.",
+    //         "success"
+    //       ).then((okay) => {
+    //         if (okay) {
+    //           window.location.reload();
+    //         }
+    //       });
+    //     } else {
+    //       swal(
+    //         "Cancelled",
+    //         "There was some problem with online checkin! Please try again later!!",
+    //         "error"
+    //       );
+    //     }
+    //   });
+    // });
   };
 
   render() {

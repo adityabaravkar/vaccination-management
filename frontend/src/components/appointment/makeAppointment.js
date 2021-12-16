@@ -114,6 +114,7 @@ class MakeAppointment extends Component {
     makeAppointment(addAptRequest)
       .then((response) => {
         Alert.success("You have successfully booked your appointment!");
+        this.handleClose();
         window.location.reload();
       })
       .catch((error) => {
@@ -122,7 +123,6 @@ class MakeAppointment extends Component {
             "Oops! Something went wrong. Please try again!"
         );
       });
-    this.handleClose();
   };
 
   onChangeClinic = async (e) => {

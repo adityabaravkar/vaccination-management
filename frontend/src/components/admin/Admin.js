@@ -116,7 +116,9 @@ class Admin extends Component {
     showAllVacinations = (e) =>{
         window.location.href= "/allVaccinations";
     }
-    
+    showSystemReports = (e) => {
+        window.location.href= "/adminReports";
+    }
     showAllDiseases = (e) =>{
         window.location.href= "/allDiseases";
     }
@@ -191,7 +193,7 @@ class Admin extends Component {
             .catch((error) => {
                 console.log(error);
                 Alert.error(
-                    
+                    (error && error.message) ||
                     "Clinic with the same name already added!"
                 );
             });
@@ -366,6 +368,7 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
+                            Format: 24-hr : 01:00to24:00
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="businessHours"
                         value={this.state.businessHours}
                         onChange={this.handleChange}></input>
@@ -548,6 +551,8 @@ class Admin extends Component {
                     <Button className="adminbtns" onClick = {this.showAllClinics}>All Clinics</Button>
                     <Button className="adminbtns" onClick = {this.showAllDiseases}>All Diseases</Button>
                     <Button className="adminbtns" onClick = {this.showAllVacinations}>All Vaccines</Button>
+                    <br/>
+                    <Button className="adminbtns" onClick = {this.showSystemReports}>System Reports</Button>
                    
                </div>
                <div>
