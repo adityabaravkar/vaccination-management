@@ -192,8 +192,10 @@ class MakeAppointment extends Component {
                           id="clinicId"
                           name="clinicId"
                           onChange={this.onChangeClinic}
+                          placeholder="Select Clinic"
                           value={this.state.clinicId}
                         >
+                        <option >---select clinic---</option>
                           {this.state.clinics.map((clinic) => {
                             return (
                               <option value={clinic.id}>{clinic.name}</option>

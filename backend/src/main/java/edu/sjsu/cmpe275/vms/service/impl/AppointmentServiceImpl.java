@@ -192,7 +192,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         int aptMin = Integer.parseInt(appointmentTime.substring(14));
 
         int prevAptHr = Integer.parseInt(previousAptTime.substring(11,13));
-        int prevAptMin = Integer.parseInt(previousAptTime.substring(14));
+        int prevAptMin = Integer.parseInt(previousAptTime.substring(14, 16));
 
         long months = ChronoUnit.MONTHS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
         long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));

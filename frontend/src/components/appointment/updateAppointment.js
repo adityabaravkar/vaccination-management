@@ -139,6 +139,7 @@ class UpdateAppointment extends Component {
                           name="clinicId"
                           onChange={this.onChange}
                         >
+                        <option >---select clinic---</option>
                           {this.state.clinics.map((clinic) => {
                             return (
                               <option value={clinic.id}>{clinic.name}</option>
