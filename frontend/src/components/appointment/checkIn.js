@@ -16,6 +16,7 @@ class CheckIn extends Component {
       checkins: [],
       //  checkinStatus: false,
     };
+    this.getAppointmentsToCheckIn = this.getAppointmentsToCheckIn.bind(this);
   }
   onChange = (e) => {
     this.setState({
@@ -23,9 +24,14 @@ class CheckIn extends Component {
     });
   };
 
-  componentDidMount = async () => {
+  componentWillReceiveProps() {
+    this.getAppointmentsToCheckIn();
+  }
+
+  getAppointmentsToCheckIn() {
     const patientId = Authentication.userId;
-    var currentDate = new Date();
+    var currentDate = this.props.currentDate;
+    console.log("Current Date: " + currentDate.toString());
     let curHr =
       currentDate.getHours() < 10
         ? "0" + currentDate.getHours()
@@ -67,7 +73,7 @@ class CheckIn extends Component {
             "Oops! Something went wrong. Please try again!"
         );
       });
-  };
+  }
 
   checkInApt = (aptID) => (e) => {
     console.log("cancel Appt");

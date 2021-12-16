@@ -25,10 +25,18 @@ class App extends Component {
     super(props);
     this.state = {
       authenticated: false,
+      currentDate: new Date(),
     };
 
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleCurrentDateChange = this.handleCurrentDateChange.bind(this);
+  }
+
+  handleCurrentDateChange(value) {
+    this.setState({
+      currentDate: value,
+    });
   }
 
   handleLogout() {
@@ -49,7 +57,7 @@ class App extends Component {
         if (Authentication.isUserLoggedIntoAdminMode()) {
           this.props.history.push("/admin");
         } else {
-          this.props.history.push("/dashboard");
+          this.props.history.push("/profile");
         }
       })
       .catch((error) => {
@@ -71,6 +79,7 @@ class App extends Component {
         <div className="app-top-box">
           <AppHeader
             authenticated={this.state.authenticated}
+            handleCurrentDateChange={this.handleCurrentDateChange}
             onLogout={this.handleLogout}
           />
         </div>
@@ -143,6 +152,7 @@ class App extends Component {
                 <CheckIn
                   authenticated={this.state.authenticated}
                   handleLogin={this.handleLogin}
+                  currentDate={this.state.currentDate}
                   {...props}
                 />
               )}
@@ -162,12 +172,7 @@ class App extends Component {
                 />
               )}
             />
-            <Route
-              path="/profile"
-              render={(props) => (
-                <Profile></Profile>
-              )}
-            />
+            <Route path="/profile" render={(props) => <Profile></Profile>} />
             <Route component={NotFound} />
           </Switch>
         </div>

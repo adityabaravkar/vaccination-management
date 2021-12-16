@@ -44,3 +44,18 @@
 .app-nav ul li a.active {
   color: #0f96f6;
 }
+
+.transparent {
+  background: transparent;
+  border: none;
+  line-height: 15px;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.label {
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+}
