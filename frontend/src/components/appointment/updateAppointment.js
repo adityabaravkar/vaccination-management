@@ -65,7 +65,7 @@ class UpdateAppointment extends Component {
 
   onSubmitUpdate = (e) => {
     e.preventDefault();
-    var currentDate = new Date();
+    var currentDate = this.props.currentDate;
     var datetime =
       currentDate.getFullYear() +
       "-" +

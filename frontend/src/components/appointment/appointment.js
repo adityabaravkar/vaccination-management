@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import "../admin/Admin.css";
 import { Card } from "react-bootstrap";
@@ -80,7 +79,7 @@ class Appointment extends Component {
     console.log("appointments", this.state.appointments);
     return (
       <div className="">
-        <MakeAppointment />
+        <MakeAppointment currentDate={this.props.currentDate} />
 
         <Container>
           <h4 style={{ color: "white", fontSize: "25px" }}>
