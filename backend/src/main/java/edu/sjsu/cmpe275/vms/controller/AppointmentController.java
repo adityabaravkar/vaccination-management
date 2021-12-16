@@ -8,6 +8,8 @@ import edu.sjsu.cmpe275.vms.model.Appointment;
 import edu.sjsu.cmpe275.vms.model.Clinic;
 import edu.sjsu.cmpe275.vms.model.Vaccination;
 import edu.sjsu.cmpe275.vms.payload.AddAppointmentRequest;
+import edu.sjsu.cmpe275.vms.payload.AddDiseaseRequest;
+import edu.sjsu.cmpe275.vms.payload.AppointmentsByClinicRequest;
 import edu.sjsu.cmpe275.vms.payload.UpdateAppointmentRequest;
 import edu.sjsu.cmpe275.vms.security.CurrentUser;
 import edu.sjsu.cmpe275.vms.service.AppointmentService;
@@ -121,5 +123,12 @@ public class AppointmentController {
         long patientID = Long.valueOf(patientId);
         return this.appointmentService.allAppointments(patientID);
     }
+
+    @PostMapping ("/api/allAppointmentsByClinic")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Appointment> getAllAppointmentsByClinic( @RequestBody AppointmentsByClinicRequest request){
+        return this.appointmentService.getAllAppointmentsByClinic(request.getClinicId());
+    }
+
 
 }

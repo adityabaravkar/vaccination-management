@@ -30,4 +30,6 @@ public interface AppointmentService {
 
     List<Appointment> allAppointments(long patientId);
 
+    List<Appointment> getAllAppointmentsByClinic(String clinicId);
+
 }

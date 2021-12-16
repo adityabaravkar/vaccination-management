@@ -350,4 +350,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         System.out.println(aptList);
         return aptList;
     }
+
+    @Override
+    public List<Appointment> getAllAppointmentsByClinic(String clinicId){
+        return this.appointmentRepository.findAppointmentsByCinic(Long.parseLong(clinicId));
+    }
+
 }

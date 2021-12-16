@@ -202,3 +202,11 @@ export function getAllVaccines() {
   });
 }
 
+
+export function getAllAppointmentsByClinic(ViewReportRequest) {
+  return request({
+    url: API_BASE_URL + "/allAppointmentsByClinic",
+    method: "POST",
+    body: JSON.stringify(ViewReportRequest),
+  });
+}

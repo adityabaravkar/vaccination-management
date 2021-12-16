@@ -368,7 +368,7 @@ class Admin extends Component {
                         <span style={{color:'red'}}> </span>
                         
                         <Row> 
-                            Format: 24-hr : 01:00to24:00
+                        Format: 24-hr : 01:00to24:00
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="businessHours"
                         value={this.state.businessHours}
                         onChange={this.handleChange}></input>
