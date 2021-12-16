@@ -32,7 +32,7 @@ class Disease extends Component {
     return (
       <div >
       <Button className="stageClinic1" style={{color:'white'}} onClick={this.homePage}>Home Page</Button>
-      <h4  className="stageClinic" style={{color:'white', fontSize:'25px'}} >All Available Clinics</h4>
+      <h4  className="stageClinic" style={{color:'white', fontSize:'25px'}} >All Diseases</h4>
       <br/>
       <div className="card-list">
         {allDiseases.map( alld => 
