@@ -50,7 +50,7 @@ class FirstTab extends Component {
           checkins: response,
         });
         for (let i = 0; i < response.length; i++) {
-          if (response[i].checkedInStatus == "No Show") {
+          if (response[i].checkedInStatus === "No Show") {
             console.log("inhere");
             this.setState({
               checkinStatus: true,
@@ -73,36 +73,74 @@ class FirstTab extends Component {
   checkInApt = (aptID) => (e) => {
     console.log("cancel Appt");
     console.log(aptID);
-    checkInAppointment(aptID).then((response) => {
-      swal({
-        title: "Are you ready?",
-        text: "Your Appointment is ready for online check-in",
-        type: "warning",
-        buttons: ["Cancel", "Confirm"],
-        // showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Confirm!",
-      }).then(function (isConfirm) {
-        if (isConfirm) {
-          swal(
-            "Confirmed!",
-            "Your Appointment has been successfully checked in!.",
-            "success"
-          ).then((okay) => {
-            if (okay) {
-              window.location.reload();
-            }
+    swal({
+      title: "Are you sure?",
+      text: "Your Appointment is ready for online check-in",
+      type: "warning",
+      buttons: ["Cancel", "Confirm"],
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!",
+    }).then(function (isConfirm) {
+      if (isConfirm) {
+        checkInAppointment(aptID)
+          .then((response) => {
+            swal(
+              "Confirmed!",
+              "Appointment has been successfully checked in!.",
+              "success"
+            ).then((okay) => {
+              if (okay) {
+                window.location.reload();
+              }
+            });
+          })
+          .catch((error) => {
+            console.log("error:", error);
+            swal(
+              "Oops!",
+              "Could not find the appointment to checkin ",
+              "error"
+            );
           });
-        } else {
-          swal(
-            "Cancelled",
-            "There was some problem with online checkin! Please try again later!!",
-            "error"
-          );
-        }
-      });
+      } else {
+        swal(
+          "Ok",
+          "There was some problem with online checkin! Please try again later!!",
+          "error"
+        );
+      }
     });
+    // checkInAppointment(aptID).then((response) => {
+    //   swal({
+    //     title: "Are you ready?",
+    //     text: "Your Appointment is ready for online check-in",
+    //     type: "warning",
+    //     buttons: ["Cancel", "Confirm"],
+    //     // showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Confirm!",
+    //   }).then(function (isConfirm) {
+    //     if (isConfirm) {
+    //       swal(
+    //         "Confirmed!",
+    //         "Your Appointment has been successfully checked in!.",
+    //         "success"
+    //       ).then((okay) => {
+    //         if (okay) {
+    //           window.location.reload();
+    //         }
+    //       });
+    //     } else {
+    //       swal(
+    //         "Cancelled",
+    //         "There was some problem with online checkin! Please try again later!!",
+    //         "error"
+    //       );
+    //     }
+    //   });
+    // });
   };
 
   render() {
@@ -118,7 +156,7 @@ class FirstTab extends Component {
           <Row xs={4}>
             {this.state.checkins.map((data) => {
               let checkinStatus = "false";
-              if (data.checkedInStatus == "No Show") {
+              if (data.checkedInStatus === "No Show") {
                 checkinStatus = "true";
               }
               const aptDate = data.appointmentTime.substring(0, 10);
@@ -149,7 +187,7 @@ class FirstTab extends Component {
                         </Card.Text>
                         <Button
                           type="submit"
-                          disabled={checkinStatus == "true"}
+                          disabled={checkinStatus === "true"}
                           onClick={this.checkInApt(data.id)}
                         >
                           Checkin

@@ -43,35 +43,37 @@ class ThirdTab extends Component {
   cancelApt = (aptID) => (e) => {
     console.log("cancel Appt");
     console.log(aptID);
-    cancelAppointment(aptID).then((response) => {
-      swal({
-        title: "Are you sure?",
-        text: "Your Appointment will be cancelled",
-        type: "warning",
-        buttons: ["No,keep it", "Yes, cancel it!"],
-        // showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Cancel it!",
-      }).then(function (isConfirm) {
-        if (isConfirm) {
-          swal(
-            "Cancelled!",
-            "Your Appointment has been successfully cancelled!.",
-            "success"
-          ).then((okay) => {
-            if (okay) {
-              window.location.reload();
-            }
+    //cancelAppointment(aptID).then((response) => {
+    swal({
+      title: "Are you sure?",
+      text: "It will cancel your appointment!",
+      type: "warning",
+      buttons: ["No, Keep it!", "Yes, cancel it!"],
+      // showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!",
+    }).then(function (isConfirm) {
+      if (isConfirm) {
+        cancelAppointment(aptID)
+          .then((response) => {
+            swal(
+              "Cancelled!",
+              "Your appointment has been cancelled.",
+              "success"
+            ).then((okay) => {
+              if (okay) {
+                window.location.reload();
+              }
+            });
+          })
+          .catch((error) => {
+            console.log("error:", error);
+            swal("Oops!", "Could not find the appointment ", "error");
           });
-        } else {
-          swal(
-            "Cancelled",
-            "There was some problem canceling your appointment! Please try again later!!",
-            "error"
-          );
-        }
-      });
+      } else {
+        swal("Ok", "Your appointment is not cancelled!", "error");
+      }
     });
   };
 
@@ -90,7 +92,7 @@ class ThirdTab extends Component {
           <Row xs={4}>
             {this.state.appointments.map((data) => {
               let status = "false";
-              if (data.aptStatus == "Cancelled") {
+              if (data.aptStatus === "Cancelled") {
                 status = "true";
               }
               const updateAptData = {
