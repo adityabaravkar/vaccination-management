@@ -7,12 +7,14 @@ import Alert from "react-s-alert";
 import Container from "react-bootstrap/Container";
 import { getAptsToCheckin, checkInAppointment } from "../../util/APIUtils";
 import swal from "sweetalert";
+import { Authentication } from "../../services";
 
 class CheckIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
       checkins: [],
+      //  checkinStatus: false,
     };
   }
   onChange = (e) => {
@@ -22,11 +24,11 @@ class CheckIn extends Component {
   };
 
   componentDidMount = async () => {
-    const patientId = "598179743";
+    const patientId = Authentication.userId;
     var currentDate = new Date();
     let curHr =
-      currentDate.getHours < 10
-        ? 0 + currentDate.getHours()
+      currentDate.getHours() < 10
+        ? "0" + currentDate.getHours()
         : currentDate.getHours();
     console.log("curHr", curHr);
     var currentTime =
@@ -36,7 +38,8 @@ class CheckIn extends Component {
       "-" +
       currentDate.getDate() +
       "-" +
-      currentDate.getHours() +
+      curHr +
+      //currentDate.getHours() +
       "-" +
       currentDate.getMinutes();
     getAptsToCheckin(patientId, currentTime)
@@ -45,6 +48,18 @@ class CheckIn extends Component {
         this.setState({
           checkins: response,
         });
+        for (let i = 0; i < response.length; i++) {
+          if (response[i].checkedInStatus == "No Show") {
+            console.log("inhere");
+            this.setState({
+              checkinStatus: true,
+            });
+          } else {
+            this.setState({
+              checkinStatus: false,
+            });
+          }
+        }
       })
       .catch((error) => {
         Alert.error(
@@ -91,6 +106,7 @@ class CheckIn extends Component {
 
   render() {
     console.log("checkins", this.state.checkins);
+    console.log("status", this.state.checkinStatus);
     return (
       <div className="">
         <Container>
@@ -100,6 +116,10 @@ class CheckIn extends Component {
           <br />
           <Row xs={4}>
             {this.state.checkins.map((data) => {
+              let checkinStatus = "false";
+              if (data.checkedInStatus == "No Show") {
+                checkinStatus = "true";
+              }
               const aptDate = data.appointmentTime.substring(0, 10);
               const aptTime = data.appointmentTime.substring(11, 16);
 
@@ -122,6 +142,7 @@ class CheckIn extends Component {
                         </Card.Text>
                         <Button
                           type="submit"
+                          disabled={checkinStatus == "true"}
                           onClick={this.checkInApt(data.id)}
                         >
                           Checkin

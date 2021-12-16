@@ -19,7 +19,7 @@ class MakeAppointment extends Component {
       vaccine: [],
       allVaccinesSelected: [],
       appointments: [],
-      clinicId:""
+      clinicId: "",
     };
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -28,7 +28,7 @@ class MakeAppointment extends Component {
     getClinics()
       .then((response) => {
         let clinics = [];
-        console.log("hey",response);
+        console.log("hey", response);
         for (let i = 0; i < response.length; i++) {
           const clinicData = {
             id: response[i].id,
@@ -72,17 +72,18 @@ class MakeAppointment extends Component {
     console.log("inside save operation for making an appointment");
     var currentDate = new Date();
     let curHr =
-    currentDate.getHours() < 10
-      ? "0" + currentDate.getHours()
-      : currentDate.getHours();
+      currentDate.getHours() < 10
+        ? "0" + currentDate.getHours()
+        : currentDate.getHours();
     var datetime =
       currentDate.getFullYear() +
       "-" +
       (currentDate.getMonth() + 1) +
       "-" +
       currentDate.getDate() +
-      "-" + curHr +
-     // currentDate.getHours() +
+      "-" +
+      curHr +
+      // currentDate.getHours() +
       "-" +
       currentDate.getMinutes();
     const appointmentDate = this.state.aptDate.concat(
@@ -113,6 +114,7 @@ class MakeAppointment extends Component {
     makeAppointment(addAptRequest)
       .then((response) => {
         Alert.success("You have successfully booked your appointment!");
+        window.location.reload();
       })
       .catch((error) => {
         Alert.error(
@@ -131,39 +133,38 @@ class MakeAppointment extends Component {
       clinicId: e.target.value,
     });
 
-    console.log("clinicId on selected",e.target.value);
-
-  }
-  componentDidUpdate = (prevProps, prevState) =>{
-    if(prevState.clinicId !== this.state.clinicId){
-      
-     getDueVaccines(this.state.clinicId)
-      .then((response) => {
-        let vaccine = [];
-        console.log("getDueVaccines", response);
-        for (let i = 0; i < response.length; i++) {
-          const vaccineData = {
-            id: response[i].id,
-            name: response[i].vaccineName,
-          };
-          vaccine.push(vaccineData);
-        }
-        this.setState({
-          vaccine: vaccine,
+    console.log("clinicId on selected", e.target.value);
+  };
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.clinicId !== this.state.clinicId) {
+      getDueVaccines(this.state.clinicId)
+        .then((response) => {
+          let vaccine = [];
+          console.log("getDueVaccines", response);
+          for (let i = 0; i < response.length; i++) {
+            const vaccineData = {
+              id: response[i].id,
+              name: response[i].vaccineName,
+            };
+            vaccine.push(vaccineData);
+          }
+          this.setState({
+            vaccine: vaccine,
+          });
+        })
+        .catch((error) => {
+          Alert.error(
+            (error && error.message) ||
+              "Oops! Something went wrong. Please try again!"
+          );
         });
-      })
-      .catch((error) => {
-        Alert.error(
-          (error && error.message) ||
-            "Oops! Something went wrong. Please try again!"
-        );
-      });
     }
   };
 
   render() {
     console.log("vaccine list", this.state.vaccine);
     console.log("allVaccines", this.state.allVaccines);
+    console.log("bus hrs:");
     return (
       <div className="">
         <br />
@@ -223,6 +224,7 @@ class MakeAppointment extends Component {
                   <span style={{ color: "red" }}></span>
                   <Row>
                     &nbsp;&nbsp;&nbsp;
+                    {this.state.clinics.businessHrs}
                     <div className="form-group d-sm-flex margin">
                       <div className="d-flex align-items-center flex-fill me-sm-1 my-sm-0 my-4 border-bottom position-relative">
                         <select

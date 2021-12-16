@@ -23,7 +23,7 @@ class UpdateAppointment extends Component {
         for (let i = 0; i < response.length; i++) {
           const clinicData = {
             id: response[i].id,
-            name: response[i].name,
+            name: response[i].clinicName,
           };
           clinics.push(clinicData);
         }
@@ -111,7 +111,12 @@ class UpdateAppointment extends Component {
     return (
       <div className="">
         <br />
-        <Button onClick={this.handleShow}>Update</Button>
+        <Button
+          onClick={this.handleShow}
+          disabled={this.props.updateAptData.appointmentStatus === "true"}
+        >
+          Update
+        </Button>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <div className="container mt-4">

@@ -139,7 +139,7 @@ class Clinic extends Component {
               show={this.state.show} onHide={()=>this.handleModalClose()}>
                 <Modal.Header closeButton>Add Vaccine</Modal.Header>
                 <Modal.Body>
-                <Multiselect
+                <Multiselect 
                                      options={this.state.allVaccines}
                                      displayValue="vaccineName"
                                      placeholder="Select Vaccines"

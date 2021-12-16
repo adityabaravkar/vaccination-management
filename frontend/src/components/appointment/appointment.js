@@ -75,110 +75,70 @@ class Appointment extends Component {
     });
   };
 
-  makeAppointment = (e) => {
-    e.preventDefault();
-    console.log("inside save operation for making an appointment");
-    var currentDate = new Date();
-    var datetime =
-      currentDate.getFullYear() +
-      "-" +
-      (currentDate.getMonth() + 1) +
-      "-" +
-      currentDate.getDate() +
-      "-" +
-      currentDate.getHours() +
-      "-" +
-      currentDate.getMinutes();
-    const appointmentDate = this.state.aptDate.concat(
-      "-",
-      this.state.aptTime,
-      "-",
-      this.state.aptMin
-    );
-    const data = {
-      patientId: Authentication.userId,
-      appointmentTime: appointmentDate,
-      currentTime: datetime,
-      vaccinationIds: ["3"],
-      clinicId: this.state.clinicId,
-    };
-    console.log("data:", data);
-
-    const addAptRequest = Object.assign({}, data);
-    // makeAppointment(addAptRequest)
-    //   .then((response) => {
-    //     Alert.success("You have successfully booked your appointment!");
-    //     this.handleModalClose();
-    //     // this.props.history.push("/admin");
-    //   })
-    //   .catch((error) => {
-    //     Alert.error(
-    //       (error && error.message) ||
-    //         "Oops! Something went wrong. Please try again!"
-    //     );
-    //   });
-  };
-
   render() {
     console.log("appointments", this.state.appointments);
     return (
       <div className="">
-      <div><MakeAppointment /></div> 
-      
-      <Container>
-      <h4 style={{ color: "white", fontSize: "25px" }}>
-        <center>Previous Appointment History!</center>
-      </h4>
-      <br />
-      <Row xs={4}>
-      {this.state.appointments.map((data) => {
-        const aptDate = data.appointmentTime.substring(0, 10);
-        const aptTime = data.appointmentTime.substring(11, 16);
-        return (
-          
-          <Col>
-            <div style={{ display: "flex", justifyContent: "", color:"black" }}>
-              <Card style={{ width: "18rem" }}>
-                <Card.Body>
-                  <Card.Title tag="h6">Ref Id: {data.id}</Card.Title>
-                  <Card.Subtitle tag="h7" className="mb-2 text-muted">
-                    Status: {data.aptStatus}
-                  </Card.Subtitle>
-                  <Card.Text>
-                    <u>Clinic:</u> {data.clinicId.clinicName}
-                    <br />
-                    <u>Date:</u> {aptDate}
-                    <br />
-                    <u>Time:</u> {aptTime}
-                    <br />
-                    <u>Vaccine Name:</u> {data.vaccinations[0].vaccineName}
-                    <br />
-                  </Card.Text>
-                  
-                  &nbsp;&nbsp;&nbsp;
-                 
-                  <UpdateAppointment/>
-                 
-                  <Button
-                          type="submit"
-                          onClick={this.cancelApt(data.id)}
-                        >
+        <MakeAppointment />
+
+        <Container>
+          <h4 style={{ color: "white", fontSize: "25px" }}>
+            <center>Previous Appointment History!</center>
+          </h4>
+          <br />
+          <Row xs={4}>
+            {this.state.appointments.map((data) => {
+              let status = "false";
+              if (data.aptStatus == "Cancelled") {
+                status = "true";
+              }
+              const updateAptData = {
+                aptId: data.id,
+                appointmentStatus: status,
+              };
+              const aptDate = data.appointmentTime.substring(0, 10);
+              const aptTime = data.appointmentTime.substring(11, 16);
+              return (
+                <Col>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "",
+                      color: "black",
+                    }}
+                  >
+                    <Card style={{ width: "18rem" }}>
+                      <Card.Body>
+                        <Card.Title tag="h6">Ref Id: {data.id}</Card.Title>
+                        <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                          Status: {data.aptStatus}
+                        </Card.Subtitle>
+                        <Card.Text>
+                          <u>Clinic:</u> {data.clinicId.clinicName}
+                          <br />
+                          <u>Date:</u> {aptDate}
+                          <br />
+                          <u>Time:</u> {aptTime}
+                          <br />
+                          <u>Vaccine Name:</u>{" "}
+                          {data.vaccinations[0].vaccineName}
+                          <br />
+                        </Card.Text>
+                        &nbsp;&nbsp;&nbsp;
+                        <UpdateAppointment updateAptData={updateAptData} />
+                        <Button type="submit" onClick={this.cancelApt(data.id)}>
                           Cancel
                         </Button>
-                 
-                  
+                        <br />
+                      </Card.Body>
+                    </Card>
+                  </div>
                   <br />
-                 
-                </Card.Body>
-              </Card>
-            </div>
-            <br />
-          </Col>
-        );
-      })}
-      </Row>
-      
-    </Container>
+                </Col>
+              );
+            })}
+          </Row>
+        </Container>
       </div>
     );
   }
