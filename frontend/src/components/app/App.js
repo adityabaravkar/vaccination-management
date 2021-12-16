@@ -15,6 +15,7 @@ import Profile from "../profile/Profile";
 import Disease from "../admin/Disease";
 import Vaccine from "../admin/Vaccine";
 import Admin from "../admin/Admin";
+import AdminReports from "../admin/AdminReports";
 import Clinic from "../admin/Clinic";
 import Appointment from "../appointment/appointment";
 import CheckIn from "../appointment/checkIn";
@@ -179,6 +180,16 @@ class App extends Component {
                 <Profile currentDate={this.state.currentDate}></Profile>
               )}
             />
+              <Route
+                  path="/adminReports"
+                  render={(props) => (
+                      <AdminReports
+                          authenticated={this.state.authenticated}
+                          handleLogin={this.handleLogin}
+                          {...props}
+                      />
+                  )}
+              />
             <Route component={NotFound} />
           </Switch>
         </div>
