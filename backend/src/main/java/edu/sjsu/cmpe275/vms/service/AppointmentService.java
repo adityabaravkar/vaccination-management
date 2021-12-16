@@ -16,7 +16,7 @@ public interface AppointmentService {
 
     Appointment getAppointment(long id);
 
-    ResponseEntity<?> getAllClinics();
+    List<Clinic> getAllClinics();
 
     List<Vaccination>  getAllDueVaccines();
 

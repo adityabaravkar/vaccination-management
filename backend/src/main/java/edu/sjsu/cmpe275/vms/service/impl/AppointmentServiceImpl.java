@@ -124,17 +124,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public ResponseEntity<?> getAllClinics() {
+    public List<Clinic> getAllClinics() {
         List<Clinic> allClinics = this.clinicRepository.findAll();
 
-        List<JSONObject> clinicList = new ArrayList<JSONObject>();
-        for (Clinic n : allClinics) {
-            JSONObject entity = new JSONObject();
-            entity.put("id", n.getId());
-            entity.put("name", n.getClinicName());
-            clinicList.add(entity);
-        }
-        return ResponseEntity.ok(clinicList);
+//        List<JSONObject> clinicList = new ArrayList<JSONObject>();
+//        for (Clinic n : allClinics) {
+//            JSONObject entity = new JSONObject();
+//            entity.put("id", n.getId());
+//            entity.put("name", n.getClinicName());
+//            clinicList.add(entity);
+//        }
+        return allClinics;
 
     }
 

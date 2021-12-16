@@ -100,10 +100,9 @@ public class AppointmentController {
 //    }
 
     @GetMapping(path = "/api/appointment/allClinic")
-    public ResponseEntity<?> getAllClinic() {
+    public List<Clinic> getAllClinic() {
         return this.appointmentService.getAllClinics();
     }
-
     @GetMapping(path = "/api/appointment/allDueVaccines")
     public List<Vaccination>  getAllDueVaccines() {
         return this.appointmentService.getAllDueVaccines();

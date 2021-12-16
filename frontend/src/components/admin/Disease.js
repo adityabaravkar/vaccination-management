@@ -43,12 +43,12 @@ class Disease extends Component {
                    <h5>{alld.diseaseName}</h5>
                    </Card.Title>
                 {alld.description}
-                {alld.vaccination.length == 0 ? (""):(<div>
-                  <br/>
-                  <h6>Vaccinations</h6>
-                  {alld.vaccination.map(allv=>
-                    <div>{allv.vaccineName}</div>)}
-                    </div>)}
+                {/*{alld.vaccination == null ? (""):(<div>*/}
+                {/*  <br/>*/}
+                {/*  <h6>Vaccinations</h6>*/}
+                {/*  {alld.vaccination.map(allv=>*/}
+                {/*    <div>{allv.vaccineName}</div>)}*/}
+                {/*    </div>)}*/}
                 
                  </Card.Body> 
                  </Card> 
