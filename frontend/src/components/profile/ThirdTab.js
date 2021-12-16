@@ -86,7 +86,7 @@ class ThirdTab extends Component {
             <center>Manage all your Appointments here!</center>
           </h4>
           <br />
-          <MakeAppointment />
+          <MakeAppointment currentDate={this.props.currentDate} />
           <Row xs={4}>
             {this.state.appointments.map((data) => {
               let status = "false";
@@ -126,7 +126,10 @@ class ThirdTab extends Component {
                           <br />
                         </Card.Text>
                         &nbsp;&nbsp;&nbsp;
-                        <UpdateAppointment updateAptData={updateAptData} />
+                        <UpdateAppointment
+                          updateAptData={updateAptData}
+                          currentDate={this.props.currentDate}
+                        />
                         <br />
                         <Button
                           type="submit"

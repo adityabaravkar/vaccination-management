@@ -70,7 +70,7 @@ class MakeAppointment extends Component {
   makeAppointment = (e) => {
     e.preventDefault();
     console.log("inside save operation for making an appointment");
-    var currentDate = new Date();
+    var currentDate = this.props.currentDate;
     let curHr =
       currentDate.getHours() < 10
         ? "0" + currentDate.getHours()

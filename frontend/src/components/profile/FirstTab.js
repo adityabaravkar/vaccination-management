@@ -25,7 +25,8 @@ class FirstTab extends Component {
 
   componentDidMount = async () => {
     const patientId = Authentication.userId;
-    var currentDate = new Date();
+    var currentDate = this.props.currentDate;
+    console.log("Current Date: " + currentDate.toString());
     let curHr =
       currentDate.getHours() < 10
         ? "0" + currentDate.getHours()
@@ -125,7 +126,13 @@ class FirstTab extends Component {
 
               return (
                 <Col>
-                  <div style={{ display: "flex", justifyContent: "" ,color: "black"}}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "",
+                      color: "black",
+                    }}
+                  >
                     <Card style={{ width: "18rem" }}>
                       <Card.Body>
                         <Card.Title tag="h6">Ref Id: {data.id}</Card.Title>

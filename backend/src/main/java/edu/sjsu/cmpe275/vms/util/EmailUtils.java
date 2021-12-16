@@ -1,6 +1,8 @@
 package edu.sjsu.cmpe275.vms.util;
 
 import edu.sjsu.cmpe275.vms.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,6 +15,8 @@ import java.io.UnsupportedEncodingException;
 
 @Component
 public class EmailUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(EmailUtils.class);
 
     private static JavaMailSender mailSender;
 
@@ -49,6 +53,29 @@ public class EmailUtils {
         helper.setText(content, true);
 
         mailSender.send(message);
+    }
+
+    public static void sendNotificationEmail(User user, String status) {
+        try {
+            String toAddress = user.getEmail();
+            String fromAddress = "cmpe275.vms@gmail.com";
+            String senderName = "Vaccination Management System";
+            String subject = "Vaccination Management System : Notification";
+            String content = "Hi [[name]],<br>"
+                    + "This is to inform you that your appointment has been " + status + ".<br>"
+                    + "Thank you,<br>"
+                    + "Vaccination Management System.";
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setFrom(fromAddress, senderName);
+            helper.setTo(toAddress);
+            helper.setSubject(subject);
+            content = content.replace("[[name]]", user.getFirstName());
+            helper.setText(content, true);
+            mailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            logger.error("Exception in sending email: "+e.getLocalizedMessage());
+        }
     }
 
     @Autowired

@@ -142,6 +142,7 @@ class App extends Component {
                 <Appointment
                   authenticated={this.state.authenticated}
                   handleLogin={this.handleLogin}
+                  currentDate={this.state.currentDate}
                   {...props}
                 />
               )}
@@ -172,7 +173,12 @@ class App extends Component {
                 />
               )}
             />
-            <Route path="/profile" render={(props) => <Profile></Profile>} />
+            <Route
+              path="/profile"
+              render={(props) => (
+                <Profile currentDate={this.state.currentDate}></Profile>
+              )}
+            />
             <Route component={NotFound} />
           </Switch>
         </div>

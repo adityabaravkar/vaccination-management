@@ -6,6 +6,7 @@ import edu.sjsu.cmpe275.vms.model.*;
 import edu.sjsu.cmpe275.vms.repository.*;
 import edu.sjsu.cmpe275.vms.service.AppointmentService;
 import edu.sjsu.cmpe275.vms.util.DateUtils;
+import edu.sjsu.cmpe275.vms.util.EmailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -103,8 +104,9 @@ public class AppointmentServiceImpl implements AppointmentService {
                         Appointment appointment = new Appointment(patientId, appointmentTime, clinic, vaccinationList,"Booked","Ready for Checkin");
                         s.setNoOfApt(numberOfAptsInThisSlot);
                         this.slotRepository.save(s);
-                        return this.appointmentRepository.save(appointment);
-
+                        Appointment a = this.appointmentRepository.save(appointment);
+                        EmailUtils.sendNotificationEmail(patient, "confirmed");
+                        return a;
                     }
                     else{
                         throw new BadRequestException(" Sorry physicians are not available.");
@@ -154,7 +156,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         if(appointment != null){
             appointment.setAptStatus("Cancelled");
         }
-        return this.appointmentRepository.save(appointment);
+        Appointment saved = this.appointmentRepository.save(appointment);
+        User patient = userRepository.findById(appointment.getPatientId()).get();
+        EmailUtils.sendNotificationEmail(patient, "cancelled");
+        return saved;
     }
 
     @Override
@@ -163,7 +168,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         if(appointment != null){
             appointment.setCheckedInStatus("Checked-In");
         }
-        return this.appointmentRepository.save(appointment);
+        Appointment saved = this.appointmentRepository.save(appointment);
+        User patient = userRepository.findById(appointment.getPatientId()).get();
+        EmailUtils.sendNotificationEmail(patient, "checked in");
+        return saved;
     }
 
     @Override
@@ -265,8 +273,10 @@ public class AppointmentServiceImpl implements AppointmentService {
                     s.setNoOfApt(numberOfAptsInThisSlot);
                     this.slotRepository.save(s);
                     appointment.setAppointmentTime(appointmentTime);
-                    return this.appointmentRepository.saveAndFlush(appointment);
-
+                    Appointment saved = this.appointmentRepository.saveAndFlush(appointment);
+                    User patient = userRepository.findById(appointment.getPatientId()).get();
+                    EmailUtils.sendNotificationEmail(patient, "modified");
+                    return saved;
                 }
                 else{
                     throw new BadRequestException(" Sorry physicians are not available.");

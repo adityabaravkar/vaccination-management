@@ -17,10 +17,8 @@ class Profile extends Component {
 
   render() {
     return (
-        
       <div>
-      <Tabs/>
-       
+        <Tabs currentDate={this.props.currentDate} />
       </div>
     );
   }
