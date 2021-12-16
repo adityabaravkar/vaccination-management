@@ -113,7 +113,7 @@ class CheckIn extends Component {
                           Status: {data.checkedInStatus}
                         </Card.Subtitle>
                         <Card.Text>
-                          <u>Clinic:</u> {data.clinicId.name}
+                          <u>Clinic:</u> {data.clinicId.clinicName}
                           <br />
                           <u>Date:</u> {aptDate}
                           <br />

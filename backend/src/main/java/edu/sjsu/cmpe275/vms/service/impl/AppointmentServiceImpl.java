@@ -56,7 +56,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         String appointmentDate = appointmentTime.substring(0,10);
         String currentDate = currentTime.substring(0,10);
         int aptHr = Integer.parseInt(appointmentTime.substring(11,13));
-        int aptMin = Integer.parseInt(appointmentTime.substring(14,16));
+        int aptMin = Integer.parseInt(appointmentTime.substring(14));
 
         long months = ChronoUnit.MONTHS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
         long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
@@ -177,10 +177,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         String appointmentDate = appointmentTime.substring(0,10);
         String currentDate = currentTime.substring(0,10);
         int aptHr = Integer.parseInt(appointmentTime.substring(11,13));
-        int aptMin = Integer.parseInt(appointmentTime.substring(14,16));
+        int aptMin = Integer.parseInt(appointmentTime.substring(14));
 
         int prevAptHr = Integer.parseInt(previousAptTime.substring(11,13));
-        int prevAptMin = Integer.parseInt(previousAptTime.substring(14,16));
+        int prevAptMin = Integer.parseInt(previousAptTime.substring(14));
 
         long months = ChronoUnit.MONTHS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));
         long days = ChronoUnit.DAYS.between(LocalDate.parse(currentDate),LocalDate.parse(appointmentDate));

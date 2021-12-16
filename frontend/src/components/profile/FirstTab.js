@@ -2,7 +2,9 @@ import React,{useEffect, useState} from "react";
 import { checkInAppointment, getAppointment } from "../../util/APIUtils";
 import "./Profile.css";
 import { Card } from "react-bootstrap";
-import { Button } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+
 const FirstTab = () => {
   const [state, setstate] = useState("")
   useEffect(() => {
@@ -27,24 +29,106 @@ const updateAppointment = (appointmentId) =>{
 }
 
   return (
-    <div className="FirstTab">
-      <p><h4 style={{ color: "white", fontSize: "25px" }}>
-      <center>Your Online Check-In</center>
-    </h4>
-    <div style={{ display: "flex", justifyContent: "" }}>
-      <Card style={{ width: "18rem" }}>
-        <Card.Body>
-          <Card.Title>
-            <h5>Your Appointments</h5>
-          </Card.Title>
-          Description:
-        </Card.Body>
-        <Button type="submit" >Check-In</Button>
-      </Card>
+    <div className="">
+    <Container>
+      <h4 style={{ color: "white", fontSize: "25px" }}>
+        <center>Check - In Online!</center>
+      </h4>
+      <br />
+      <Row xs={4}>
+       
+            <Col>
+              <div style={{ display: "flex", justifyContent: "", color:"black" }}>
+                <Card style={{ width: "18rem" }}>
+                  <Card.Body>
+                    <Card.Title tag="h6">Ref Id: </Card.Title>
+                    <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                      Status: 
+                    </Card.Subtitle>
+                    <Card.Text>
+                      <u>Clinic:</u> 
+                      <br />
+                      <u>Date:</u> 
+                      <br />
+                      <u>Time:</u> 
+                      <br />
+                    </Card.Text>
+                    <Button
+                      type="submit"
+                     
+                    >
+                      Checkin
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
+                    <br />
+                  </Card.Body>
+                </Card>
+              </div>
+              <br />
+            </Col>
+            <Col>
+              <div style={{ display: "flex", justifyContent: "", color:"black" }}>
+                <Card style={{ width: "18rem" }}>
+                  <Card.Body>
+                    <Card.Title tag="h6">Ref Id: </Card.Title>
+                    <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                      Status: 
+                    </Card.Subtitle>
+                    <Card.Text>
+                      <u>Clinic:</u> 
+                      <br />
+                      <u>Date:</u> 
+                      <br />
+                      <u>Time:</u> 
+                      <br />
+                    </Card.Text>
+                    <Button
+                      type="submit"
+                     
+                    >
+                      Checkin
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;
+                    <br />
+                  </Card.Body>
+                </Card>
+              </div>
+              <br />
+            </Col>
+            <Col>
+            <div style={{ display: "flex", justifyContent: "", color:"black" }}>
+              <Card style={{ width: "18rem" }}>
+                <Card.Body>
+                  <Card.Title tag="h6">Ref Id: </Card.Title>
+                  <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                    Status: 
+                  </Card.Subtitle>
+                  <Card.Text>
+                    <u>Clinic:</u> 
+                    <br />
+                    <u>Date:</u> 
+                    <br />
+                    <u>Time:</u> 
+                    <br />
+                  </Card.Text>
+                  <Button
+                    type="submit"
+                   
+                  >
+                    Checkin
+                  </Button>
+                  &nbsp;&nbsp;&nbsp;
+                  <br />
+                </Card.Body>
+              </Card>
+            </div>
+            <br />
+          </Col>
+      </Row>
       
-    </div></p>
-      
-    </div>
+    </Container>
+    
+  </div>
   );
 };
 export default FirstTab;

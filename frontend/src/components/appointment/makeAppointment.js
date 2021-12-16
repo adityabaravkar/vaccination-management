@@ -32,8 +32,9 @@ class MakeAppointment extends Component {
         for (let i = 0; i < response.length; i++) {
           const clinicData = {
             id: response[i].id,
-            name: response[i].name,
+            name: response[i].clinicName,
           };
+          console.log(clinicData);
           clinics.push(clinicData);
         }
         this.setState({
@@ -70,14 +71,18 @@ class MakeAppointment extends Component {
     e.preventDefault();
     console.log("inside save operation for making an appointment");
     var currentDate = new Date();
+    let curHr =
+    currentDate.getHours() < 10
+      ? "0" + currentDate.getHours()
+      : currentDate.getHours();
     var datetime =
       currentDate.getFullYear() +
       "-" +
       (currentDate.getMonth() + 1) +
       "-" +
       currentDate.getDate() +
-      "-" +
-      currentDate.getHours() +
+      "-" + curHr +
+     // currentDate.getHours() +
       "-" +
       currentDate.getMinutes();
     const appointmentDate = this.state.aptDate.concat(
@@ -139,7 +144,7 @@ class MakeAppointment extends Component {
         for (let i = 0; i < response.length; i++) {
           const vaccineData = {
             id: response[i].id,
-            name: response[i].name,
+            name: response[i].vaccineName,
           };
           vaccine.push(vaccineData);
         }
