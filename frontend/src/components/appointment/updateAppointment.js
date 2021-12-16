@@ -40,7 +40,6 @@ class UpdateAppointment extends Component {
             "Oops! Something went wrong. Please try again!"
         );
       });
-    const patientId = "598179743";
   };
   handleShow = () => {
     this.setState({ show: true });
@@ -111,7 +110,8 @@ class UpdateAppointment extends Component {
     return (
       <div className="">
         <br />
-        <Button style={{marginLeft:'60px'}}
+        <Button
+          style={{ marginLeft: "100px" }}
           onClick={this.handleShow}
           disabled={this.props.updateAptData.appointmentStatus === "true"}
         >

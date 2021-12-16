@@ -128,7 +128,11 @@ class ThirdTab extends Component {
                         &nbsp;&nbsp;&nbsp;
                         <UpdateAppointment updateAptData={updateAptData} />
                         <br />
-                        <Button type="submit" onClick={this.cancelApt(data.id)}>
+                        <Button
+                          type="submit"
+                          style={{ marginLeft: "100px", marginTop: "20px" }}
+                          onClick={this.cancelApt(data.id)}
+                        >
                           Cancel
                         </Button>
                         <br />
