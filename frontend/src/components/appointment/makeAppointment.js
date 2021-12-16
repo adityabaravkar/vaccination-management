@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import {
   getClinics,
@@ -8,6 +8,7 @@ import {
 } from "../../util/APIUtils";
 import Alert from "react-s-alert";
 import { Multiselect } from "multiselect-react-dropdown";
+import { Authentication } from "../../services";
 
 class MakeAppointment extends Component {
   constructor() {
@@ -93,7 +94,7 @@ class MakeAppointment extends Component {
       Alert.success("You cannot select more than 4 vaccinations at once!");
     }
     const data = {
-      patientId: "598179743",
+      patientId: Authentication.userId,
       appointmentTime: appointmentDate,
       currentTime: datetime,
       vaccinationIds: vaccineId,

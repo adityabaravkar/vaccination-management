@@ -125,13 +125,13 @@ export function getAptsToCheckin(patientId, currentTime) {
   });
 }
 
-export function checkInAppointment(checkIn) {
-  return request({
-    url: API_BASE_URL + "/patient/checkInAppointment",
-    method: "POST",
-    body: JSON.stringify(checkIn),
-  });
-}
+// export function checkInAppointment(checkIn) {
+//   return request({
+//     url: API_BASE_URL + "/patient/checkInAppointment",
+//     method: "POST",
+//     body: JSON.stringify(checkIn),
+//   });
+// }
 
 export function getAppointment() {
   console.log(Authentication.userId)

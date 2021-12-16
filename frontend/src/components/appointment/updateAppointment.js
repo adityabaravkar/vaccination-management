@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import { getClinics, updateAppointment } from "../../util/APIUtils";
 import Alert from "react-s-alert";

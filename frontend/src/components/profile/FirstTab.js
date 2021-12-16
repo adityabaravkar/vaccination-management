@@ -39,7 +39,7 @@ const updateAppointment = (appointmentId) =>{
           </Card.Title>
           Description:
         </Card.Body>
-        <Button type="submit" onClick={updateAppointment()}>Check-In</Button>
+        <Button type="submit" >Check-In</Button>
       </Card>
       
     </div></p>
