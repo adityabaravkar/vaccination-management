@@ -20,6 +20,12 @@ public class VaccinationController {
 
     @Autowired private VaccinationService vaccinationService;
 
+    @GetMapping("/allVaccines")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Vaccination> getAllVaccines() {
+        return this.vaccinationService.getAllVaccines();
+    }
+
 
     @PostMapping("/createVaccination")
     @PreAuthorize("hasRole('ADMIN')")

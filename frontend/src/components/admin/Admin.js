@@ -451,8 +451,7 @@ class Admin extends Component {
                         onChange={this.handleChange}></input>
                          <span style={{color:'red'}}>{errors.vaccineName}</span>
                     </Row>
-                    <br/>
-                    
+                    <br/> 
                     <Row>
                         <Col>
                             <Row>
@@ -499,8 +498,8 @@ class Admin extends Component {
                         <span style={{color:'red'}}></span>
                         
                         <Row> 
-                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="noofshots"
-                        value={this.state.noofshots}  
+                        &nbsp;&nbsp;&nbsp;<input style={{width:'80%'}} name="numberOfShots"
+                        value={this.state.numberOfShots}  
                         onChange={this.handleChange}></input>
                          <span style={{color:'red'}}>{errors.noofshots}</span>
                         </Row>
@@ -513,15 +512,12 @@ class Admin extends Component {
                         <h6>Shot Interval</h6>
                         </Row>
                         <span style={{color:'red'}}> </span>
-                        
                         <Row> 
                         &nbsp;&nbsp;&nbsp;<input style={{width:'50%'}} name="shotinterval"
                         value={this.state.shotinterval}
                         onChange={this.handleChange}></input>
-                        
                         </Row>
                      </Col>
-                     
                      <Col>
                         <Row>
                         <h6>Duration</h6>

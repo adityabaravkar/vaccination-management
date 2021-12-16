@@ -10,4 +10,5 @@ public interface VaccinationService {
                                   int numberOfShots,
                                   int shotInternalVal,
                                   int duration);
+    List<Vaccination> getAllVaccines();
 }

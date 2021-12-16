@@ -3,26 +3,60 @@ import "./Admin.css";
 import {
     Card
    } from 'react-bootstrap';
+   import {
+    Button
+   } from 'reactstrap';
+import {getAllDiseases} from "../../util/APIUtils"; 
 class Disease extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      allDiseases : []
+    }
+  }
+  componentDidMount = async () => {
+    console.log("hello")
+    getAllDiseases()
+        .then((response) => {
+            const respData = response;
+            console.log(respData)
+            this.setState({allDiseases:respData});
+        })
+  }
+  homePage = ()=>{
+    this.props.history.push("/admin");
+  }
   render() {
+    const {allDiseases} = this.state;
+    
     return (
-      <div class="stageClinic">
-      <h4 style={{color:'white', fontSize:'25px'}} >Current Diseases</h4>
-      <div style={{ display: 'flex', justifyContent: '' }}>
-                 
-                 <Card style={{ width: "18rem" }}>
+      <div >
+      <Button className="stageClinic1" style={{color:'white'}} onClick={this.homePage}>Home Page</Button>
+      <h4  className="stageClinic" style={{color:'white', fontSize:'25px'}} >All Available Clinics</h4>
+      <br/>
+      <div className="card-list">
+        {allDiseases.map( alld => 
+          <div>
+            <Card style={{ width: "18rem", height:'15rem' }}>
                  <Card.Body>
                  <Card.Title>
-                
-                   <h5>Name of the Disease</h5>
-                  
+                   <h5>{alld.diseaseName}</h5>
                    </Card.Title>
-                    Description:
-                    
+                {alld.description}
+                {alld.vaccination.length == 0 ? (""):(<div>
+                  <br/>
+                  <h6>Vaccinations</h6>
+                  {alld.vaccination.map(allv=>
+                    <div>{allv.vaccineName}</div>)}
+                    </div>)}
+                
                  </Card.Body> 
-                 </Card>                           
+                 </Card> 
+          </div>
+      )}
+      </div>              
       </div>
-      </div>
+    
     );
   }
 }

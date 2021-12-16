@@ -40,4 +40,11 @@ public class VaccinationServiceImpl implements VaccinationService {
         vaccination.setDiseases(diseases);
         return this.vaccinationRepository.save(vaccination);
     }
+
+    @Override
+    public List<Vaccination> getAllVaccines(){
+        List<Vaccination> allVaccines = this.vaccinationRepository.findAll();
+        return allVaccines;
+
+    }
 }
