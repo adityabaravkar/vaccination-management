@@ -19,7 +19,10 @@ public class Vaccination {
 
    // @Column(name = "diseases", nullable = false)
 
-    @ManyToMany(mappedBy = "vaccination", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+//    @ManyToMany(mappedBy = "vaccination", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+//    @JsonIgnoreProperties({"vaccination"})
+//    private List<Disease> diseases;
+    @OneToMany(mappedBy = "vaccination", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JsonIgnoreProperties({"vaccination"})
     private List<Disease> diseases;
 

@@ -185,3 +185,11 @@ export function getAllDiseases() {
     method: "GET",
   });
 }
+
+export function getAllVaccines() {
+  return request({
+    url: API_BASE_URL + "/vaccination/allVaccines",
+    method: "GET",
+  });
+}
+

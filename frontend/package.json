@@ -16,6 +16,7 @@
     "react-s-alert": "^1.4.1",
     "react-scripts": "4.0.3",
     "react-social-login-buttons": "^3.6.0",
+    "reactstrap": "^9.0.1",
     "sweetalert": "^2.1.2",
     "web-vitals": "^1.1.2"
   },

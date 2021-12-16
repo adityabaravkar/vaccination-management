@@ -127,7 +127,12 @@ class MakeAppointment extends Component {
     });
 
     console.log("clinicId on selected",e.target.value);
-    await getDueVaccines(e.target.value)
+
+  }
+  componentDidUpdate = (prevProps, prevState) =>{
+    if(prevState.clinicId !== this.state.clinicId){
+      
+     getDueVaccines(this.state.clinicId)
       .then((response) => {
         let vaccine = [];
         console.log("getDueVaccines", response);
@@ -148,6 +153,7 @@ class MakeAppointment extends Component {
             "Oops! Something went wrong. Please try again!"
         );
       });
+    }
   };
 
   render() {

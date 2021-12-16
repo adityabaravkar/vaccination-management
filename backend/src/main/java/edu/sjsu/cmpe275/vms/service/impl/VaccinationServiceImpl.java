@@ -32,12 +32,19 @@ public class VaccinationServiceImpl implements VaccinationService {
             duration = Integer.MAX_VALUE;
         }
         Vaccination vaccination = new Vaccination(vaccineName, diseases ,manufacturer, numberOfShots, shotInternalVal, duration);
-        List<Vaccination> vaccinationList = new ArrayList<>();
-        vaccinationList.add(vaccination);
+//        List<Vaccination> vaccinationList = new ArrayList<>();
+//        vaccinationList.add(vaccination);
         for(Disease disease : diseases) {
-            disease.setVaccination(vaccinationList);
+            disease.setVaccination(vaccination);
         }
         vaccination.setDiseases(diseases);
         return this.vaccinationRepository.save(vaccination);
+    }
+
+    @Override
+    public List<Vaccination> getAllVaccines(){
+        List<Vaccination> allVaccines = this.vaccinationRepository.findAll();
+        return allVaccines;
+
     }
 }
