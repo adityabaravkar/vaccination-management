@@ -11,8 +11,11 @@ import java.util.List;
 
 public interface ClinicService {
     List<Vaccination> getVaccinations(long id);
-    Clinic createClinic(String name,
-                        Address address,
+    Clinic createClinic(String clinicName,
+                       String streetAndNumber,
+                        String city,
+                        String state,
+                        int zipCode,
                         String businessHours,
                         int NumberOfPhysicians);
     Clinic addVaccinations(long clinic_id, List<Long> vaccination_ids);

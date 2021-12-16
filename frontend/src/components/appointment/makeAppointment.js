@@ -19,6 +19,7 @@ class MakeAppointment extends Component {
       vaccine: [],
       allVaccinesSelected: [],
       appointments: [],
+      clinicId:""
     };
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -27,6 +28,7 @@ class MakeAppointment extends Component {
     getClinics()
       .then((response) => {
         let clinics = [];
+        console.log("hey",response);
         for (let i = 0; i < response.length; i++) {
           const clinicData = {
             id: response[i].id,
@@ -116,18 +118,19 @@ class MakeAppointment extends Component {
     this.handleClose();
   };
 
-  onChangeClinic = (e) => {
+  onChangeClinic = async (e) => {
     console.log("inside change");
     console.log("e.target.name", e.target.name);
     console.log("e.target.value", e.target.value);
     this.setState({
-      [e.target.name]: e.target.value,
+      clinicId: e.target.value,
     });
 
-    console.log("clinicId on selected", this.state.clinicId);
-    getDueVaccines(this.state.clinicId)
+    console.log("clinicId on selected",e.target.value);
+    await getDueVaccines(e.target.value)
       .then((response) => {
         let vaccine = [];
+        console.log("getDueVaccines", response);
         for (let i = 0; i < response.length; i++) {
           const vaccineData = {
             id: response[i].id,
@@ -177,6 +180,7 @@ class MakeAppointment extends Component {
                           id="clinicId"
                           name="clinicId"
                           onChange={this.onChangeClinic}
+                          value={this.state.clinicId}
                         >
                           {this.state.clinics.map((clinic) => {
                             return (

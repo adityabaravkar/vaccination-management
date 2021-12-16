@@ -19,18 +19,23 @@ public class VaccinationServiceImpl implements VaccinationService {
     @Autowired
     DiseaseRepository diseaseRepository;
     @Override
-    public Vaccination createVaccination(String name, List<String> diseasesList, String manufacturer,
+    public Vaccination createVaccination(String vaccineName, List<String> diseasesList, String manufacturer,
                                           int numberOfShots,
                                           int shotInternalVal,
                                           int duration) {
         List<Disease> diseases = new ArrayList<>();
         for(int i = 0; i < diseasesList.size(); i++) {
-            Disease disease = diseaseRepository.findByName(diseasesList.get(i)).get();
+            Disease disease = diseaseRepository.findByDiseaseName(diseasesList.get(i)).get();
             diseases.add(disease);
         }
-        Vaccination vaccination = new Vaccination(name, diseases ,manufacturer, numberOfShots, shotInternalVal, duration);
+        if(duration == 0) {
+            duration = Integer.MAX_VALUE;
+        }
+        Vaccination vaccination = new Vaccination(vaccineName, diseases ,manufacturer, numberOfShots, shotInternalVal, duration);
+        List<Vaccination> vaccinationList = new ArrayList<>();
+        vaccinationList.add(vaccination);
         for(Disease disease : diseases) {
-            disease.setVaccination(vaccination);
+            disease.setVaccination(vaccinationList);
         }
         vaccination.setDiseases(diseases);
         return this.vaccinationRepository.save(vaccination);

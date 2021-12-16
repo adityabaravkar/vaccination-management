@@ -38,7 +38,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Long> slotIds = new ArrayList<>();
 
         if(this.userRepository.existsById(patientId)){
-             patient = userRepository.findById(patientId).get();
+            patient = userRepository.findById(patientId).get();
         } else {
             throw new BadRequestException("Patient with id " + patientId + " does not exist in the database.");
         }
@@ -101,8 +101,8 @@ public class AppointmentServiceImpl implements AppointmentService {
                     numberOfAptsInThisSlot++;
                     Appointment appointment = new Appointment(patientId, appointmentTime, clinic, vaccinationList,"Booked","Ready for Checkin");
                     s.setNoOfApt(numberOfAptsInThisSlot);
-                   this.slotRepository.save(s);
-               return this.appointmentRepository.save(appointment);
+                    this.slotRepository.save(s);
+                    return this.appointmentRepository.save(appointment);
 
                 }
                 else{
@@ -112,7 +112,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 throw new BadRequestException("The appointment time is not within the business hours.");
             }
         }   else {
-            throw new BadRequestException("The appointment time should be before within 12 months of the current time.");
+            throw new BadRequestException("The appointment time should be before within 12 monts of the current time.");
         }
     }
 
@@ -131,7 +131,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         for (Clinic n : allClinics) {
             JSONObject entity = new JSONObject();
             entity.put("id", n.getId());
-            entity.put("name", n.getName());
+            entity.put("name", n.getClinicName());
             clinicList.add(entity);
         }
         return ResponseEntity.ok(clinicList);

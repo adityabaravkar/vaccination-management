@@ -11,14 +11,15 @@ public class Vaccination {
 
     @Id
     @GeneratedValue
+
     private long id;
 
     @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    private String vaccineName;
 
    // @Column(name = "diseases", nullable = false)
 
-    @OneToMany(mappedBy = "vaccination", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToMany(mappedBy = "vaccination", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JsonIgnoreProperties({"vaccination"})
     private List<Disease> diseases;
 
@@ -34,8 +35,8 @@ public class Vaccination {
     @Column(name = "duration", nullable = false)
     private int duration;
 
-    public Vaccination(String name, List<Disease> diseases, String manufacturer, int numberOfShots, int shotInternalVal, int duration) {
-        this.name = name;
+    public Vaccination(String vaccineName, List<Disease> diseases, String manufacturer, int numberOfShots, int shotInternalVal, int duration) {
+        this.vaccineName = vaccineName;
         this.diseases = diseases;
         this.manufacturer = manufacturer;
         this.numberOfShots = numberOfShots;
@@ -54,13 +55,20 @@ public class Vaccination {
     public void setId(long id) {
         this.id = id;
     }
+//    public long getVaccinationId() {
+//        return vaccinationId;
+//    }
+//
+//    public void setVaccinationId(long vaccinationId) {
+//        this.vaccinationId = vaccinationId;
+//    }
 
-    public String getName() {
-        return name;
+    public String getVaccineName() {
+        return vaccineName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVaccineName(String vaccineName) {
+        this.vaccineName = vaccineName;
     }
 
     public List<Disease> getDiseases() {
