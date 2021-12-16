@@ -125,101 +125,57 @@ class Appointment extends Component {
       <div className="">
       <div><MakeAppointment /></div> 
       
-          
-          <Container>
+      <Container>
       <h4 style={{ color: "white", fontSize: "25px" }}>
-        <center>Check - In Online!</center>
+        <center>Previous Appointment History!</center>
       </h4>
       <br />
       <Row xs={4}>
-       
-            <Col>
-              <div style={{ display: "flex", justifyContent: "", color:"black" }}>
-                <Card style={{ width: "18rem" }}>
-                  <Card.Body>
-                    <Card.Title tag="h6">Ref Id: </Card.Title>
-                    <Card.Subtitle tag="h7" className="mb-2 text-muted">
-                      Status: 
-                    </Card.Subtitle>
-                    <Card.Text>
-                      <u>Clinic:</u> 
-                      <br />
-                      <u>Date:</u> 
-                      <br />
-                      <u>Time:</u> 
-                      <br />
-                    </Card.Text>
-                    <Button
-                      type="submit"
-                     
-                    >
-                      Checkin
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;
-                    <br />
-                  </Card.Body>
-                </Card>
-              </div>
-              <br />
-            </Col>
-            <Col>
-              <div style={{ display: "flex", justifyContent: "", color:"black" }}>
-                <Card style={{ width: "18rem" }}>
-                  <Card.Body>
-                    <Card.Title tag="h6">Ref Id: </Card.Title>
-                    <Card.Subtitle tag="h7" className="mb-2 text-muted">
-                      Status: 
-                    </Card.Subtitle>
-                    <Card.Text>
-                      <u>Clinic:</u> 
-                      <br />
-                      <u>Date:</u> 
-                      <br />
-                      <u>Time:</u> 
-                      <br />
-                    </Card.Text>
-                    <Button
-                      type="submit"
-                     
-                    >
-                      Checkin
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;
-                    <br />
-                  </Card.Body>
-                </Card>
-              </div>
-              <br />
-            </Col>
-            <Col>
+      {this.state.appointments.map((data) => {
+        const aptDate = data.appointmentTime.substring(0, 10);
+        const aptTime = data.appointmentTime.substring(11, 16);
+        return (
+          
+          <Col>
             <div style={{ display: "flex", justifyContent: "", color:"black" }}>
               <Card style={{ width: "18rem" }}>
                 <Card.Body>
-                  <Card.Title tag="h6">Ref Id: </Card.Title>
+                  <Card.Title tag="h6">Ref Id: {data.id}</Card.Title>
                   <Card.Subtitle tag="h7" className="mb-2 text-muted">
-                    Status: 
+                    Status: {data.aptStatus}
                   </Card.Subtitle>
                   <Card.Text>
-                    <u>Clinic:</u> 
+                    <u>Clinic:</u> {data.clinicId.clinicName}
                     <br />
-                    <u>Date:</u> 
+                    <u>Date:</u> {aptDate}
                     <br />
-                    <u>Time:</u> 
+                    <u>Time:</u> {aptTime}
+                    <br />
+                    <u>Vaccine Name:</u> {data.vaccinations[0].vaccineName}
                     <br />
                   </Card.Text>
-                  <Button
-                    type="submit"
-                   
-                  >
-                    Checkin
-                  </Button>
+                  
                   &nbsp;&nbsp;&nbsp;
+                 
+                  <UpdateAppointment/>
+                 
+                  <Button
+                          type="submit"
+                          onClick={this.cancelApt(data.id)}
+                        >
+                          Cancel
+                        </Button>
+                 
+                  
                   <br />
+                 
                 </Card.Body>
               </Card>
             </div>
             <br />
           </Col>
+        );
+      })}
       </Row>
       
     </Container>
