@@ -55,7 +55,7 @@ class CheckIn extends Component {
           checkins: response,
         });
         for (let i = 0; i < response.length; i++) {
-          if (response[i].checkedInStatus == "No Show") {
+          if (response[i].checkedInStatus === "No Show") {
             console.log("inhere");
             this.setState({
               checkinStatus: true,
@@ -123,7 +123,7 @@ class CheckIn extends Component {
           <Row xs={4}>
             {this.state.checkins.map((data) => {
               let checkinStatus = "false";
-              if (data.checkedInStatus == "No Show") {
+              if (data.checkedInStatus === "No Show") {
                 checkinStatus = "true";
               }
               const aptDate = data.appointmentTime.substring(0, 10);
@@ -148,7 +148,7 @@ class CheckIn extends Component {
                         </Card.Text>
                         <Button
                           type="submit"
-                          disabled={checkinStatus == "true"}
+                          disabled={checkinStatus === "true"}
                           onClick={this.checkInApt(data.id)}
                         >
                           Checkin

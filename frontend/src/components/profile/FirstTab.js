@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
 import Alert from "react-s-alert";
 import Container from "react-bootstrap/Container";
-import { getAptsToCheckin, checkInAppointment } from "../../util/APIUtils";
+import { getAptsToCheckin, checkInAppointment, getAllAppointments } from "../../util/APIUtils";
 import swal from "sweetalert";
 import { Authentication } from "../../services";
 
@@ -14,6 +14,10 @@ class FirstTab extends Component {
     super(props);
     this.state = {
       checkins: [],
+      appointments: [],
+      noShowCount : 0,
+      noCancel : 0,
+      noCheckin: 0,
       //  checkinStatus: false,
     };
     this.getAppointmentsToCheckIn = this.getAppointmentsToCheckIn.bind(this);
@@ -79,7 +83,38 @@ class FirstTab extends Component {
             "Oops! Something went wrong. Please try again!"
         );
       });
-  }
+
+    
+    getAllAppointments(patientId)
+      .then((response) => {
+        console.log("resspoon",response);
+        this.setState({
+          appointments: response,
+        });
+        let count = 0, cancel = 0, checkin = 0;
+
+        for (let i = 0; i < response.length; i++) {
+          if (response[i].checkedInStatus === "No Show") {
+            count += 1;
+          }else if(response[i].aptStatus === "Cancelled"){
+            cancel += 1;
+          }else if(response[i].checkedInStatus === "Checked-In"){
+            checkin += 1;
+          }
+        }
+        this.setState({
+          noShowCount : count,
+          noCancel : cancel,
+          noCheckin : checkin,
+        })
+      })
+      .catch((error) => {
+        Alert.error(
+          (error && error.message) ||
+            "Oops! Something went wrong. Please try again!"
+        );
+      });
+  };
 
   checkInApt = (aptID) => (e) => {
     console.log("cancel Appt");
@@ -159,6 +194,9 @@ class FirstTab extends Component {
     console.log("status", this.state.checkinStatus);
     return (
       <div className="">
+      <h4> Number of times you didn't show up: {this.state.noShowCount}</h4>
+      <h4> Number of times you've cancelled: {this.state.noCancel}</h4>
+      <h4> Number of times you've showed up: {this.state.noCheckin}</h4>
         <Container>
           <h4 style={{ color: "white", fontSize: "25px" }}>
             <center>Check - In Online!</center>

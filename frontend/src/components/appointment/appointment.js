@@ -89,7 +89,7 @@ class Appointment extends Component {
           <Row xs={4}>
             {this.state.appointments.map((data) => {
               let status = "false";
-              if (data.aptStatus == "Cancelled") {
+              if (data.aptStatus === "Cancelled") {
                 status = "true";
               }
               const updateAptData = {
