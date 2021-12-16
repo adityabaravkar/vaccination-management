@@ -191,7 +191,7 @@ class Admin extends Component {
             .catch((error) => {
                 console.log(error);
                 Alert.error(
-                    
+                    (error && error.message) ||
                     "Clinic with the same name already added!"
                 );
             });
