@@ -130,7 +130,7 @@ class ThirdTab extends Component {
                         <br />
                         <Button
                           type="submit"
-                          style={{ marginLeft: "100px", marginTop: "20px" }}
+                          style={{ marginLeft: "60px", marginTop: "20px" }}
                           onClick={this.cancelApt(data.id)}
                         >
                           Cancel

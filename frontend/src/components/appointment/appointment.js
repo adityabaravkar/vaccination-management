@@ -127,7 +127,7 @@ class Appointment extends Component {
                         </Card.Text>
                         &nbsp;&nbsp;&nbsp;
                         <UpdateAppointment updateAptData={updateAptData} />
-                        <Button style={{marginLeft:'100px',marginTop:'20px'}} type="submit" onClick={this.cancelApt(data.id)}>
+                        <Button type="submit" onClick={this.cancelApt(data.id)}>
                           Cancel
                         </Button>
                         <br />
