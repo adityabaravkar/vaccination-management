@@ -147,6 +147,7 @@ class Admin extends Component {
         if (!city || city === '') errors.city = 'City cannot be blank!';
         if (!state || state === '') errors.state = 'State cannot be blank!';
         if (!zipCode || zipCode === '') errors.zipCode = 'Zipcode cannot be blank!';
+
         if (!businessHours || businessHours === '') errors.businessHours = 'Business Hours cannot be blank!';
         if (!numberOfPhysicians || numberOfPhysicians === '') errors.numberOfPhysicians = 'Number Of Physicians cannot be blank!';
         return errors;
@@ -188,7 +189,9 @@ class Admin extends Component {
                 this.setState({numberOfPhysicians : ''});
             })
             .catch((error) => {
+                console.log(error);
                 Alert.error(
+                    
                     "Clinic with the same name already added!"
                 );
             });

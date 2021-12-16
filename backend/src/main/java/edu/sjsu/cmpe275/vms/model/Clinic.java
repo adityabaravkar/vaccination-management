@@ -17,7 +17,7 @@ public class Clinic {
     @GeneratedValue
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String clinicName;
     @Column(name = "streetNo", nullable = false)
     private String streetAndNumber;

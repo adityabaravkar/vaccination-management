@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -38,31 +40,91 @@ public class ClinicServiceImpl implements ClinicService {
         return clinic.getVaccinations();
     }
 
-    @Override
-    public Clinic createClinic(String clinicName, String streetAndNumber,String city,String state,int zipCode, String businessHours, int numberOfPhysicians) {
-        String[] split = businessHours.split("to");
-        int starthour = Integer.parseInt(split[0]);
-        int endhour = Integer.parseInt(split[1]);
-        ArrayList<Slot> slots = new ArrayList<>();
+//    @Override
+//    public Clinic createClinic(String clinicName, String streetAndNumber,String city,String state,int zipCode, String businessHours, int numberOfPhysicians) {
+//
+//
+//        String[] split = businessHours.split("to");
+////        int starthour = Integer.parseInt(split[0].substring(0,2));
+////        int endhour = Integer.parseInt(split[1].substring(0,2));
+////        int startMin = Integer.parseInt(split[0].substring(3));// get start min
+////        int endMin = Integer.parseInt(split[1].substring(3));// get end min
+//
+//        LocalTime startTime = LocalTime.parse(split[0]);
+//        LocalTime endTime = LocalTime.parse(split[1]);
+//        double totalhrs = Duration.between(startTime, endTime).getSeconds() * 1.00 / 60 * 60;
+//
+//        ArrayList<Slot> slots = new ArrayList<>();
+//
+//        Clinic clinic = new Clinic(clinicName,streetAndNumber,city,state,zipCode,businessHours, numberOfPhysicians);
+//        Clinic clinicValue = this.clinicRepository.saveAndFlush(clinic); // trying to save the clinic entity first
+//        long clinicId = clinic.getId();
+//        System.out.println("clinicId"+clinicId);
+//
+//        //int totalhrs =  endhour - starthour;
+//        if(totalhrs > 8){
+//            throw new BadRequestException("Business hours range should be 8 hrs");
+//        }
+//        if(totalhrs <= 8){
+//            int allowedSlots = totalhrs * 4;
+//            for(int i =0 ; i< allowedSlots ; i++)
+//            {
+//              Slot slot = new Slot("Unbooked",0,clinicValue);
+//              slots.add(slot);
+//            }
+//        }
+//        this.slotRepository.saveAll(slots);
+//        return clinic;
+//    }
+@Override
+public Clinic createClinic(String clinicName, String streetAndNumber,String city,String state,int zipCode, String businessHours, int numberOfPhysicians) {
+    int totalhrs = 0;
+    int difInMin = 0;
+    ArrayList<Slot> slots = new ArrayList<>();
 
-        Clinic clinic = new Clinic(clinicName,streetAndNumber,city,state,zipCode,businessHours, numberOfPhysicians);
-        Clinic clinicValue = this.clinicRepository.saveAndFlush(clinic); // trying to save the clinic entity first
-        long clinicId = clinic.getId();
-        System.out.println("clinicId"+clinicId);
+    String[] split = businessHours.split("to");
+    int starthour = Integer.parseInt(split[0].substring(0,2)); // get start hr
+    int endhour = Integer.parseInt(split[1].substring(0,2)); // get end hr
+    int startTime = Integer.parseInt(split[0].substring(3));// get start min
+    int endTime = Integer.parseInt(split[1].substring(3));// get end min
 
-        int totalhrs =  endhour - starthour;
-        if(totalhrs <= 8){
-            int allowedSlots = totalhrs * 4;
-            for(int i =0 ; i< allowedSlots ; i++)
-            {
-              Slot slot = new Slot("Unbooked",0,clinicValue);
-              slots.add(slot);
-            }
-        }
-        this.slotRepository.saveAll(slots);
-        return clinic;
+    Clinic clinic = new Clinic(clinicName, streetAndNumber,city,state,zipCode, businessHours, numberOfPhysicians);
+    Clinic clinicValue = this.clinicRepository.saveAndFlush(clinic); // trying to save the clinic entity first
+    long clinicId = clinic.getId();
+
+    //calculating the total business hours
+    if(startTime > endTime) {
+        totalhrs =  endhour - starthour - 1;
+        difInMin = 60 - startTime;
+    } else if(startTime < endTime) {
+        totalhrs = endhour - starthour ;
+        difInMin = endTime - startTime;
+    } else {
+        totalhrs = endhour - starthour;
     }
 
+    //adding slots only if business hours is <=8
+    if(totalhrs <= 8){
+        int allowedSlots = 0;
+        switch (difInMin){
+            case 0: allowedSlots = totalhrs * 4;
+                break;
+            case 15: allowedSlots = (totalhrs * 4) + 1;
+                break;
+            case 30: allowedSlots = (totalhrs * 4) + 2;
+                break;
+            case 45: allowedSlots = (totalhrs  * 4) + 3;
+                break;
+        }
+        for(int i =0 ; i< allowedSlots ; i++)
+        {
+            Slot slot = new Slot("Unbooked",0,clinicValue);
+            slots.add(slot);
+        }
+    }
+    this.slotRepository.saveAll(slots);
+    return clinic;
+}
     @Override
     public Clinic addVaccinations(long clinic_id, List<Long> vaccination_ids) {
         Clinic clinic = this.clinicRepository.findById(clinic_id)
