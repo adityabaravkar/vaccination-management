@@ -111,7 +111,7 @@ class UpdateAppointment extends Component {
     return (
       <div className="">
         <br />
-        <Button
+        <Button style={{marginLeft:'60px'}}
           onClick={this.handleShow}
           disabled={this.props.updateAptData.appointmentStatus === "true"}
         >
