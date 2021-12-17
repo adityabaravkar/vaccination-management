@@ -2,6 +2,7 @@ package edu.sjsu.cmpe275.vms.security.oauth2;
 
 import edu.sjsu.cmpe275.vms.exception.EmailNotVerifiedException;
 import edu.sjsu.cmpe275.vms.exception.OAuth2AuthenticationProcessingException;
+import edu.sjsu.cmpe275.vms.model.Address;
 import edu.sjsu.cmpe275.vms.model.AuthProvider;
 import edu.sjsu.cmpe275.vms.model.Role;
 import edu.sjsu.cmpe275.vms.model.User;
@@ -80,6 +81,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setRole(Role.Patient);
         user.setVerificationCode(RandomString.make(64));
+        user.setAddress(new Address("112", "San Jose", "CA", 95113));
         User savedUser = userRepository.save(user);
 
         String siteURL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
