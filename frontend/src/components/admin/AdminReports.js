@@ -46,6 +46,10 @@ viewReport=()=>{
     const viewClinic = {
         clinicId: this.state.selectedClinic
     }
+    console.log("*****")
+    console.log(viewClinic)
+    console.log(this.state.selectedClinic)
+    console.log("*****")
     const ViewReportRequest = Object.assign({}, viewClinic);
     getAllAppointmentsByClinic(ViewReportRequest)
     .then((response) => {
