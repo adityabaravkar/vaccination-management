@@ -287,7 +287,7 @@ class FirstTab extends Component {
                     <Card.Body>
                       <Card.Title tag="h6">Vaccine Name: {data.vaccinations[0].vaccineName}</Card.Title>
                       <Card.Subtitle tag="h7" className="mb-2 text-muted">
-                        Status: {data.checkedInStatus}
+                        
                       </Card.Subtitle>
                       <Card.Text>
                         <u>Clinic:</u> {data.clinicId.clinicName}
