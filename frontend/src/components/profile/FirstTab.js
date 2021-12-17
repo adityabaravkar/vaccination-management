@@ -18,6 +18,7 @@ class FirstTab extends Component {
       noShowCount : 0,
       noCancel : 0,
       noCheckin: 0,
+      due: [],
       //  checkinStatus: false,
     };
     this.getAppointmentsToCheckIn = this.getAppointmentsToCheckIn.bind(this);
@@ -39,6 +40,7 @@ class FirstTab extends Component {
     console.log("Current Date: " + currentDate.toString());
     this.getAppointmentsToCheckIn(currentDate);
   };
+  
 
   getAppointmentsToCheckIn(currentDate) {
     const patientId = Authentication.userId;
@@ -60,7 +62,7 @@ class FirstTab extends Component {
       currentDate.getMinutes();
     getAptsToCheckin(patientId, currentTime)
       .then((response) => {
-        console.log("response", response);
+        console.log("response here", response);
         this.setState({
           checkins: response,
         });
@@ -76,6 +78,14 @@ class FirstTab extends Component {
             });
           }
         }
+        for (let i = 0; i < response.length; i++) {
+          if(response[i].checkedInStatus === "Checked-In"){
+            this.setState(prevState => ({
+              due: [...prevState.due, response[i]]
+            }))
+          }
+        }
+
       })
       .catch((error) => {
         Alert.error(
@@ -252,6 +262,53 @@ class FirstTab extends Component {
             })}
           </Row>
         </Container>
+        
+        <Container>
+        <h4 style={{ color: "white", fontSize: "25px" }}>
+          <center>Due vaccines:</center>
+        </h4>
+        <br />
+        <Row xs={4}>
+          {this.state.due.map((data) => {
+            
+            const aptDate = data.appointmentTime.substring(0, 10);
+            const aptTime = data.appointmentTime.substring(11, 16);
+
+            return (
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "",
+                    color: "black",
+                  }}
+                >
+                  <Card style={{ width: "18rem" }}>
+                    <Card.Body>
+                      <Card.Title tag="h6">Vaccine Name: {data.vaccinations[0].vaccineName}</Card.Title>
+                      <Card.Subtitle tag="h7" className="mb-2 text-muted">
+                        Status: {data.checkedInStatus}
+                      </Card.Subtitle>
+                      <Card.Text>
+                        <u>Clinic:</u> {data.clinicId.clinicName}
+                        <br />
+                        <u>Date:</u> {aptDate}
+                        <br />
+                        <u>Time:</u> {aptTime}
+                        <br />
+                      </Card.Text>
+                      
+                      &nbsp;&nbsp;&nbsp;
+                      <br />
+                    </Card.Body>
+                  </Card>
+                </div>
+                <br />
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
       </div>
     );
   }
