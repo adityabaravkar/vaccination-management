@@ -292,9 +292,7 @@ class FirstTab extends Component {
                       <Card.Text>
                         <u>Clinic:</u> {data.clinicId.clinicName}
                         <br />
-                        <u>Date:</u> {aptDate}
-                        <br />
-                        <u>Time:</u> {aptTime}
+                        
                         <br />
                       </Card.Text>
                       
