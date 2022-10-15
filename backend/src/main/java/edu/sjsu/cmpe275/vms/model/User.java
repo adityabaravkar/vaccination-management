@@ -3,7 +3,7 @@ package edu.sjsu.cmpe275.vms.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
+import java.util.List;
 import java.sql.Date;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -35,10 +35,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String imageUrl;
-
     @Column(nullable = false)
     private Boolean emailVerified = false;
+
+    @Column(length = 64)
+    private String verificationCode;
 
     @JsonIgnore
     private String password;
@@ -49,17 +50,21 @@ public class User {
 
     private String providerId;
 
+
+    @OneToMany(mappedBy = "patientId", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private List<Appointment> appointmentList;
+
+    public List<Appointment> getAppointmentList(){return appointmentList;}
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @NotNull
     private Date dateOfBirth;
 
     @Embedded
     private Address address;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -103,20 +108,20 @@ public class User {
         this.email = email;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public Boolean getEmailVerified() {
         return emailVerified;
     }
 
     public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public String getPassword() {

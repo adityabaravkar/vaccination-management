@@ -19,8 +19,6 @@ public class SignUpRequest {
     @NotBlank
     private String password;
 
-    private String role;
-
     @NotBlank
     private String dateOfBirth;
 
@@ -30,7 +28,7 @@ public class SignUpRequest {
 
     private String state;
 
-    private Integer zipCode;
+    private Integer zipCode = 0;
 
     @NotBlank
     private String gender;
@@ -73,14 +71,6 @@ public class SignUpRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getDateOfBirth() {
