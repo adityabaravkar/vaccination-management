@@ -15,4 +15,3 @@ http://ec2-54-183-134-139.us-west-1.compute.amazonaws.com:8080/
 * Google app is not published hence only selected emails can be used to login.
 * For testing use : 
  cmpe275.vms@gmail.com
- password : vms@CMPE275
